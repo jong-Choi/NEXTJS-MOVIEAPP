@@ -1,6 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import firebaseInstance, { authService } from "../public/fbase";
+import firebaseInstance, {
+  authService,
+  CustomMultiFactorUserType,
+  dbService,
+} from "../public/fbase";
 import { useSelector } from "../store";
 import authSlice from "../store/authSlice";
 
@@ -21,9 +25,32 @@ const login = () => {
 
   useEffect(() => {
     authService.onAuthStateChanged(async (user) => {
-      await dispatch(authSlice.actions.setUserOjbect(user?.multiFactor?.user));
+      const multiFactor: CustomMultiFactorUserType = user?.multiFactor;
+      await dispatch(authSlice.actions.setUserOjbect(multiFactor.user));
     });
   }, []);
+
+  // useEffect(() => {
+  //   if (!isAuth) return;
+
+  //   const docRef = dbService
+  //     .collection("cities")
+  //     .where("uid", "==", userObject.uid);
+
+  //   docRef
+  //     .get()
+  //     .then((doc) => {
+  //       if (doc.exists) {
+  //         console.log("Document data:", doc.data());
+  //       } else {
+  //         // doc.data() will be undefined in this case
+  //         console.log("No such document!");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log("Error getting document:", error);
+  //     });
+  // }, [isAuth]);
 
   return (
     <div>
