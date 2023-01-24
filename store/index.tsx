@@ -4,13 +4,16 @@ import {
   TypedUseSelectorHook,
   useSelector as useReduxSeletor,
 } from "react-redux";
-
-import todoSlice from "./todoSlice";
+import authSlice from "./authSlice";
 
 const store = configureStore({
   reducer: {
-    todoSlice: todoSlice.reducer,
+    authSlice: authSlice.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 const makeStore = () => store;
 

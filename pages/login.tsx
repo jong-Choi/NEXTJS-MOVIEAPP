@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import firebaseInstance, { authService } from "../public/fbase";
+import { useSelector } from "../store";
+import authSlice from "../store/authSlice";
 
 const login = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const dispatch = useDispatch();
+  const { userObject, isAuth } = useSelector((state) => state.authSlice);
+
   const onSocialLogin = async (event) => {
     const {
       target: { name },
@@ -15,14 +20,14 @@ const login = () => {
   };
 
   useEffect(() => {
-    authService.onAuthStateChanged((user) => {
-      if (user) setIsLoggedIn(true);
-      else setIsLoggedIn(false);
+    authService.onAuthStateChanged(async (user) => {
+      await dispatch(authSlice.actions.setUserOjbect(user?.multiFactor?.user));
     });
   }, []);
+
   return (
     <div>
-      {isLoggedIn ? (
+      {isAuth ? (
         <button onClick={() => authService.signOut()}>로그아웃 하기</button>
       ) : (
         <button onClick={onSocialLogin} name="loginWithGoogle">
