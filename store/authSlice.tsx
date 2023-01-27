@@ -25,3 +25,4 @@ const authSlice = createSlice({
 });
 
 export default authSlice;
+export const { setUserOjbect } = authSlice.actions;

@@ -1,3 +1,4 @@
+import { UserType } from "./../types/user.d";
 // Import the functions you need from the SDKs you need
 // import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
@@ -32,5 +33,5 @@ export default firebaseInstance;
 
 export interface CustomMultiFactorUserType
   extends firebase.User.MultiFactorUser {
-  user?: object;
+  user?: UserType;
 }

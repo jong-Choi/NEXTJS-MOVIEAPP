@@ -1,1 +1,4 @@
-export type UserType = object | null;
+export interface UserType {
+  uid?: string;
+  accessToken?: string;
+}
