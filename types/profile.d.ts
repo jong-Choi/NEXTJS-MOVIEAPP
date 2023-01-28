@@ -5,6 +5,6 @@ export interface ProfileType {
   myMovies: Array<number>;
 }
 
-export interface UpdatingProfileType extends ProfileType {
+export interface ProfileDataType extends ProfileType {
   documentId: string;
 }
