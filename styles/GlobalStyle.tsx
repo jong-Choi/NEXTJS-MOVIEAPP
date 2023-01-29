@@ -1,10 +1,13 @@
 import { createGlobalStyle } from "styled-components";
-import GlobalFontFamily from "./GlobalFontFamily";
-import GlobalResetStyle from "./GlobalStyleReset";
 
 const GlobalStyle = createGlobalStyle`
-  ${GlobalResetStyle}
-  ${GlobalFontFamily}
+  html,
+  body {
+    font-family: "Noto Sans KR", sans-serif;
+    background-color: #01192f;
+    /* padding-top: 75px; */
+    color: #ffff;
+  }
 `;
 
 export default GlobalStyle;

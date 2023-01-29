@@ -1,17 +1,21 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { dbService } from "../../public/fbase";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { authService, dbService } from "../../public/fbase";
 import { createProfile, fetchProfile } from "../../services/fbProfile";
-import wrapper from "../../store";
-import { setUserProfile } from "../../store/authSlice";
+import wrapper, { useTypedSelector } from "../../store";
+import { setUserOjbect, setUserProfile } from "../../store/authSlice";
 import { ProfileType } from "../../types/profile";
+import { setCookie } from "../../utils/handleCookie";
 
-const create = ({ userObject }) => {
+const create = () => {
+  const userObject = useTypedSelector((store) => store.authSlice.userObject);
+  const router = useRouter();
+  const dispatch = useDispatch();
   const [nickname, setNickname] = useState("");
   const [image, setImage] = useState("/default.png");
   const [movie, setMovie] = useState("");
   const [myMovies, setMyMovies] = useState([]);
-  const router = useRouter();
   const onRequest = () => {
     createProfile({ uid: userObject.uid, nickname, image, myMovies })
       .then(async (res) => {
@@ -24,6 +28,23 @@ const create = ({ userObject }) => {
       })
       .catch((err) => console.log(err));
   };
+
+  useEffect(() => {
+    const onMounted = async () => {
+      if (!userObject) {
+        const currentUser = authService.currentUser;
+        if (!currentUser) return router.push("/login");
+        dispatch(setUserOjbect(currentUser));
+        setCookie("uid", currentUser.uid, 1);
+      }
+      const userProfile = await fetchProfile(userObject.uid);
+      if (userProfile) {
+        return router.push("/");
+      }
+    };
+    onMounted();
+  }, []);
+
   return (
     <div>
       <input
@@ -82,31 +103,3 @@ const create = ({ userObject }) => {
 };
 
 export default create;
-
-export const getStaticProps = wrapper.getStaticProps((store) => async () => {
-  const userObject = await store.getState().authSlice.userObject;
-  if (!userObject) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/login",
-      },
-      props: { userObject },
-    };
-  }
-  const userProfile = await fetchProfile(userObject.uid);
-  if (userProfile) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/",
-      },
-      props: { userObject },
-    };
-  }
-  return {
-    props: {
-      userObject,
-    },
-  };
-});

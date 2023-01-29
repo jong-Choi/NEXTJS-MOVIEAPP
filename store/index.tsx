@@ -21,4 +21,5 @@ const wrapper = createWrapper(makeStore);
 export default wrapper;
 
 export type RootState = ReturnType<typeof store.getState>;
-export const useSelector: TypedUseSelectorHook<RootState> = useReduxSeletor;
+export const useTypedSelector: TypedUseSelectorHook<RootState> =
+  useReduxSeletor;
