@@ -72,7 +72,7 @@ export default function Home() {
       setTimeout(() => {
         setHeadClassName("up-lift");
         setTimeout(() => router.push(url), 1100);
-      }, 1900);
+      }, 1000);
     });
   }, []);
 
