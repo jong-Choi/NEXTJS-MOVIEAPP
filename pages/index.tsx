@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import { authService } from "../public/fbase";
 import { onSocialLogin } from "../services/fbAuth";
@@ -67,12 +68,35 @@ export default function Home() {
       let url = "/main";
       const profile = await fetchProfile(uid);
       if (!profile) url = "/profile/create";
+      let flag = false;
+      let routingTimeoutId;
+      const routing = () => {
+        if (flag) router.push(url);
+        else {
+          routingTimeoutId = setTimeout(routing, 1100);
+        }
+      };
       setTimeout(() => {
-        dispatch(authSlice.actions.setUserOjbect(currentUser));
-        if (profile) dispatch(authSlice.actions.setUserProfile(profile));
         setHeadClassName("up-lift");
-        setTimeout(() => router.push(url), 1100);
+        setTimeout(routing, 1100);
       }, 1000);
+      try {
+        await dispatch(authSlice.actions.setUserOjbect(currentUser));
+        await dispatch(authSlice.actions.setUserProfile(profile));
+        flag = true;
+      } catch (error) {
+        clearTimeout(routingTimeoutId);
+        toast.error(error.message, {
+          position: "bottom-left",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }
     });
   }, []);
 
