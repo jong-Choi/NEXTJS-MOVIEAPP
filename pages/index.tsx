@@ -10,6 +10,7 @@ import wrapper from "../store";
 import authSlice from "../store/authSlice";
 import GrayScaleMasthead from "../styles/GrayScaleMasthead";
 import { setCookie } from "../utils/handleCookie";
+import { toastError } from "../utils/toastAlert";
 
 export default function Home() {
   const [imgUrl, setImgUrl] = useState("");
@@ -86,16 +87,7 @@ export default function Home() {
         flag = true;
       } catch (error) {
         clearTimeout(routingTimeoutId);
-        toast.error(error.message, {
-          position: "bottom-left",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
+        toastError(error.message);
       }
     });
   }, []);
