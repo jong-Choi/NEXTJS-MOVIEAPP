@@ -1,9 +1,10 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
 import styled from "styled-components";
 import { authService } from "../public/fbase";
+import { onSocialLogin } from "../services/fbAuth";
+import { fetchProfile } from "../services/fbProfile";
 import wrapper from "../store";
 import authSlice from "../store/authSlice";
 import GrayScaleMasthead from "../styles/GrayScaleMasthead";
@@ -17,19 +18,6 @@ export default function Home() {
   const [buttonDisplay, setButtonDisplay] = useState("d-none");
   const dispatch = useDispatch();
   const router = useRouter();
-
-  const notify = () => {
-    return toast.error("로그인이 중단되었습니다.", {
-      position: "bottom-left",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
 
   useEffect(() => {
     const backdropPathList = [
@@ -74,31 +62,37 @@ export default function Home() {
         setButtonDisplay("");
         return;
       }
-      setCookie("uid", currentUser.uid, 1);
+      const uid = currentUser.uid;
+      setCookie("uid", uid, 1);
       setButtonDisplay("d-none");
+      let url = "/main";
+      const profile = await fetchProfile(uid);
+      if (!profile) url = "/profile/create";
+      await dispatch(authSlice.actions.setUserProfile(profile));
       setTimeout(() => {
         setHeadClassName("up-lift");
-        setTimeout(() => router.push("/main"), 1200);
-      }, 3000);
+        setTimeout(() => router.push(url), 1100);
+      }, 1900);
     });
   }, []);
 
   return (
     <GrayScaleMasthead>
       <BgImg src={imgUrl} className={`after-1-secs ${headClassName}`}></BgImg>
-      <header className={`masthead ${headClassName}`}>
+      <header className={`masthead ${headClassName} after-0-secs`}>
         <div className="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center masthead-text">
           <div className="d-flex justify-content-center">
             <div className="text-center">
               <h1 className="mx-auto my-0 text-uppercase">TEAL AND ORAGNE</h1>
-              <h2 className="text-white-50 mx-auto mt-3 mb-5 after-1-secs">
+              <h2 className="text-white-50 mx-auto mt-3 mb-5">
                 {quetes}
                 <br />- <i> {movieName}</i>
               </h2>
               <button
                 type="button"
                 className={`btn btn-outline-light after-1-secs ${buttonDisplay}`}
-                onClick={notify}
+                onClick={onSocialLogin}
+                name="loginWithGoogle"
               >
                 구글로 로그인 하기
               </button>
@@ -117,7 +111,7 @@ const BgImg = styled.img`
   max-height: 99vh;
   object-fit: cover;
   visibility: hidden;
-  animation: fadein 1.5s;
+  animation: fadein 1s;
   animation-delay: 1s;
   animation-fill-mode: forwards;
 `;

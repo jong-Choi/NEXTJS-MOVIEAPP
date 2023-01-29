@@ -63,10 +63,9 @@ const GrayScaleMasthead = styled.div`
       font-size: 1.25rem;
     }
   }
-  .after-1-secs {
+  .after-0-secs {
     visibility: hidden;
-    animation: fadein 1.5s;
-    animation-delay: 1s;
+    animation: fadein 200ms;
     animation-fill-mode: forwards;
   }
   @keyframes fadein {
@@ -81,8 +80,8 @@ const GrayScaleMasthead = styled.div`
   }
   .after-1-secs {
     visibility: hidden;
-    animation: fadein 1.5s;
-    animation-delay: 1s;
+    animation: fadein 1500ms;
+    animation-delay: 500ms;
     animation-fill-mode: forwards;
   }
   @keyframes fadein {
@@ -96,17 +95,17 @@ const GrayScaleMasthead = styled.div`
     }
   }
   .up-lift {
-    animation: up 1s;
+    animation: up 1000ms;
     animation-fill-mode: forwards;
   }
   @keyframes up {
-    from {
+    0% {
       visibility: visible;
       transform: translateZ(0);
     }
-    to {
+    100% {
       visibility: hidden;
-      transform: translate3d(0, -100%, 0);
+      transform: translate3d(0, -105%, 0);
     }
   }
 `;
