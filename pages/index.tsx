@@ -68,11 +68,11 @@ export default function Home() {
       let url = "/main";
       const profile = await fetchProfile(uid);
       if (!profile) url = "/profile/create";
-      await dispatch(authSlice.actions.setUserProfile(profile));
       setTimeout(() => {
         setHeadClassName("up-lift");
         setTimeout(() => router.push(url), 1100);
       }, 1000);
+      dispatch(authSlice.actions.setUserProfile(profile));
     });
   }, []);
 
