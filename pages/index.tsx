@@ -53,8 +53,8 @@ export default function Home() {
 
     const randIdx = Math.ceil(Math.random() * (movieTitleList.length - 1));
     setImgUrl(backdropPathList[randIdx]);
-    setQuetes(movieTitleList[randIdx]);
-    setMovieName(movieQuotes[randIdx]);
+    setMovieName(movieTitleList[randIdx]);
+    setQuetes(movieQuotes[randIdx]);
     authService.onAuthStateChanged(async (user) => {
       const currentUser = authService.currentUser;
       await dispatch(authSlice.actions.setUserOjbect(currentUser));
