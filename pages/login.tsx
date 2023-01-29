@@ -25,7 +25,7 @@ const login = ({ isLoggedIn }) => {
       }
       setCookie("uid", currentUser.uid, 1);
       setLoginClass("");
-      router.push("/profile");
+      // router.push("/profile");
     });
   }, []);
 

@@ -1,14 +1,22 @@
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import styled from "styled-components";
+import { authService } from "../public/fbase";
 import wrapper from "../store";
+import authSlice from "../store/authSlice";
 import GrayScaleMasthead from "../styles/GrayScaleMasthead";
+import { setCookie } from "../utils/handleCookie";
 
 export default function Home() {
   const [imgUrl, setImgUrl] = useState("");
   const [quetes, setQuetes] = useState("");
   const [movieName, setMovieName] = useState("");
   const [headClassName, setHeadClassName] = useState("");
+  const [buttonDisplay, setButtonDisplay] = useState("d-none");
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const notify = () => {
     return toast.error("로그인이 중단되었습니다.", {
@@ -59,7 +67,20 @@ export default function Home() {
     setImgUrl(backdropPathList[randIdx]);
     setQuetes(movieTitleList[randIdx]);
     setMovieName(movieQuotes[randIdx]);
-    setTimeout(() => setHeadClassName("fade-away"), 3000);
+    authService.onAuthStateChanged(async (user) => {
+      const currentUser = authService.currentUser;
+      await dispatch(authSlice.actions.setUserOjbect(currentUser));
+      if (!currentUser) {
+        setButtonDisplay("");
+        return;
+      }
+      setCookie("uid", currentUser.uid, 1);
+      setButtonDisplay("d-none");
+      setTimeout(() => {
+        setHeadClassName("up-lift");
+        setTimeout(() => router.push("/main"), 1200);
+      }, 3000);
+    });
   }, []);
 
   return (
@@ -76,7 +97,7 @@ export default function Home() {
               </h2>
               <button
                 type="button"
-                className="btn btn-outline-light after-1-secs"
+                className={`btn btn-outline-light after-1-secs ${buttonDisplay}`}
                 onClick={notify}
               >
                 구글로 로그인 하기
@@ -93,14 +114,10 @@ const BgImg = styled.img`
   pointer-events: none;
   position: absolute;
   width: 100vw;
+  max-height: 99vh;
+  object-fit: cover;
   visibility: hidden;
   animation: fadein 1.5s;
   animation-delay: 1s;
   animation-fill-mode: forwards;
-  @media (min-width: 780px) {
-    width: 130vw;
-  }
-  @media (min-width: 1200px) {
-    width: 100vw;
-  }
 `;

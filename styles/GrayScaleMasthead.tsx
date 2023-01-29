@@ -95,18 +95,18 @@ const GrayScaleMasthead = styled.div`
       visibility: visible;
     }
   }
-  .fade-away {
-    animation: fadeout 1s;
+  .up-lift {
+    animation: up 1s;
     animation-fill-mode: forwards;
   }
-  @keyframes fadeout {
+  @keyframes up {
     from {
       visibility: visible;
       transform: translateZ(0);
     }
     to {
       visibility: hidden;
-      transform: translate3d(0, -2000px, 0);
+      transform: translate3d(0, -100%, 0);
     }
   }
 `;
