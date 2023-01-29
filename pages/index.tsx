@@ -57,7 +57,6 @@ export default function Home() {
     setQuetes(movieQuotes[randIdx]);
     authService.onAuthStateChanged(async (user) => {
       const currentUser = authService.currentUser;
-      await dispatch(authSlice.actions.setUserOjbect(currentUser));
       if (!currentUser) {
         setButtonDisplay("");
         return;
@@ -69,10 +68,11 @@ export default function Home() {
       const profile = await fetchProfile(uid);
       if (!profile) url = "/profile/create";
       setTimeout(() => {
+        dispatch(authSlice.actions.setUserOjbect(currentUser));
+        if (profile) dispatch(authSlice.actions.setUserProfile(profile));
         setHeadClassName("up-lift");
         setTimeout(() => router.push(url), 1100);
       }, 1000);
-      dispatch(authSlice.actions.setUserProfile(profile));
     });
   }, []);
 
