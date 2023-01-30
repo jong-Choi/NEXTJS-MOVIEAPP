@@ -18,7 +18,7 @@ const create = () => {
   const [movie, setMovie] = useState("");
   const [myMovies, setMyMovies] = useState([]);
   const [changinProfile, setChangingProfile] = useState(false);
-  const [integrityMsg, setIntegrityMsg] = useState("");
+  const [integrityMsg, setIntegrityMsg] = useState("모든 항목을 작성해주세요");
   const onRequest = () => {
     createProfile({ uid: userObject.uid, nickname, image, myMovies })
       .then(async (res) => {
@@ -36,7 +36,7 @@ const create = () => {
     const onMounted = async () => {
       if (!userObject) {
         const currentUser = authService.currentUser;
-        // if (!currentUser) return router.push("/login");
+        if (!currentUser) return router.push("/login");
         dispatch(setUserOjbect(currentUser));
         setCookie("uid", currentUser.uid, 1);
       }
@@ -164,15 +164,6 @@ const create = () => {
               />
               <label htmlFor="floatingInput">나의 인생영화</label>
             </div>
-            <button
-              type="button"
-              onClick={(e) => {
-                if (myMovies.length < 5) setMyMovies([...myMovies, movie]);
-              }}
-            >
-              {" "}
-              영화 추가하기
-            </button>
             <div className="d-flex justify-content-evenly small-text-container">
               {myMovies.map((element, idx) => {
                 return (
@@ -259,11 +250,20 @@ const StyledForm = styled.div`
   }
   .login-dark {
     height: 1000px;
-    background: #475d62 url(../../assets/img/star-sky.jpg);
-    background-size: cover;
     position: relative;
+    animation: up-comming 1000ms;
+    animation-fill-mode: forwards;
   }
-
+  @keyframes up-comming {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, 105%, 0);
+    }
+    100% {
+      opacity: 1;
+      transform: translateZ(0);
+    }
+  }
   .login-dark form {
     max-width: 710px;
     width: 90%;
@@ -275,7 +275,7 @@ const StyledForm = styled.div`
     top: 50%;
     left: 50%;
     color: #fff;
-    box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.5);
   }
 
   .login-dark .illustration {
