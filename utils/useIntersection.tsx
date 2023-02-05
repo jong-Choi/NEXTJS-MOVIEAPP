@@ -21,8 +21,8 @@ function handleIntersections(entries) {
 function getIntersectionObserver() {
   if (observer === undefined) {
     observer = new IntersectionObserver(handleIntersections, {
-      rootMargin: "0px",
-      threshold: 0.15,
+      rootMargin: "100px",
+      threshold: 0,
     });
   }
   return observer;
