@@ -109,7 +109,6 @@ const create = () => {
               />
               <label htmlFor="floatingInput">닉네임을 입력하세요</label>
             </div>
-            <Search></Search>
             <div className="form-floating">
               <input
                 className="form-control text-center"
@@ -120,6 +119,7 @@ const create = () => {
               />
               <label htmlFor="floatingInput">나의 인생영화</label>
             </div>
+            <Search></Search>
             <div className="d-flex justify-content-evenly small-text-container">
               {myMovies.map((element, idx) => {
                 return (
