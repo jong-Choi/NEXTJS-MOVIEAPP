@@ -9,6 +9,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import { StyledMovieRow } from "../styles/StyledMovieRow";
+import MovieRowSearch from "./MovieRowSearch";
+import MovieRowContent from "./MovieRowContent";
 
 interface iProps {
   title: string;
@@ -60,7 +62,7 @@ function MovieRow({ title, id, fetchUrl, movieList, onResultClick }: iProps) {
   // poster_path: "/f2PVrphK0u81ES256lw3oAZuF3x.jpg"
   // vote_average: 8.3
   // vote_count: 939
-
+  const MovieFigure = movieList?.length ? MovieRowSearch : MovieRowContent;
   return (
     <StyledMovieRow className="row">
       <h2>{title}</h2>
@@ -76,6 +78,7 @@ function MovieRow({ title, id, fetchUrl, movieList, onResultClick }: iProps) {
       <Swiper
         // install Swiper modules
         modules={[Navigation, Pagination, Scrollbar, A11y]}
+        autoHeight={true}
         loop={false}
         // spaceBetween={50}
         // slidesPerView={3}
@@ -113,7 +116,7 @@ function MovieRow({ title, id, fetchUrl, movieList, onResultClick }: iProps) {
               <SwiperSlide key="noResult">
                 <figure>
                   <img
-                    alt="검색결과가 없습니다"
+                    alt="결과가 없습니다"
                     style={{
                       cursor: "pointer",
                     }}
@@ -127,14 +130,9 @@ function MovieRow({ title, id, fetchUrl, movieList, onResultClick }: iProps) {
                   >
                     <div
                       className="description"
-                      style={
-                        movieList
-                          ? {
-                              fontSize: "x-small",
-                              cursor: "pointer",
-                            }
-                          : {}
-                      }
+                      style={{
+                        fontSize: "x-small",
+                      }}
                     >
                       결과가 없습니다
                     </div>
@@ -147,7 +145,8 @@ function MovieRow({ title, id, fetchUrl, movieList, onResultClick }: iProps) {
               return (
                 movie.backdrop_path && (
                   <SwiperSlide key={movie.id}>
-                    <figure>
+                    <MovieFigure movie={movie} />
+                    {/* <figure>
                       <img
                         alt={movie.title || movie.original_title}
                         style={{
@@ -180,7 +179,7 @@ function MovieRow({ title, id, fetchUrl, movieList, onResultClick }: iProps) {
                           {movie.title || movie.original_title}
                         </div>
                       </div>
-                    </figure>
+                    </figure> */}
                   </SwiperSlide>
                 )
               );

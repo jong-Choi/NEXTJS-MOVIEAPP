@@ -16,7 +16,7 @@ const Search = ({ label, onResultClick }: iProps) => {
   const debouncedInput = useDebounce(input, 500);
 
   useEffect(() => {
-    if (!debouncedInput) return;
+    if (!debouncedInput) return setMoives([]);
     getSearchData(debouncedInput).then((res) => setMoives(res.data.results));
   }, [debouncedInput]);
   return (
@@ -52,7 +52,7 @@ export const StyledSearchResults = styled.div`
   position: absolute;
   z-index: 2;
   width: 100%;
-  /* height: 250%; */
+
   backdrop-filter: blur(10px);
   box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.5);
   .RowContainer {
@@ -60,5 +60,12 @@ export const StyledSearchResults = styled.div`
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 1rem;
+    height: 250%;
+  }
+  /*
+  https://stackoverflow.com/questions/63213956/when-loading-swiper-slide-height-changes
+  */
+  .swiper-wrapper {
+    min-height: 8vh;
   }
 `;
