@@ -64,7 +64,6 @@ function MovieRow({ title, id, fetchUrl, movieList, onResultClick }: iProps) {
   return (
     <StyledMovieRow className="row">
       <h2>{title}</h2>
-
       {/*  <div className="slider">
         <div
           className="slider__arrow-left"
@@ -80,23 +79,27 @@ function MovieRow({ title, id, fetchUrl, movieList, onResultClick }: iProps) {
         loop={true}
         // spaceBetween={50}
         // slidesPerView={3}
-        navigation
-        pagination={{ clickable: true }}
+        // navigation
+        pagination={movieList ? { enabled: false } : { clickable: true }}
         // scrollbar={{ draggable: true }}
         // onSwiper={(swiper) => console.log(swiper)}
         // onSlideChange={() => console.log("slide change")}
+        navigation={{
+          prevEl: ".swiper-button-prev",
+          nextEl: ".swiper-button-next",
+        }}
         breakpoints={{
           1378: {
-            slidesPerView: 6,
-            slidesPerGroup: 6,
-          },
-          998: {
             slidesPerView: 5,
             slidesPerGroup: 5,
           },
-          625: {
+          998: {
             slidesPerView: 4,
             slidesPerGroup: 4,
+          },
+          625: {
+            slidesPerView: 3,
+            slidesPerGroup: 3,
           },
           0: {
             slidesPerView: 3,
@@ -115,7 +118,7 @@ function MovieRow({ title, id, fetchUrl, movieList, onResultClick }: iProps) {
                       // key={movie.id}
                       className="row__poster"
                       src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
-                      onClick={() => handleClick(movie)}
+                      onClick={() => console.log("안녕하세요")}
                     />
                   </SwiperSlide>
                 )
@@ -131,10 +134,12 @@ function MovieRow({ title, id, fetchUrl, movieList, onResultClick }: iProps) {
           <span className="arrow">{">"}</span>
         </div>
       </div> */}
+        <div className="swiper-button-prev arrow"></div>
+        <div className="swiper-button-next arrow"></div>
       </Swiper>
       {/* {modalOpen && (
         <MovieModal {...movieSelected} setModalOpen={setModalOpen} />
-      )} */}
+      )} */}{" "}
     </StyledMovieRow>
   );
 }
