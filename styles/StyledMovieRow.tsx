@@ -10,6 +10,7 @@ export const StyledMovieRow = styled.section`
   }
   .slider {
     position: relative;
+    /* min-height: 160px; */
   }
   .slider__arrow-left {
     background-clip: content-box;
@@ -180,5 +181,122 @@ export const StyledMovieRow = styled.section`
   .swiper-button-prev:hover {
     transition: 400ms all ease-in-out;
     transform: scale(1.2);
+  }
+  /*
+  //이미지 위에 글자
+// https://zzznara2.tistory.com/807
+*/
+  figure {
+    width: 100%;
+    position: relative;
+  }
+
+  figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  /* 
+  animation: fadein 0.3s;
+  -moz-animation: fadein 0.3s; 
+  -webkit-animation: fadein 0.3s; 
+  -o-animation: fadein 0.3s; 
+}
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@-moz-keyframes fadein {
+
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes fadein {
+
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@-o-keyframes fadein {
+  
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+*/
+  figure h4 {
+    position: absolute;
+    top: calc(100% - 50px);
+    left: 0;
+    width: 100%;
+    height: 50px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.6);
+    margin: 0;
+  }
+  figure .overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    width: 100%;
+    height: 0;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.6);
+    -webkit-transition: 0.4s ease;
+    transition: 0.4s ease;
+  }
+  figure .overlay .description {
+    font-size: medium;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+    word-break: keep-all;
+    /* 글자수 자르기 https://eunyoe.tistory.com/19 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    /* word-wrap: break-word; */
+    /* line-height: 1.2em;
+    height: 3.6em; */
+  }
+
+  figure:hover h4 {
+    display: none;
+  }
+  figure:hover .overlay {
+    display: block;
+    height: 50%;
+  }
+
+  @media screen and (max-width: 768px) {
+    figure .overlay .description {
+      font-size: small;
+    }
+    figure:hover .overlay {
+      display: block;
+      height: 100%;
+    }
   }
 `;

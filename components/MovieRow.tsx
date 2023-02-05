@@ -90,16 +90,16 @@ function MovieRow({ title, id, fetchUrl, movieList, onResultClick }: iProps) {
         }}
         breakpoints={{
           1378: {
+            slidesPerView: 6,
+            slidesPerGroup: 6,
+          },
+          998: {
             slidesPerView: 5,
             slidesPerGroup: 5,
           },
-          998: {
+          625: {
             slidesPerView: 4,
             slidesPerGroup: 4,
-          },
-          625: {
-            slidesPerView: 3,
-            slidesPerGroup: 3,
           },
           0: {
             slidesPerView: 3,
@@ -113,13 +113,38 @@ function MovieRow({ title, id, fetchUrl, movieList, onResultClick }: iProps) {
               return (
                 movie.backdrop_path && (
                   <SwiperSlide key={movie.id}>
-                    <img
-                      alt={movie.title || movie.original_title}
-                      // key={movie.id}
-                      className="row__poster"
-                      src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
-                      onClick={() => console.log("안녕하세요")}
-                    />
+                    <figure>
+                      <img
+                        alt={movie.title || movie.original_title}
+                        style={{ cursor: "pointer" }}
+                        // key={movie.id}
+                        className="row__poster"
+                        src={
+                          movieList
+                            ? `https://image.tmdb.org/t/p/w300/${movie.backdrop_path}`
+                            : `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`
+                        }
+                        onClick={() => console.log("안녕하세요")}
+                      />
+                      <div
+                        className="overlay"
+                        style={movieList ? { height: "100%" } : {}}
+                      >
+                        <div
+                          className="description"
+                          style={
+                            movieList
+                              ? {
+                                  fontSize: "x-small",
+                                  cursor: "pointer",
+                                }
+                              : {}
+                          }
+                        >
+                          {movie.title || movie.original_title}
+                        </div>
+                      </div>
+                    </figure>
                   </SwiperSlide>
                 )
               );
