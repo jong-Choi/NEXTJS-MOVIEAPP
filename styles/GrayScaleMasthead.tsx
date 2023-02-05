@@ -95,17 +95,19 @@ const GrayScaleMasthead = styled.div`
     }
   }
   .up-lift {
-    animation: up 1000ms;
+    animation: up 500ms;
     animation-fill-mode: forwards;
   }
   @keyframes up {
     0% {
+      opacity: 1;
       visibility: visible;
       transform: translateZ(0);
     }
     100% {
+      opacity: 0;
       visibility: hidden;
-      transform: translate3d(0, -105%, 0);
+      transform: translate3d(0, -5%, 0);
     }
   }
 `;

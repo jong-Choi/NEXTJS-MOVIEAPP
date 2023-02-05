@@ -69,26 +69,28 @@ export default function Home() {
       let url = "/main";
       const profile = await fetchProfile(uid);
       if (!profile) url = "/profile/create";
-      let flag = false;
+      let flag = 1;
       let routingTimeoutId;
       const routing = () => {
-        if (flag) router.push(url);
-        else {
-          routingTimeoutId = setTimeout(routing, 1100);
+        if (!flag) {
+          setHeadClassName("up-lift");
+          setTimeout(() => router.push(url), 510);
+        } else if (flag > 10) {
+          clearTimeout(routingTimeoutId);
+          toastError("알 수 없는 에러가 발생하였습니다.");
+        } else {
+          flag += 1;
+          routingTimeoutId = setTimeout(routing, 200);
         }
       };
       setTimeout(() => {
-        setHeadClassName("up-lift");
-        setTimeout(routing, 1100);
-      }, 1000);
-      try {
-        await dispatch(authSlice.actions.setUserOjbect(currentUser));
-        await dispatch(authSlice.actions.setUserProfile(profile));
-        flag = true;
-      } catch (error) {
-        clearTimeout(routingTimeoutId);
-        toastError(error.message);
-      }
+        routing();
+      }, 2000);
+
+      Promise.allSettled([
+        dispatch(authSlice.actions.setUserOjbect(currentUser)),
+        dispatch(authSlice.actions.setUserProfile(profile)),
+      ]).then(() => (flag = -1));
     });
   }, []);
 
