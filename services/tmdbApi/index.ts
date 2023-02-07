@@ -22,7 +22,7 @@ export const getSearchData = async (searchValue) => {
 };
 
 export const requests = {
-  fetchNowPlaying: "movie/now_playing",
+  fetchNowPlaying: "/movie/now_playing",
   fetchTrending: "/trending/movie/week",
   fetchTopRated: "/movie/top_rated",
   fetchActionMovies: "/discover/movie?with_genres=28",

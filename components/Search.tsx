@@ -35,7 +35,7 @@ const Search = ({ label, onResultClick }: iProps) => {
         <StyledSearchResults>
           <div className="RowContainer">
             <MovieRow
-              title="검색결과"
+              title=""
               id="SearchResult"
               movieList={movies}
             ></MovieRow>

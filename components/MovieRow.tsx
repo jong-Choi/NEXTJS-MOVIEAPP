@@ -65,7 +65,7 @@ function MovieRow({ title, id, fetchUrl, movieList, onResultClick }: iProps) {
   const MovieFigure = movieList?.length ? MovieRowSearch : MovieRowContent;
   return (
     <StyledMovieRow className="row">
-      <h2>{title}</h2>
+      {title? <h2>{title}</h2> : <></>}
       {/*  <div className="slider">
         <div
           className="slider__arrow-left"
