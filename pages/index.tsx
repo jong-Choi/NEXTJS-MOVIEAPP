@@ -1,12 +1,10 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
 import styled from "styled-components";
 import { authService } from "../public/fbase";
 import { onSocialLogin } from "../services/fbAuth";
 import { fetchProfile } from "../services/fbProfile";
-import wrapper from "../store";
 import authSlice from "../store/authSlice";
 import GrayScaleMasthead from "../styles/GrayScaleMasthead";
 import { setCookie } from "../utils/handleCookie";
@@ -17,6 +15,7 @@ export default function Home() {
   const [quetes, setQuetes] = useState("");
   const [movieName, setMovieName] = useState("");
   const [headClassName, setHeadClassName] = useState("");
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [buttonDisplay, setButtonDisplay] = useState("d-none");
   const dispatch = useDispatch();
   const router = useRouter();
@@ -85,7 +84,7 @@ export default function Home() {
       };
       setTimeout(() => {
         routing();
-      }, 2000);
+      }, 1000);
 
       Promise.allSettled([
         dispatch(authSlice.actions.setUserOjbect(currentUser)),
@@ -96,11 +95,21 @@ export default function Home() {
 
   return (
     <GrayScaleMasthead>
-      <BgImg src={imgUrl} className={`after-1-secs ${headClassName}`}></BgImg>
+      <BgImg
+        src={imgUrl}
+        className={`mast_hidden ${
+          isImageLoaded ? "after-01-secs" : ""
+        } ${headClassName}`}
+        onLoad={() => setIsImageLoaded(true)}
+      ></BgImg>
       <header className={`masthead ${headClassName} after-0-secs`}>
         <div className="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center masthead-text">
           <div className="d-flex justify-content-center">
-            <div className="text-center">
+            <div
+              className={`text-center mast_hidden ${
+                isImageLoaded ? "after-01-secs" : ""
+              }`}
+            >
               <h1 className="mx-auto my-0 text-uppercase">TEAL AND ORAGNE</h1>
               <h2 className="text-white-50 mx-auto mt-3 mb-5">
                 {quetes}
@@ -108,7 +117,7 @@ export default function Home() {
               </h2>
               <button
                 type="button"
-                className={`btn btn-outline-light after-1-secs ${buttonDisplay}`}
+                className={`btn btn-outline-light ${buttonDisplay}`}
                 onClick={onSocialLogin}
                 name="loginWithGoogle"
               >
@@ -128,8 +137,4 @@ const BgImg = styled.img`
   width: 100vw;
   max-height: 99vh;
   object-fit: cover;
-  visibility: hidden;
-  animation: fadein 1s;
-  animation-delay: 1s;
-  animation-fill-mode: forwards;
 `;

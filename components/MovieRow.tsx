@@ -11,16 +11,17 @@ import "swiper/css/scrollbar";
 import { StyledMovieRow } from "../styles/StyledMovieRow";
 import MovieRowSearch from "./MovieRowSearch";
 import MovieRowContent from "./MovieRowContent";
+import { Movie } from "../types/moive";
 
 interface iProps {
   title: string;
   id: string;
   fetchUrl?: string;
-  movieList?: Array<any>;
-  onResultClick?: Function;
+  movieList?: Array<Movie>;
+  onResultClick?: (movie: Movie) => any;
 }
 function MovieRow({ title, id, fetchUrl, movieList, onResultClick }: iProps) {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState<Array<Movie>>([]);
 
   useEffect(() => {
     fetchMovieData();
@@ -65,7 +66,7 @@ function MovieRow({ title, id, fetchUrl, movieList, onResultClick }: iProps) {
   const MovieFigure = movieList?.length ? MovieRowSearch : MovieRowContent;
   return (
     <StyledMovieRow className="row">
-      {title? <h2>{title}</h2> : <></>}
+      {title ? <h2>{title}</h2> : <></>}
       {/*  <div className="slider">
         <div
           className="slider__arrow-left"
@@ -145,7 +146,13 @@ function MovieRow({ title, id, fetchUrl, movieList, onResultClick }: iProps) {
               return (
                 movie.backdrop_path && (
                   <SwiperSlide key={movie.id}>
-                    <MovieFigure movie={movie} />
+                    <div
+                      onClick={() => {
+                        handleClick(movie);
+                      }}
+                    >
+                      <MovieFigure movie={movie} />
+                    </div>
                     {/* <figure>
                       <img
                         alt={movie.title || movie.original_title}

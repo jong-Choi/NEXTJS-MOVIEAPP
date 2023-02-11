@@ -18,7 +18,7 @@ export const fetchProfile = async (uid: string) => {
 };
 
 export const createProfile = async (Profile: ProfileType) => {
-  const { uid, nickname, image, myMovies } = Profile;
+  const { uid, nickname, image, myMovies, myRecommendations } = Profile;
   return dbService
     .collection("user")
     .add({
@@ -26,18 +26,26 @@ export const createProfile = async (Profile: ProfileType) => {
       nickname,
       image,
       myMovies,
+      myRecommendations,
     })
     .then((res) => Promise.resolve(res))
     .catch((err) => Promise.reject(err));
 };
 
 export const updateProfile = (UpdatingProfile: ProfileDataType) => {
-  const { documentId, uid, nickname, image, myMovies } = UpdatingProfile;
+  const { documentId, uid, nickname, image, myMovies, myRecommendations } =
+    UpdatingProfile;
   return dbService
     .doc(`user/${documentId}`)
-    .update({ uid, nickname, image, myMovies })
+    .update({ uid, nickname, image, myMovies, myRecommendations })
     .then(() => {
-      return Promise.resolve({ uid, nickname, image, myMovies } as ProfileType);
+      return Promise.resolve({
+        uid,
+        nickname,
+        image,
+        myMovies,
+        myRecommendations,
+      } as ProfileType);
     })
     .catch((err) => {
       return Promise.reject(err);

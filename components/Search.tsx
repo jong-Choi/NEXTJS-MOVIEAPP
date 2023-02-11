@@ -4,51 +4,68 @@ import { getSearchData } from "../services/tmdbApi";
 import StyledForm from "../styles/StyledForm";
 import useDebounce from "../utils/useDebounce";
 import MovieRow from "./MovieRow";
+import Input from "./common/Input";
+import { Movie } from "../types/moive";
 
 interface iProps {
   label?: string;
-  onResultClick?: React.MouseEventHandler;
+  onResultClick?: (movie: Movie) => any;
+  disabled?: boolean;
 }
 
-const Search = ({ label, onResultClick }: iProps) => {
+const Search = ({
+  label,
+  onResultClick = (movie) => {},
+  disabled = false,
+}: iProps) => {
   const [input, setInput] = useState("");
-  const [movies, setMoives] = useState([]);
+  const [movies, setMoives] = useState<Array<Movie>>([]);
   const debouncedInput = useDebounce(input, 500);
+  useEffect(() => {
+    if (disabled) {
+      setInput("");
+      setMoives([]);
+    }
+  }, [disabled]);
 
   useEffect(() => {
     if (!debouncedInput) return setMoives([]);
-    getSearchData(debouncedInput).then((res) => setMoives(res.data.results));
+    getSearchData(debouncedInput).then((res) => {
+      setMoives(res.data.results);
+    });
   }, [debouncedInput]);
+
   return (
-    <StyledForm className="form-floating">
-      <input
-        className="form-control text-center"
-        type="text"
-        name="text"
-        placeholder="인생 영화를 검색하세요"
-        onChange={(e) => setInput(e.target.value)}
-      />
-      <label htmlFor="floatingInput">
-        {label ? label : "인생 영화를 검색하세요"}
-      </label>
-      <div className={debouncedInput ? "" : "d-none"}>
-        <StyledSearchResults>
-          <div className="RowContainer">
-            <MovieRow
-              title=""
-              id="SearchResult"
-              movieList={movies}
-            ></MovieRow>
-          </div>
-        </StyledSearchResults>
-      </div>
-    </StyledForm>
+    <div>
+      <StyledForm>
+        <Input
+          placeholder={label || "인생 영화를 검색하세요"}
+          state={input}
+          setState={setInput}
+          disabled={disabled}
+        >
+          <StyledSearchResults
+            className={debouncedInput && input ? "" : "d-none"}
+          >
+            <div className="RowContainer">
+              <MovieRow
+                title=""
+                id="SearchResult"
+                movieList={movies}
+                onResultClick={onResultClick}
+              ></MovieRow>
+            </div>
+          </StyledSearchResults>
+        </Input>
+      </StyledForm>
+    </div>
   );
 };
 
 export default Search;
 
 export const StyledSearchResults = styled.div`
+  display: flex;
   position: absolute;
   z-index: 2;
   width: 100%;
@@ -56,16 +73,15 @@ export const StyledSearchResults = styled.div`
   backdrop-filter: blur(10px);
   box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.5);
   .RowContainer {
-    max-width: 90%;
+    padding-top: 1rem;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 1rem;
-    height: 250%;
   }
   /*
   https://stackoverflow.com/questions/63213956/when-loading-swiper-slide-height-changes
   */
-  .swiper-wrapper {
-    min-height: 8vh;
+  .row__posters {
+    height: 8vh;
   }
 `;

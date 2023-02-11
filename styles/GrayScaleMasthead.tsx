@@ -20,9 +20,11 @@ const GrayScaleMasthead = styled.div`
   }
   .masthead h1,
   .masthead .h1 {
-    font-family: "Varela Round", -apple-system, BlinkMacSystemFont, "Segoe UI",
-      Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
-      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: "Noto Sans KR", "Varela Round", -apple-system,
+      BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+      sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+      "Noto Color Emoji";
+    font-display: block;
     font-size: 2.5rem;
     line-height: 2.5rem;
     letter-spacing: 0.8rem;
@@ -78,10 +80,13 @@ const GrayScaleMasthead = styled.div`
       visibility: visible;
     }
   }
-  .after-1-secs {
+  .mast_hidden {
     visibility: hidden;
-    animation: fadein 1500ms;
-    animation-delay: 500ms;
+  }
+  .after-01-secs {
+    visibility: hidden;
+    animation: fadein 1000ms;
+    animation-delay: 100ms;
     animation-fill-mode: forwards;
   }
   @keyframes fadein {

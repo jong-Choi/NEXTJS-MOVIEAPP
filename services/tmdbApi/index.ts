@@ -1,4 +1,5 @@
 import axios from "axios";
+import { MyMovie } from "../../types/moive";
 
 const tmdb_api_key = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 const tmdbApi = axios.create({
@@ -19,6 +20,35 @@ export const getSearchData = async (searchValue) => {
   return await tmdbApi.get(
     `/search/movie?include_adult=false&query=${searchValue}`,
   );
+};
+
+export const newRecommendations = (myMovies: Array<MyMovie>) => {
+  const map: Map<number, MyMovie> = new Map();
+  const set: Set<number> = new Set();
+  const newArray = [];
+  let recommendations;
+  return Promise.allSettled(
+    myMovies.map((movie) => {
+      set.add(movie.id);
+      return getRecommenations(movie.id).then((res) => {
+        newArray.push(...res.data.results.slice(0, 10));
+      });
+    }),
+  ).then(() => {
+    newArray.forEach((movie) => {
+      if (!set.has(movie.id) && !map.has(movie.id) && movie.backdrop_path)
+        map.set(movie.id, {
+          id: movie.id,
+          title: movie.title,
+          backdrop_path: movie.backdrop_path,
+          genre_ids: movie.genre_ids,
+        });
+    });
+    const keys = Array.from(map.keys());
+    keys.sort(() => 0.5 - Math.random());
+    recommendations = keys.slice(0, 20).map((key) => map.get(key));
+    return recommendations;
+  });
 };
 
 export const requests = {
