@@ -5,10 +5,12 @@ import {
   useSelector as useReduxSeletor,
 } from "react-redux";
 import authSlice from "./authSlice";
+import dbSlice from "./dbSlice";
 
 const store = configureStore({
   reducer: {
     authSlice: authSlice.reducer,
+    dbSlice: dbSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

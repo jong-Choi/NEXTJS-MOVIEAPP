@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import MovieRow from "../components/MovieRow";
 import { patchPreload } from "../services/fbDb";
 import tmdbApi, { requests } from "../services/tmdbApi";
+import { useTypedSelector } from "../store";
 import { Movie } from "../types/moive";
 
 interface iProps {
@@ -11,10 +12,10 @@ interface iProps {
 }
 
 const main = ({ moviesObject, preloadingData, validate }: iProps) => {
+  const dbValidate = useTypedSelector((state) => state.dbSlice.dbValidate);
   useEffect(() => {
-    const currentDate = Math.floor(Date.now() / 1000);
-    if (currentDate - validate <= 15) {
-      // patchPreload(validate, preloadingData);
+    if (dbValidate !== validate) {
+      patchPreload(validate, preloadingData);
     }
   }, []);
 
