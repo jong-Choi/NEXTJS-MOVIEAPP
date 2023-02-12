@@ -151,7 +151,9 @@ export const StyledMovieRow = styled.section`
   /* .swiper-pagination {
   text-align: right !important;
 } */
-
+  .swiper-slide {
+    padding: 0 0.3vw 0.1vh 0.3vw;
+  }
   .swiper-pagination-bullet {
     background: gray !important;
     opacity: 1 !important;
@@ -163,10 +165,12 @@ export const StyledMovieRow = styled.section`
 
   .swiper-button-prev {
     color: white !important;
+    padding-bottom: 15px;
   }
 
   .swiper-button-next {
     color: white !important;
+    padding-bottom: 15px;
   }
 
   .swiper-button-next:after,
@@ -182,6 +186,12 @@ export const StyledMovieRow = styled.section`
   .swiper-button-prev:hover {
     transition: 400ms all ease-in-out;
     transform: scale(1.2);
+  }
+  @media screen and (max-width: 768px) {
+    .swiper-button-next,
+    .swiper-button-prev {
+      display: none;
+    }
   }
   /*
   //이미지 위에 글자
