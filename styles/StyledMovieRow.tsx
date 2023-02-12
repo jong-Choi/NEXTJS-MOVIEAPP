@@ -6,6 +6,7 @@ export const StyledMovieRow = styled.section`
     color: white;
   }
   h2 {
+    font-size: 1.5rem;
     padding-left: 20px;
   }
   .slider {
@@ -254,8 +255,11 @@ export const StyledMovieRow = styled.section`
     left: 0;
     right: 0;
     overflow: hidden;
+    opacity: 0;
     width: 100%;
-    height: 0;
+    cursor: pointer;
+    /* height: 0; */
+    height: 100%;
     color: #fff;
     background: rgba(0, 0, 0, 0.6);
     -webkit-transition: 0.4s ease;
@@ -287,16 +291,13 @@ export const StyledMovieRow = styled.section`
   }
   figure:hover .overlay {
     display: block;
-    height: 50%;
+    opacity: 1;
+    /* height: 100%; */
   }
 
   @media screen and (max-width: 768px) {
     figure .overlay .description {
       font-size: small;
-    }
-    figure:hover .overlay {
-      display: block;
-      height: 100%;
     }
   }
 `;

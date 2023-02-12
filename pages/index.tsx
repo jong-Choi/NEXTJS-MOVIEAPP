@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { authService } from "../public/fbase";
 import { onSocialLogin } from "../services/fbAuth";
+import { fetchPreload } from "../services/fbDb";
 import { fetchProfile } from "../services/fbProfile";
 import authSlice from "../store/authSlice";
 import GrayScaleMasthead from "../styles/GrayScaleMasthead";
@@ -89,6 +90,21 @@ export default function Home() {
       Promise.allSettled([
         dispatch(authSlice.actions.setUserOjbect(currentUser)),
         dispatch(authSlice.actions.setUserProfile(profile)),
+        fetchPreload().then((res) => {
+          res.preloadData.map((backdrop_path) => {
+            const imageElement = new Image();
+            imageElement.src = `https://image.tmdb.org/t/p/w780/${backdrop_path}`;
+            return imageElement;
+          });
+        }),
+        () => {
+          if (!profile) return;
+          profile.myRecommendations.map((movie) => {
+            const imageElement = new Image();
+            imageElement.src = `https://image.tmdb.org/t/p/w780/${movie.backdrop_path}`;
+            return imageElement;
+          });
+        },
       ]).then(() => (flag = -1));
     });
   }, []);

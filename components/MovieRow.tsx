@@ -16,29 +16,29 @@ import { Movie } from "../types/moive";
 interface iProps {
   title: string;
   id: string;
-  fetchUrl?: string;
   movieList?: Array<Movie>;
+  moviesData?: Array<Movie>;
   onResultClick?: (movie: Movie) => any;
 }
-function MovieRow({ title, id, fetchUrl, movieList, onResultClick }: iProps) {
-  const [movies, setMovies] = useState<Array<Movie>>([]);
-
-  useEffect(() => {
-    fetchMovieData();
-  });
+function MovieRow({ title, id, movieList, moviesData, onResultClick }: iProps) {
+  const [movies, setMovies] = useState<Array<Movie>>(moviesData || movieList);
 
   // useEffect(() => {
-  //   if (movieList && movieList.length) setMovies(movieList);
-  // }, [movieList]);
+  //   fetchMovieData();
+  // });
+
+  useEffect(() => {
+    if (movieList && movieList.length) setMovies(movieList);
+  }, [movieList]);
   // const [modalOpen, setModalOpen] = useState(false);
   const [movieSelected, setMovieSelected] = useState({});
 
-  const fetchMovieData = async () => {
-    let request;
-    if (fetchUrl) request = await tmdbApi.get(fetchUrl);
-    const newMovies = movieList || request.data.results;
-    setMovies(newMovies);
-  };
+  // const fetchMovieData = async () => {
+  //   let request;
+  //   if (fetchUrl) request = await tmdbApi.get(fetchUrl);
+  //   const newMovies = movieList || request.data.results;
+  //   setMovies(newMovies);
+  // };
 
   const handleClick = (movie) => {
     if (onResultClick) {
@@ -66,28 +66,12 @@ function MovieRow({ title, id, fetchUrl, movieList, onResultClick }: iProps) {
   const MovieFigure = movieList?.length ? MovieRowSearch : MovieRowContent;
   return (
     <StyledMovieRow className="row">
-      {title ? <h2>{title}</h2> : <></>}
-      {/*  <div className="slider">
-        <div
-          className="slider__arrow-left"
-          onClick={() => {
-            document.getElementById(id).scrollLeft -= window.innerWidth - 80;
-          }}
-        >
-          <span className="arrow">{"<"}</span>
-        </div> */}
+      {title ? <h2 className="mt-2 ">{title}</h2> : <></>}
       <Swiper
-        // install Swiper modules
         modules={[Navigation, Pagination, Scrollbar, A11y]}
         autoHeight={true}
         loop={false}
-        // spaceBetween={50}
-        // slidesPerView={3}
-        // navigation
         pagination={{ clickable: true }}
-        // scrollbar={{ draggable: true }}
-        // onSwiper={(swiper) => console.log(swiper)}
-        // onSlideChange={() => console.log("slide change")}
         navigation={{
           prevEl: ".swiper-button-prev",
           nextEl: ".swiper-button-next",
@@ -121,7 +105,6 @@ function MovieRow({ title, id, fetchUrl, movieList, onResultClick }: iProps) {
                     style={{
                       cursor: "pointer",
                     }}
-                    // key={movie.id}
                     className="row__poster"
                     src="/noResult.jpg"
                   />
@@ -153,61 +136,15 @@ function MovieRow({ title, id, fetchUrl, movieList, onResultClick }: iProps) {
                     >
                       <MovieFigure movie={movie} />
                     </div>
-                    {/* <figure>
-                      <img
-                        alt={movie.title || movie.original_title}
-                        style={{
-                          cursor: "pointer",
-                        }}
-                        // key={movie.id}
-                        className="row__poster"
-                        src={
-                          movieList
-                            ? `https://image.tmdb.org/t/p/w300/${movie.backdrop_path}`
-                            : `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`
-                        }
-                        onClick={() => console.log("안녕하세요")}
-                      />
-                      <div
-                        className="overlay"
-                        style={movieList ? { height: "100%" } : {}}
-                      >
-                        <div
-                          className="description"
-                          style={
-                            movieList
-                              ? {
-                                  fontSize: "x-small",
-                                  cursor: "pointer",
-                                }
-                              : {}
-                          }
-                        >
-                          {movie.title || movie.original_title}
-                        </div>
-                      </div>
-                    </figure> */}
                   </SwiperSlide>
                 )
               );
             })
           )}
         </div>
-        {/* <div
-          className="slider__arrow-right"
-          onClick={() => {
-            document.getElementById(id).scrollLeft += window.innerWidth - 80;
-          }}
-        >
-          <span className="arrow">{">"}</span>
-        </div>
-      </div> */}
         <div className="swiper-button-prev arrow"></div>
         <div className="swiper-button-next arrow"></div>
       </Swiper>
-      {/* {modalOpen && (
-        <MovieModal {...movieSelected} setModalOpen={setModalOpen} />
-      )} */}{" "}
     </StyledMovieRow>
   );
 }
