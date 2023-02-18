@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { SwiperSlide } from "swiper/react";
 import { useIntersection } from "../utils/useIntersection";
 
-const MovieRowSearch = ({ movie }) => {
+const MovieRowSearch = ({ movie, cardMode = false }) => {
   const [Loading, setIsLoading] = useState(1);
   const [isInView, setIsInView] = useState(false);
   const imgRef = useRef();
@@ -16,8 +16,7 @@ const MovieRowSearch = ({ movie }) => {
         style={{
           width: "100%",
           paddingTop: "56.25%",
-          background:
-            "url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wEEEAGQAZABkAGQAakBkAHCAfQB9AHCAnECowJYAqMCcQOdA1IDBwMHA1IDnQV4A+gEMwPoBDMD6AV4CE0FLQYOBS0FLQYOBS0ITQdTCOMHOga9BzoI4wdTDS8KWgkuCS4KWg0vDzwMywwcDMsPPBJ1EIEQgRJ1Fz4WEhc+Hl8eXyjSEQGQAZABkAGQAakBkAHCAfQB9AHCAnECowJYAqMCcQOdA1IDBwMHA1IDnQV4A+gEMwPoBDMD6AV4CE0FLQYOBS0FLQYOBS0ITQdTCOMHOga9BzoI4wdTDS8KWgkuCS4KWg0vDzwMywwcDMsPPBJ1EIEQgRJ1Fz4WEhc+Hl8eXyjS/8IAEQgACQAQAwEiAAIRAQMRAf/EACgAAQEBAAAAAAAAAAAAAAAAAAEAAgEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEAMQAAAAykf/xAAUEAEAAAAAAAAAAAAAAAAAAAAg/9oACAEBAAE/AB//xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oACAECAQE/AH//xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oACAEDAQE/AH//2Q==')",
+          background: "url('/noResult.jpg')",
         }}
       >
         <img
@@ -30,7 +29,11 @@ const MovieRowSearch = ({ movie }) => {
           }}
           className={`row__poster ${Loading ? "invisible" : ""}`}
           onLoad={() => setIsLoading(0)}
-          src={`https://image.tmdb.org/t/p/w92/${movie.poster_path}`}
+          src={
+            cardMode
+              ? `https://image.tmdb.org/t/p/w780/${movie.backdrop_path}`
+              : `https://image.tmdb.org/t/p/w92/${movie.poster_path}`
+          }
         />
       </div>
       <div

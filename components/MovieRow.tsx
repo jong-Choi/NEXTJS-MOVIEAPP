@@ -19,8 +19,16 @@ interface iProps {
   movieList?: Array<Movie>;
   moviesData?: Array<Movie>;
   onResultClick?: (movie: Movie) => any;
+  cardMode?: boolean;
 }
-function MovieRow({ title, id, movieList, moviesData, onResultClick }: iProps) {
+function MovieRow({
+  title,
+  id,
+  movieList,
+  moviesData,
+  onResultClick,
+  cardMode = false,
+}: iProps) {
   const [movies, setMovies] = useState<Array<Movie>>(moviesData || movieList);
 
   // useEffect(() => {
@@ -28,7 +36,7 @@ function MovieRow({ title, id, movieList, moviesData, onResultClick }: iProps) {
   // });
 
   useEffect(() => {
-    if (movieList && movieList.length) setMovies(movieList);
+    setMovies(movieList);
   }, [movieList]);
   // const [modalOpen, setModalOpen] = useState(false);
   const [movieSelected, setMovieSelected] = useState({});
@@ -71,29 +79,33 @@ function MovieRow({ title, id, movieList, moviesData, onResultClick }: iProps) {
         modules={[Navigation, Pagination, Scrollbar, A11y]}
         autoHeight={true}
         loop={false}
-        pagination={{ clickable: true }}
         navigation={{
           prevEl: ".swiper-button-prev",
           nextEl: ".swiper-button-next",
         }}
-        breakpoints={{
-          1378: {
-            slidesPerView: 6,
-            slidesPerGroup: 6,
-          },
-          998: {
-            slidesPerView: 5,
-            slidesPerGroup: 5,
-          },
-          625: {
-            slidesPerView: 4,
-            slidesPerGroup: 4,
-          },
-          0: {
-            slidesPerView: 3,
-            slidesPerGroup: 3,
-          },
-        }}
+        pagination={cardMode ? { enabled: false } : { clickable: true }}
+        breakpoints={
+          cardMode
+            ? {}
+            : {
+                1378: {
+                  slidesPerView: 6,
+                  slidesPerGroup: 6,
+                },
+                998: {
+                  slidesPerView: 5,
+                  slidesPerGroup: 5,
+                },
+                625: {
+                  slidesPerView: 4,
+                  slidesPerGroup: 4,
+                },
+                0: {
+                  slidesPerView: 3,
+                  slidesPerGroup: 3,
+                },
+              }
+        }
       >
         <div id={id} className="row__posters">
           {!movies.length ? (
@@ -110,7 +122,11 @@ function MovieRow({ title, id, movieList, moviesData, onResultClick }: iProps) {
                   />
                   <div
                     className="overlay"
-                    style={{ height: "100%", backdropFilter: "blur(10px)" }}
+                    style={{
+                      height: "100%",
+                      backdropFilter: "blur(10px)",
+                      opacity: "1",
+                    }}
                   >
                     <div
                       className="description"
@@ -134,7 +150,7 @@ function MovieRow({ title, id, movieList, moviesData, onResultClick }: iProps) {
                         handleClick(movie);
                       }}
                     >
-                      <MovieFigure movie={movie} />
+                      <MovieFigure movie={movie} cardMode={cardMode} />
                     </div>
                   </SwiperSlide>
                 )

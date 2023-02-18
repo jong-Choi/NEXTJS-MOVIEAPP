@@ -1,9 +1,12 @@
 import { MyMovie } from "./moive";
 
-export interface ProfileType {
+export interface Author {
   uid: string;
   nickname: string;
   image: string;
+}
+
+export interface ProfileType extends Author {
   myMovies: Array<MyMovie>;
   myRecommendations: Array<MyMovie>;
 }

@@ -11,12 +11,14 @@ interface iProps {
   label?: string;
   onResultClick?: (movie: Movie) => any;
   disabled?: boolean;
+  cardMode?: boolean;
 }
 
 const Search = ({
   label,
   onResultClick = (movie) => {},
   disabled = false,
+  cardMode = false,
 }: iProps) => {
   const [input, setInput] = useState("");
   const [movies, setMoives] = useState<Array<Movie>>([]);
@@ -53,6 +55,7 @@ const Search = ({
                 id="SearchResult"
                 movieList={movies}
                 onResultClick={onResultClick}
+                cardMode={cardMode}
               ></MovieRow>
             </div>
           </StyledSearchResults>

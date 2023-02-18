@@ -1,4 +1,5 @@
 import { dbService } from "../../public/fbase";
+import { Article } from "../../types/article";
 
 export const patchPreload = async (
   validate: number,
@@ -27,6 +28,10 @@ export const fetchPreload = async (): Promise<PreloadDataType> => {
       return result;
     })
     .catch((err) => err);
+};
+
+export const createArticle = async (article: Article) => {
+  return dbService.collection("articles").add(article);
 };
 
 // export const fetchProfile = async (uid: string) => {

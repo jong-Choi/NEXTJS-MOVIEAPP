@@ -260,6 +260,7 @@ export const StyledMovieRow = styled.section`
     margin: 0;
   }
   figure .overlay {
+    border-radius: 4px;
     position: absolute;
     bottom: 0;
     left: 0;

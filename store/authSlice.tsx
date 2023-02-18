@@ -8,7 +8,13 @@ const authSlice = createSlice({
   initialState: {
     userObject: null as UserType,
     isAuth: false as boolean,
-    userProfile: null as null | ProfileDataType,
+    userProfile: {
+      uid: "",
+      nickname: "",
+      image: "",
+      myMovies: [],
+      myRecommendations: [],
+    } as ProfileDataType,
   },
   reducers: {
     setUserOjbect(state, action: PayloadAction<UserType>) {
