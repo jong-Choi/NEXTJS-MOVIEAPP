@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { fetchAticles } from "../../../services/fbDb";
+import { Article } from "../../../types/article";
 import Card from "./Card";
 import CardCreate from "./CardCreate";
 
 const CardGrid = ({ creating, setCreating }) => {
-  const [articles, setArticles] = useState([]);
+  const [articles, setArticles] = useState([] as Article[]);
   const [grid, setGrid] = useState([]);
   const [cardList, setCardlist] = useState([]);
   const [updated, setUpdated] = useState(false);

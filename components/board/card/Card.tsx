@@ -1,26 +1,62 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import styled from "styled-components";
+import { useTypedSelector } from "../../../store";
+import { Article } from "../../../types/article";
 import CardBody from "./CardBody";
 import CardBodyEdditing from "./CardBodyEdditing";
 import CardFooter from "./CardFooter";
 
-const Card = ({ article }) => {
+interface iProp {
+  article: Article;
+}
+
+const Card = ({ article }: iProp) => {
+  const uid = useTypedSelector((state) => state.authSlice.userProfile?.uid);
+  const [articleSnapshot, setArticleSnapshot] = useState(article);
+  const { backdrop_path, title, likes, author, published_date } =
+    articleSnapshot;
+  const isAuth = article.author.uid === uid;
+  const hasLiked = !!article.likes.includes(uid);
   const [load, setLoad] = useState(false);
 
-  // const article = {
-  //   title: "다크나이트",
-  //   body: "으라차챠차",
-  //   backdrop_path: "nMKdUUepR0i5zn0y1T4CsSB5chy.jpg",
-  //   published_date: "2021-02-18",
-  //   author: {
-  //     uid: "1234",
-  //     nickname: "배트맨좋아",
-  //     image: "1.jpg",
-  //   },
-  //   likes: ["1234", "45678"],
-  // };
+  const [isEdditing, setIsEdditing] = useState(false);
+
+  const Overlay = useMemo(() => {
+    if (isEdditing) return <></>;
+    if (isAuth) {
+      return <div onClick={() => setIsEdditing(true)}>클릭해서 수정하기</div>;
+    } else if (likes.includes(uid)) {
+      return (
+        <div
+          onClick={() => {
+            likes.splice(likes.indexOf(uid), 1);
+            setArticleSnapshot({
+              ...articleSnapshot,
+              likes: [...likes],
+            });
+          }}
+        >
+          클릭해서 좋아요 취소
+        </div>
+      );
+    } else {
+      return (
+        <div
+          onClick={() =>
+            setArticleSnapshot({
+              ...articleSnapshot,
+              likes: [...likes, uid],
+            })
+          }
+        >
+          클릭해서 좋아요
+        </div>
+      );
+    }
+  }, [likes, isEdditing]);
+
   return (
-    <StyledCard className="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 showup">
+    <StyledCard className="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4">
       <div
         className={`card text-white card-has-bg click-col 
 
@@ -35,19 +71,20 @@ const Card = ({ article }) => {
           alt={article.title}
           onLoad={() => setLoad(true)}
         />
+
         <div className="card-img-overlay d-flex flex-column">
-          <CardBody article={article} likesCount={article.likes.length} />
+          <CardBody article={article} likesCount={likes.length} />
 
           <div className="card-footer likes">
-            <small className="">{article.likes.length}개의 좋아요</small>
+            <small className="">{likes.length}개의 좋아요</small>
           </div>
-          {/* <CardInfo></CardInfo> */}
+
           <CardFooter
             author={article.author}
             published_date={article.published_date}
           />
-          {/* <CardBodyEdditing /> */}
         </div>
+        <StyledOverlay className="overlay">{Overlay}</StyledOverlay>
       </div>
     </StyledCard>
   );
@@ -55,7 +92,20 @@ const Card = ({ article }) => {
 
 export default Card;
 
+const StyledOverlay = styled.div`
+  visibility: hidden;
+  position: absolute;
+  z-index: 2;
+  top: 60%;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+`;
+
 export const StyledCard = styled.section`
+  &:hover .overlay {
+    visibility: visible;
+  }
   .card-footer:hover {
     transform: scale(1.05);
   }
@@ -176,12 +226,5 @@ export const StyledCard = styled.section`
     &:hover {
       color: orange;
     }
-  }
-  .showup {
-    visibility: hidden;
-    opacity: 0;
-    animation-duration: 200ms;
-    animation-name: title-up-comming;
-    animation-fill-mode: forwards;
   }
 `;
