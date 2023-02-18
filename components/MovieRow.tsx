@@ -36,6 +36,7 @@ function MovieRow({
   // });
 
   useEffect(() => {
+    if (moviesData?.length) return;
     setMovies(movieList);
   }, [movieList]);
   // const [modalOpen, setModalOpen] = useState(false);
@@ -108,7 +109,7 @@ function MovieRow({
         }
       >
         <div id={id} className="row__posters">
-          {!movies.length ? (
+          {!movies?.length ? (
             <div>
               <SwiperSlide key="noResult">
                 <figure>

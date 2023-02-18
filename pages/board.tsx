@@ -10,8 +10,8 @@ import { setUserProfile } from "../store/authSlice";
 const board = () => {
   const dispatch = useDispatch();
   const [creating, setCreating] = useState(false);
-  const { uid } = useTypedSelector((state) => {
-    return state.authSlice.userProfile;
+  const uid = useTypedSelector((state) => {
+    return state.authSlice.userProfile?.uid;
   }, shallowEqual);
 
   useEffect(() => {

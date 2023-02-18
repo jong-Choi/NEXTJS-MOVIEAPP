@@ -59,6 +59,7 @@ const CardCreate = ({ setCreating, setUpdated }) => {
     if (movie.title && uid && input)
       createArticle(article).then(() => {
         toastSuccess("게시글이 작성되었습니다.");
+        setCanCreate(false);
         setUpdated(false);
         setCreating(false);
       });
@@ -84,10 +85,10 @@ const CardCreate = ({ setCreating, setUpdated }) => {
             movie={movie}
             setMovie={setMovie}
           ></CardBodyEdditing>
-          <div className="card-footer likes ">
+          <div className={`card-footer likes`}>
             <div>
               <small
-                className={`create-button ${canCreate ? "" : "invisible"}`}
+                className={`create-button ${!canCreate ? "invisible" : ""}`}
                 onClick={onCreate}
               >
                 작성하기
