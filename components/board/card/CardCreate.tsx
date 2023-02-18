@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { shallowEqual } from "react-redux";
 import { authService } from "../../../public/fbase";
-import { createArticle } from "../../../services/fbDb";
+import { createArticle, fetchAticles } from "../../../services/fbDb";
 import { fetchProfile } from "../../../services/fbProfile";
 import { useTypedSelector } from "../../../store";
+import { setArticles } from "../../../store/dbSlice";
 import { Article } from "../../../types/article";
 import { toastSuccess } from "../../../utils/toastAlert";
 import { StyledCard } from "./Card";
 import CardBodyEdditing from "./CardBodyEdditing";
 
-const CardCreate = ({ setCreating }) => {
+const CardCreate = ({ setCreating, setUpdated }) => {
   const initalMovie = {
     backdrop_path: "",
     title: "",
     id: "",
   };
+  const dispatch = useDispatch();
   const [input, setInput] = useState("");
   const [movie, setMovie] = useState(initalMovie);
   const [imageURL, setImageURL] = useState("/noResult.jpg");
@@ -39,14 +42,6 @@ const CardCreate = ({ setCreating }) => {
     }
   }, [movie]);
 
-  const resetState = () => {
-    setInput("");
-    setMovie(initalMovie);
-    setImageURL("/noResult.jpg");
-    setCanCreate(false);
-    setCreating(false);
-  };
-
   const onCreate = () => {
     const article: Article = {
       title: movie.title,
@@ -63,8 +58,9 @@ const CardCreate = ({ setCreating }) => {
 
     if (movie.title && uid && input)
       createArticle(article).then(() => {
-        toastSuccess("작성되었습니다.");
-        resetState();
+        toastSuccess("게시글이 작성되었습니다.");
+        setUpdated(false);
+        setCreating(false);
       });
   };
 
@@ -81,24 +77,32 @@ const CardCreate = ({ setCreating }) => {
           src={`${imageURL}`}
           alt={movie?.title}
         />
+
         <div className="card-img-overlay d-flex flex-column">
           <CardBodyEdditing
-            input={input}
             setInput={setInput}
             movie={movie}
             setMovie={setMovie}
           ></CardBodyEdditing>
-
-          {/* <CardInfo></CardInfo> */}
           <div className="card-footer likes ">
-            <small
-              className={`create-button ${canCreate ? "" : "invisible"}`}
-              onClick={onCreate}
-            >
-              작성하기
-            </small>
+            <div>
+              <small
+                className={`create-button ${canCreate ? "" : "invisible"}`}
+                onClick={onCreate}
+              >
+                작성하기
+              </small>
+              <br />
+              <small
+                className={`create-button`}
+                onClick={() => {
+                  setCreating(false);
+                }}
+              >
+                취소
+              </small>
+            </div>
           </div>
-          {/* <CardBodyEdditing /> */}
         </div>
       </div>
     </StyledCard>

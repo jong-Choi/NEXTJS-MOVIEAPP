@@ -1,7 +1,7 @@
 import React from "react";
 
-const CardBody = ({ post, likesCount }) => {
-  const { title, body, published_date } = post;
+const CardBody = ({ article, likesCount }) => {
+  const { title, body, published_date } = article;
   return (
     <div className="card-body">
       <small className="card-meta mb-2">

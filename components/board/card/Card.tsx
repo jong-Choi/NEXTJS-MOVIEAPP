@@ -1,45 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import CardBody from "./CardBody";
 import CardBodyEdditing from "./CardBodyEdditing";
 import CardFooter from "./CardFooter";
 
-const Card = () => {
-  const post = {
-    title: "다크나이트",
-    body: "으라차챠차",
-    backdrop_path: "nMKdUUepR0i5zn0y1T4CsSB5chy.jpg",
-    published_date: "2021-02-18",
-    author: {
-      uid: "1234",
-      nickname: "배트맨좋아",
-      image: "1.jpg",
-    },
-    likes: ["1234", "45678"],
-  };
+const Card = ({ article }) => {
+  const [load, setLoad] = useState(false);
+
+  // const article = {
+  //   title: "다크나이트",
+  //   body: "으라차챠차",
+  //   backdrop_path: "nMKdUUepR0i5zn0y1T4CsSB5chy.jpg",
+  //   published_date: "2021-02-18",
+  //   author: {
+  //     uid: "1234",
+  //     nickname: "배트맨좋아",
+  //     image: "1.jpg",
+  //   },
+  //   likes: ["1234", "45678"],
+  // };
   return (
-    <StyledCard className="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+    <StyledCard className="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 showup">
       <div
-        className="card text-white card-has-bg click-col"
+        className={`card text-white card-has-bg click-col 
+
+        `}
         style={{
-          backgroundImage: `url("https://image.tmdb.org/t/p/w780/${post.backdrop_path}")`,
+          backgroundImage: `url("https://image.tmdb.org/t/p/w780/${article.backdrop_path}")`,
         }}
       >
         <img
           className="card-img d-none"
-          src={`https://image.tmdb.org/t/p/w780/${post.backdrop_path}`}
-          alt={post.title}
+          src={`https://image.tmdb.org/t/p/w780/${article.backdrop_path}`}
+          alt={article.title}
+          onLoad={() => setLoad(true)}
         />
         <div className="card-img-overlay d-flex flex-column">
-          <CardBody post={post} likesCount={post.likes.length} />
+          <CardBody article={article} likesCount={article.likes.length} />
 
           <div className="card-footer likes">
-            <small className="">{post.likes.length}개의 좋아요</small>
+            <small className="">{article.likes.length}개의 좋아요</small>
           </div>
           {/* <CardInfo></CardInfo> */}
           <CardFooter
-            author={post.author}
-            published_date={post.published_date}
+            author={article.author}
+            published_date={article.published_date}
           />
           {/* <CardBodyEdditing /> */}
         </div>
@@ -171,5 +176,12 @@ export const StyledCard = styled.section`
     &:hover {
       color: orange;
     }
+  }
+  .showup {
+    visibility: hidden;
+    opacity: 0;
+    animation-duration: 200ms;
+    animation-name: title-up-comming;
+    animation-fill-mode: forwards;
   }
 `;

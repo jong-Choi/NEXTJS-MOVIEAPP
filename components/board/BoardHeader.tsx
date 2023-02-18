@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { toastError } from "../../utils/toastAlert";
 
-const BoardHearder = ({ creating, setCreating }) => {
+const BoardHeader = ({ creating, setCreating, uid }) => {
   return (
     <StyledBoardHeader className="container">
       <div className="row">
@@ -10,6 +11,7 @@ const BoardHearder = ({ creating, setCreating }) => {
           <div
             className={`lead eddting-text ${creating && "invisible"}`}
             onClick={() => {
+              if (!uid) return toastError("로그인이 필요합니다.");
               setCreating(true);
             }}
           >
@@ -21,7 +23,7 @@ const BoardHearder = ({ creating, setCreating }) => {
   );
 };
 
-export default BoardHearder;
+export default BoardHeader;
 
 const StyledBoardHeader = styled.div`
   .eddting-text {

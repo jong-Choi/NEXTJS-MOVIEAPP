@@ -1,9 +1,10 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import useDebounce from "../../../utils/useDebounce";
 import Search from "../../Search";
+import CardTextArea from "./CardTextArea";
 
 const CardBodyEdditing = ({
-  input,
   setInput,
   movie,
   setMovie,
@@ -34,17 +35,7 @@ const CardBodyEdditing = ({
       )}
 
       <h4 className="card-title mt-0 ">
-        <StyledTextArea
-          className={`fs-6 ${searching ? "d-none" : ""}`}
-          placeholder="이 영화가 어땠나요?"
-          value={input}
-          onChange={(e) => {
-            setInput(e.target.value);
-          }}
-          rows={5}
-          maxLength={100}
-          autoFocus
-        ></StyledTextArea>
+        <CardTextArea searching={searching} setInput={setInput} />
       </h4>
     </div>
   );
@@ -67,12 +58,4 @@ const StyledInputWrapper = styled.div`
   label {
     font-size: x-small;
   }
-`;
-
-const StyledTextArea = styled.textarea`
-  width: 100%;
-  color: #fff;
-  background: transparent;
-  border: none;
-  outline: none;
 `;

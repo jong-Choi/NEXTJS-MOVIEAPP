@@ -9,7 +9,7 @@ const CardFooter = ({ author, published_date }) => {
         <div className="d-flex">
           <img
             className="mr-3 rounded-circle"
-            src={`/profileImages/${image}`}
+            src={`${image}`}
             alt="Generic placeholder image"
             style={{ maxWidth: "50px" }}
           />
