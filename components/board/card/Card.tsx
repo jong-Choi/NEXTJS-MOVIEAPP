@@ -13,6 +13,7 @@ interface iProp {
 const Card = ({ article }: iProp) => {
   const uid = useTypedSelector((state) => state.authSlice.userProfile?.uid);
   const [articleSnapshot, setArticleSnapshot] = useState(article);
+  let onClickHandler = () => {};
   const { backdrop_path, title, likes, author, published_date } =
     articleSnapshot;
   const isAuth = article.author.uid === uid;
@@ -24,39 +25,37 @@ const Card = ({ article }: iProp) => {
   const Overlay = useMemo(() => {
     if (isEdditing) return <></>;
     if (isAuth) {
-      return <div onClick={() => setIsEdditing(true)}>클릭해서 수정하기</div>;
+      onClickHandler = () => {
+        if (!isEdditing) setIsEdditing(true);
+      };
+      return <div>클릭해서 수정하기</div>;
     } else if (likes.includes(uid)) {
-      return (
-        <div
-          onClick={() => {
-            likes.splice(likes.indexOf(uid), 1);
-            setArticleSnapshot({
-              ...articleSnapshot,
-              likes: [...likes],
-            });
-          }}
-        >
-          클릭해서 좋아요 취소
-        </div>
-      );
+      onClickHandler = () => {
+        likes.splice(likes.indexOf(uid), 1);
+        setArticleSnapshot({
+          ...articleSnapshot,
+          likes: [...likes],
+        });
+      };
+      return <div>클릭해서 좋아요 취소</div>;
     } else {
-      return (
-        <div
-          onClick={() =>
-            setArticleSnapshot({
-              ...articleSnapshot,
-              likes: [...likes, uid],
-            })
-          }
-        >
-          클릭해서 좋아요
-        </div>
-      );
+      onClickHandler = () => {
+        setArticleSnapshot({
+          ...articleSnapshot,
+          likes: [...likes, uid],
+        });
+      };
+      return <div>클릭해서 좋아요</div>;
     }
   }, [likes, isEdditing]);
 
   return (
-    <StyledCard className="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+    <StyledCard
+      className="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4"
+      onClick={(e) => {
+        console.log(e.target);
+      }}
+    >
       <div
         className={`card text-white card-has-bg click-col 
 
@@ -76,7 +75,12 @@ const Card = ({ article }: iProp) => {
           <CardBody article={article} likesCount={likes.length} />
 
           <div className="card-footer likes">
-            <small className="">{likes.length}개의 좋아요</small>
+            <small>
+              <span style={likes.includes(uid) ? { color: "pink" } : {}}>
+                {likes.length}개
+              </span>
+              의 좋아요
+            </small>
           </div>
 
           <CardFooter
@@ -84,7 +88,9 @@ const Card = ({ article }: iProp) => {
             published_date={article.published_date}
           />
         </div>
-        <StyledOverlay className="overlay">{Overlay}</StyledOverlay>
+        <StyledOverlay className="overlay" onClick={onClickHandler}>
+          {Overlay}
+        </StyledOverlay>
       </div>
     </StyledCard>
   );
@@ -94,12 +100,21 @@ export default Card;
 
 const StyledOverlay = styled.div`
   visibility: hidden;
+  display: flex;
   position: absolute;
   z-index: 2;
-  top: 60%;
+  top: 0;
   width: 100%;
-  height: 100%;
-  text-align: center;
+  height: 75%;
+  align-items: end;
+  cursor: pointer;
+
+  & div {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-shadow: -1px 1px 12px rgba(255, 175, 30, 0.81);
+  }
 `;
 
 export const StyledCard = styled.section`
@@ -186,6 +201,7 @@ export const StyledCard = styled.section`
     background: linear-gradient(0deg, rgba(4, 69, 114, 0.5) 0%, #044572 100%);
   }
   .card .card-footer {
+    cursor: pointer;
     background: none;
     border-top: none;
   }
@@ -205,7 +221,7 @@ export const StyledCard = styled.section`
     transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
   }
   .card:hover {
-    cursor: pointer;
+    /* cursor: pointer; */
     transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
   }
   .card:hover .card-body {

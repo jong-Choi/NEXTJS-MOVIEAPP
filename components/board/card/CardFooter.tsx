@@ -4,7 +4,7 @@ const CardFooter = ({ author, published_date }) => {
   const { uid, nickname, image } = author;
 
   return (
-    <div className="card-footer">
+    <div className="card-footer" title="프로필로 이동하기">
       <div className="media">
         <div className="d-flex">
           <img
