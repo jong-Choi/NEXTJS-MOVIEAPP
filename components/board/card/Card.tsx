@@ -1,7 +1,9 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
+import firebaseInstance, { dbService } from "../../../public/fbase";
 import { useTypedSelector } from "../../../store";
 import { Article } from "../../../types/article";
+import useDebounce from "../../../utils/useDebounce";
 import CardBody from "./CardBody";
 import CardBodyEdditing from "./CardBodyEdditing";
 import CardFooter from "./CardFooter";
@@ -13,48 +15,81 @@ interface iProp {
 const Card = ({ article }: iProp) => {
   const uid = useTypedSelector((state) => state.authSlice.userProfile?.uid);
   const [articleSnapshot, setArticleSnapshot] = useState(article);
-  let onClickHandler = () => {};
-  const { backdrop_path, title, likes, author, published_date } =
+  const [onClickHander, setOnclickHandler] = useState();
+  const { documentId, backdrop_path, title, likes, author, published_date } =
     articleSnapshot;
   const isAuth = article.author.uid === uid;
-  const hasLiked = !!article.likes.includes(uid);
   const [load, setLoad] = useState(false);
-
   const [isEdditing, setIsEdditing] = useState(false);
+
+  const [initiated, setInitiated] = useState(false);
+  const hasLiked = useDebounce(likes.includes(uid), 500);
+  const docRef = dbService.collection("articles").doc(documentId);
+
+  useEffect(() => {
+    if (!initiated) return;
+    console.log(hasLiked);
+    if (hasLiked) {
+      docRef.update({
+        likes: firebaseInstance.firestore.FieldValue.arrayUnion(uid),
+      });
+      setInitiated(false);
+    } else if (!hasLiked) {
+      docRef.update({
+        likes: firebaseInstance.firestore.FieldValue.arrayRemove(uid),
+      });
+      setInitiated(false);
+    }
+  }, [hasLiked]);
 
   const Overlay = useMemo(() => {
     if (isEdditing) return <></>;
     if (isAuth) {
-      onClickHandler = () => {
+      const onClickHandler = () => {
         if (!isEdditing) setIsEdditing(true);
       };
-      return <div>클릭해서 수정하기</div>;
+      return (
+        <StyledOverlay className="overlay" onClick={onClickHandler}>
+          <div>클릭해서 수정하기</div>
+        </StyledOverlay>
+      );
     } else if (likes.includes(uid)) {
-      onClickHandler = () => {
-        likes.splice(likes.indexOf(uid), 1);
+      const onClickHandler = () => {
+        const idx = likes.indexOf(uid);
+        if (idx >= 0) likes.splice(idx, 1);
+        setInitiated(true);
         setArticleSnapshot({
           ...articleSnapshot,
           likes: [...likes],
         });
       };
-      return <div>클릭해서 좋아요 취소</div>;
+      return (
+        <StyledOverlay className="overlay" onClick={onClickHandler}>
+          <div>클릭해서 좋아요 취소</div>
+        </StyledOverlay>
+      );
     } else {
-      onClickHandler = () => {
+      const onClickHandler = () => {
+        setInitiated(true);
         setArticleSnapshot({
           ...articleSnapshot,
           likes: [...likes, uid],
         });
       };
-      return <div>클릭해서 좋아요</div>;
+      return (
+        <StyledOverlay className="overlay" onClick={onClickHandler}>
+          <div>클릭해서 좋아요</div>
+        </StyledOverlay>
+      );
     }
   }, [likes, isEdditing]);
 
   return (
     <StyledCard
       className="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4"
-      onClick={(e) => {
-        console.log(e.target);
-      }}
+      // onClick={(e) => {
+      //   onClickHandler();
+      // }}
     >
       <div
         className={`card text-white card-has-bg click-col 
@@ -88,9 +123,8 @@ const Card = ({ article }: iProp) => {
             published_date={article.published_date}
           />
         </div>
-        <StyledOverlay className="overlay" onClick={onClickHandler}>
-          {Overlay}
-        </StyledOverlay>
+
+        {Overlay}
       </div>
     </StyledCard>
   );
@@ -108,7 +142,7 @@ const StyledOverlay = styled.div`
   height: 75%;
   align-items: end;
   cursor: pointer;
-
+  user-select: none;
   & div {
     width: 100%;
     text-align: center;
