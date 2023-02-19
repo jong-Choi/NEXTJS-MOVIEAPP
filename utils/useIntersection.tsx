@@ -10,8 +10,10 @@ function handleIntersections(entries) {
       let cb = listenerCallbacks.get(entry.target);
 
       if (entry.isIntersecting || entry.intersectionRatio > 0) {
-        observer.unobserve(entry.target);
-        listenerCallbacks.delete(entry.target);
+        if (entry.target.loop === false) {
+          observer.unobserve(entry.target);
+          listenerCallbacks.delete(entry.target);
+        }
         cb();
       }
     }
@@ -28,9 +30,10 @@ function getIntersectionObserver() {
   return observer;
 }
 
-export function useIntersection(elem, callback) {
+export function useIntersection(elem, callback, loop: boolean = false) {
   useEffect(() => {
     let target = elem.current;
+    target.loop = loop;
     let observer = getIntersectionObserver();
     listenerCallbacks.set(target, callback);
     observer.observe(target);
