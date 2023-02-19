@@ -1,26 +1,36 @@
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import firebaseInstance, { dbService } from "../../../public/fbase";
+import { deleteArticle, updateArticle } from "../../../services/fbDb";
 import { useTypedSelector } from "../../../store";
 import { Article } from "../../../types/article";
+import { toastDefault, toastSuccess } from "../../../utils/toastAlert";
 import useDebounce from "../../../utils/useDebounce";
 import CardBody from "./CardBody";
-import CardBodyEdditing from "./CardBodyEdditing";
+import CardBodyEditing from "./CardBodyEditing";
 import CardFooter from "./CardFooter";
 
 interface iProp {
   article: Article;
+  setArticles: Function;
 }
 
-const Card = ({ article }: iProp) => {
+const Card = ({ article, setArticles }: iProp) => {
   const uid = useTypedSelector((state) => state.authSlice.userProfile?.uid);
   const [articleSnapshot, setArticleSnapshot] = useState(article);
   const [onClickHander, setOnclickHandler] = useState();
-  const { documentId, backdrop_path, title, likes, author, published_date } =
-    articleSnapshot;
+  const {
+    documentId,
+    backdrop_path,
+    title,
+    likes,
+    author,
+    published_date,
+    body,
+  } = articleSnapshot;
   const isAuth = article.author.uid === uid;
-  const [load, setLoad] = useState(false);
-  const [isEdditing, setIsEdditing] = useState(false);
+
+  const [isEditing, setIsEditing] = useState(false);
 
   const [initiated, setInitiated] = useState(false);
   const hasLiked = useDebounce(likes.includes(uid), 500);
@@ -28,7 +38,6 @@ const Card = ({ article }: iProp) => {
 
   useEffect(() => {
     if (!initiated) return;
-    console.log(hasLiked);
     if (hasLiked) {
       docRef.update({
         likes: firebaseInstance.firestore.FieldValue.arrayUnion(uid),
@@ -43,10 +52,10 @@ const Card = ({ article }: iProp) => {
   }, [hasLiked]);
 
   const Overlay = useMemo(() => {
-    if (isEdditing) return <></>;
+    if (isEditing) return <></>;
     if (isAuth) {
       const onClickHandler = () => {
-        if (!isEdditing) setIsEdditing(true);
+        if (!isEditing) setIsEditing(true);
       };
       return (
         <StyledOverlay className="overlay" onClick={onClickHandler}>
@@ -82,46 +91,160 @@ const Card = ({ article }: iProp) => {
         </StyledOverlay>
       );
     }
-  }, [likes, isEdditing]);
+  }, [likes, isEditing]);
+
+  const [movie, setMovie] = useState(() => ({
+    backdrop_path,
+    title,
+  }));
+  const [input, setInput] = useState(() => {
+    return body;
+  });
+
+  const onUpdate = () => {
+    const payload = {
+      title: movie.title,
+      body: input,
+      backdrop_path: movie.backdrop_path,
+      // published_date: Date.now(),
+      // author: author,
+      // likes: likes,
+    };
+
+    if (uid && uid === author.uid && movie.title && input) {
+      if (
+        movie.title === title &&
+        input === body &&
+        movie.backdrop_path === backdrop_path
+      ) {
+        toastDefault("변경 사항이 없습니다.");
+        setIsEditing(false);
+      } else {
+        updateArticle(documentId, payload).then(() => {
+          toastSuccess("게시글이 수정되었습니다.");
+          setArticleSnapshot({
+            ...articleSnapshot,
+            title: movie.title,
+            body: input,
+            backdrop_path: movie.backdrop_path,
+          });
+          setIsEditing(false);
+        });
+      }
+    }
+  };
+
+  const cardBody = isEditing ? (
+    <CardBodyEditing
+      setInput={setInput}
+      movie={movie}
+      setMovie={setMovie}
+      input={input}
+    ></CardBodyEditing>
+  ) : (
+    <>
+      <CardBody article={articleSnapshot} likesCount={likes.length} />
+      <div className="card-footer likes">
+        <small>
+          <span style={likes.includes(uid) ? { color: "pink" } : {}}>
+            {likes.length}개
+          </span>
+          의 좋아요
+        </small>
+      </div>
+    </>
+  );
+
+  const [isDeleting, setIsDeleting] = useState(false);
+  const onDelete = () => {
+    deleteArticle(documentId).then(() => {
+      toastSuccess("삭제되었습니다.");
+      setArticles((prevArticles) => {
+        const newArticles = [...prevArticles];
+        newArticles.splice(
+          newArticles.findIndex((e) => e.documentId === documentId),
+          1,
+        );
+        return newArticles;
+      });
+    });
+  };
+  const deleteButton = isDeleting ? (
+    <>
+      <div>
+        <span>삭제하시겠습니까? </span>{" "}
+        <UpdateSpan role="button" className="mx-3" onClick={onDelete}>
+          예
+        </UpdateSpan>{" "}
+        <UpdateSpan
+          role="button"
+          onClick={() => {
+            setIsDeleting(false);
+          }}
+        >
+          아니오
+        </UpdateSpan>
+      </div>
+    </>
+  ) : (
+    <div>
+      <UpdateSpan role="button" onClick={() => setIsDeleting(true)}>
+        삭제하기
+      </UpdateSpan>
+    </div>
+  );
+
+  const cardFooter = isEditing ? (
+    <>
+      <div>
+        <UpdateSpan role="button" onClick={onUpdate}>
+          수정하기
+        </UpdateSpan>
+        <UpdateSpan
+          role="button"
+          onClick={() => {
+            setMovie({
+              backdrop_path,
+              title,
+            });
+            setInput(body);
+            setIsEditing(false);
+          }}
+          className="mx-3"
+        >
+          취소하기
+        </UpdateSpan>
+      </div>
+      {deleteButton}
+    </>
+  ) : (
+    <CardFooter author={author} published_date={published_date} />
+  );
+
+  const ImageBackdropPath = useMemo(() => {
+    if (isEditing) return movie.backdrop_path;
+    else return backdrop_path;
+  }, [isEditing, movie.backdrop_path, backdrop_path]);
 
   return (
-    <StyledCard
-      className="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4"
-      // onClick={(e) => {
-      //   onClickHandler();
-      // }}
-    >
+    <StyledCard className="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4">
       <div
         className={`card text-white card-has-bg click-col 
 
         `}
         style={{
-          backgroundImage: `url("https://image.tmdb.org/t/p/w780/${article.backdrop_path}")`,
+          backgroundImage: `url("https://image.tmdb.org/t/p/w780/${ImageBackdropPath}")`,
         }}
       >
         <img
           className="card-img d-none"
-          src={`https://image.tmdb.org/t/p/w780/${article.backdrop_path}`}
-          alt={article.title}
-          onLoad={() => setLoad(true)}
+          src={`https://image.tmdb.org/t/p/w780/${ImageBackdropPath}`}
+          alt={title}
         />
 
         <div className="card-img-overlay d-flex flex-column">
-          <CardBody article={article} likesCount={likes.length} />
-
-          <div className="card-footer likes">
-            <small>
-              <span style={likes.includes(uid) ? { color: "pink" } : {}}>
-                {likes.length}개
-              </span>
-              의 좋아요
-            </small>
-          </div>
-
-          <CardFooter
-            author={article.author}
-            published_date={article.published_date}
-          />
+          {cardBody}
+          {cardFooter}
         </div>
 
         {Overlay}
@@ -131,6 +254,12 @@ const Card = ({ article }: iProp) => {
 };
 
 export default Card;
+
+const UpdateSpan = styled.span`
+  &:hover {
+    color: orange;
+  }
+`;
 
 const StyledOverlay = styled.div`
   visibility: hidden;

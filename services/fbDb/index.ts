@@ -48,3 +48,11 @@ export const fetchAticles = () => {
       return Articles;
     });
 };
+
+export const updateArticle = (documentId, payload) => {
+  return dbService.doc(`articles/${documentId}`).update(payload);
+};
+
+export const deleteArticle = (documentId) => {
+  return dbService.doc(`articles/${documentId}`).delete();
+};

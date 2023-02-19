@@ -9,7 +9,7 @@ import { setArticles } from "../../../store/dbSlice";
 import { Article } from "../../../types/article";
 import { toastSuccess } from "../../../utils/toastAlert";
 import { StyledCard } from "./Card";
-import CardBodyEdditing from "./CardBodyEdditing";
+import CardBodyEditing from "./CardBodyEditing";
 
 const CardCreate = ({ setCreating, setUpdated }) => {
   const initalMovie = {
@@ -80,11 +80,11 @@ const CardCreate = ({ setCreating, setUpdated }) => {
         />
 
         <div className="card-img-overlay d-flex flex-column">
-          <CardBodyEdditing
+          <CardBodyEditing
             setInput={setInput}
             movie={movie}
             setMovie={setMovie}
-          ></CardBodyEdditing>
+          ></CardBodyEditing>
           <div className={`card-footer likes`}>
             <div>
               <small

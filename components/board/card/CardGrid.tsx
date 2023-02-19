@@ -12,7 +12,13 @@ const CardGrid = ({ creating, setCreating }) => {
 
   useEffect(() => {
     const cardList = articles.map((article) => {
-      return <Card article={article} key={article.documentId} />;
+      return (
+        <Card
+          article={article}
+          key={article.documentId}
+          setArticles={setArticles}
+        />
+      );
     });
     setCardlist(cardList);
     setGrid(cardList);

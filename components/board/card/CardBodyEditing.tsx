@@ -4,15 +4,21 @@ import useDebounce from "../../../utils/useDebounce";
 import Search from "../../Search";
 import CardTextArea from "./CardTextArea";
 
-const CardBodyEdditing = ({
-  setInput,
-  movie,
-  setMovie,
-  defaultMovie = null,
-}) => {
-  const [searching, setSearching] = useState(true);
+const CardBodyEditing = ({ setInput, movie, setMovie, input = "" }) => {
+  const [searching, setSearching] = useState(() => {
+    if (movie.title) return false;
+    else return true;
+  });
+
+  const [MovieTitle, setMovieTitle] = useState(() =>
+    movie.title.length > 20 ? movie.title.slice(0, 18) + "..." : movie.title,
+  );
+
   const onResultClick = (movie) => {
     setMovie(movie);
+    setMovieTitle(
+      movie.title.length > 20 ? movie.title.slice(0, 18) + "..." : movie.title,
+    );
     setSearching(false);
   };
 
@@ -28,20 +34,18 @@ const CardBodyEdditing = ({
         </StyledInputWrapper>
       ) : (
         <small className="card-meta mb-2" onClick={() => setSearching(true)}>
-          {movie.title.length > 20
-            ? movie.title.slice(0, 18) + "..."
-            : movie.title}
+          {MovieTitle}
         </small>
       )}
 
       <h4 className="card-title mt-0 ">
-        <CardTextArea searching={searching} setInput={setInput} />
+        <CardTextArea searching={searching} setInput={setInput} input={input} />
       </h4>
     </div>
   );
 };
 
-export default React.memo(CardBodyEdditing);
+export default React.memo(CardBodyEditing);
 
 const StyledInputWrapper = styled.div`
   input {

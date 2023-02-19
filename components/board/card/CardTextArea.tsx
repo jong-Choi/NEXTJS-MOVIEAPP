@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import useDebounce from "../../../utils/useDebounce";
 
-const CardTextArea = ({ searching, setInput }) => {
-  const [body, setBody] = useState("");
+const CardTextArea = ({ searching, setInput, input = "" }) => {
+  const [body, setBody] = useState(input);
   const debouncedBody = useDebounce(body, 200);
   useEffect(() => {
     setInput(debouncedBody);
   }, [debouncedBody]);
 
+  // useEffect(() => {
+  //   setInput(body);
+  // }, [body]);
   return (
     <StyledTextArea
       className={`fs-6 ${searching ? "d-none" : ""}`}
