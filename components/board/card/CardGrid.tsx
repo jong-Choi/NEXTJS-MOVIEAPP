@@ -54,28 +54,29 @@ const CardGrid = ({ creating, setCreating }) => {
     setCardlist(cardList);
     setGrid(cardList);
     setUpdated(true);
+    setCreating(false);
   }, [articles]);
+
+  const setTrigger = () => {
+    fetchAticles().then((articles) => {
+      setArticles(articles);
+      setPublishedDate(articles.at(-1).published_date);
+      setIsLastPage(false);
+    });
+  };
 
   useEffect(() => {
     if (creating) {
       setGrid([
         <CardCreate
           setCreating={setCreating}
-          setUpdated={setUpdated}
+          setTrigger={setTrigger}
           key="CardCreate"
         />,
         ...cardList,
       ]);
-    } else {
-      if (updated) {
-        setGrid([...cardList]);
-      } else {
-        if (publishedDate) {
-          setPublishedDate(0);
-          setIsLastPage(false);
-          setTriggered(true);
-        }
-      }
+    } else if (updated) {
+      setGrid([...cardList]);
     }
   }, [creating]);
 

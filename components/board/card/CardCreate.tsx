@@ -11,7 +11,7 @@ import { toastSuccess } from "../../../utils/toastAlert";
 import { StyledCard } from "./Card";
 import CardBodyEditing from "./CardBodyEditing";
 
-const CardCreate = ({ setCreating, setUpdated }) => {
+const CardCreate = ({ setCreating, setTrigger }) => {
   const initalMovie = {
     backdrop_path: "",
     title: "",
@@ -59,9 +59,8 @@ const CardCreate = ({ setCreating, setUpdated }) => {
     if (movie.title && uid && input)
       createArticle(article).then(() => {
         toastSuccess("게시글이 작성되었습니다.");
+        setTrigger();
         setCanCreate(false);
-        setUpdated(false);
-        setCreating(false);
       });
   };
 
