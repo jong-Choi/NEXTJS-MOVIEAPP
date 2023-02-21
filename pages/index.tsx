@@ -91,7 +91,10 @@ export default function Home() {
       Promise.allSettled([
         dispatch(authSlice.actions.setUserOjbect(currentUser)),
         dispatch(authSlice.actions.setUserProfile(profile)),
-        fetchPreload().then((res) => {
+        // fetchPreload()
+        fetch("/preloadingData.json").then(async (data) => {
+          const res = await data.json();
+          console.log(res);
           dispatch(setDbValidate(res.validate));
           res.preloadData.map((backdrop_path) => {
             const imageElement = new Image();

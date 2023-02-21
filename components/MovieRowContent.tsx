@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
 import { useIntersection } from "../utils/useIntersection";
 import Link from "next/link";
-import { Movie } from "../types/moive";
+import { MovieEssential } from "../types/moive";
 
 interface iProps {
-  movie: Movie;
+  movie: MovieEssential;
   cardMode: boolean;
 }
 
@@ -37,7 +37,7 @@ const MovieRowContent = ({ movie, cardMode = false }: iProps) => {
           }}
         >
           <img
-            alt={movie.title || movie.original_title}
+            alt={movie.title}
             style={{
               cursor: "pointer",
               position: "absolute",
@@ -73,7 +73,7 @@ const MovieRowContent = ({ movie, cardMode = false }: iProps) => {
                 cursor: "pointer",
               }}
             >
-              {movie.title || movie.original_title}
+              {movie.title}
             </div>
           </div>
         </div>

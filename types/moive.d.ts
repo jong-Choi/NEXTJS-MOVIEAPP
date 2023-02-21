@@ -1,7 +1,10 @@
-export interface MyMovie {
+export interface MovieEssential {
   backdrop_path: string;
   title: string;
   id: number;
+}
+
+export interface MyMovie extends MovieEssential {
   genre_ids: Array<number>;
 }
 

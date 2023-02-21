@@ -11,13 +11,13 @@ import "swiper/css/scrollbar";
 import { StyledMovieRow } from "../styles/StyledMovieRow";
 import MovieRowSearch from "./MovieRowSearch";
 import MovieRowContent from "./MovieRowContent";
-import { Movie } from "../types/moive";
+import { Movie, MovieEssential, MyMovie } from "../types/moive";
 
 interface iProps {
   title: string;
   id: string;
   movieList?: Array<Movie>;
-  moviesData?: Array<Movie>;
+  moviesData?: Array<MovieEssential>;
   onResultClick?: (movie: Movie) => any;
   cardMode?: boolean;
 }
@@ -29,7 +29,9 @@ function MovieRow({
   onResultClick,
   cardMode = false,
 }: iProps) {
-  const [movies, setMovies] = useState<Array<Movie>>(moviesData || movieList);
+  const [movies, setMovies] = useState<Array<MovieEssential> | Array<Movie>>(
+    moviesData || movieList,
+  );
 
   // useEffect(() => {
   //   fetchMovieData();

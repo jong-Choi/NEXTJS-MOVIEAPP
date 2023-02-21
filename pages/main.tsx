@@ -6,7 +6,7 @@ import MovieRow from "../components/MovieRow";
 import { patchPreload } from "../services/fbDb";
 import tmdbApi, { requests } from "../services/tmdbApi";
 import { useTypedSelector } from "../store";
-import { Movie } from "../types/moive";
+import { Movie, MovieEssential } from "../types/moive";
 
 interface iProps {
   moviesObject: { [key: string]: [Movie] };
@@ -17,12 +17,12 @@ interface iProps {
 const main = ({ moviesObject, preloadingData, validate }: iProps) => {
   const router = useRouter();
 
-  const dbValidate = useTypedSelector((state) => state.dbSlice.dbValidate);
-  useEffect(() => {
-    if (dbValidate !== validate) {
-      patchPreload(validate, preloadingData);
-    }
-  }, []);
+  // const dbValidate = useTypedSelector((state) => state.dbSlice.dbValidate);
+  // useEffect(() => {
+  //   if (dbValidate !== validate) {
+  //     patchPreload(validate, preloadingData);
+  //   }
+  // }, []);
 
   const MoviesDataEntries: Array<[string, [Movie]]> = [
     ["요즘 뜨는 영화", moviesObject["fetchTrending"]],
@@ -48,13 +48,21 @@ const main = ({ moviesObject, preloadingData, validate }: iProps) => {
   );
 };
 
+import fs from "fs";
+import path from "path";
+
 export const getStaticProps = async () => {
   const requestsUrl = Object.entries(requests);
   const moviesObject = new Object();
   return await Promise.allSettled(
     requestsUrl.map((e) => {
+      let movieEssentialArray;
       return tmdbApi.get(e[1]).then((res) => {
-        moviesObject[e[0]] = res.data.results;
+        movieEssentialArray = res.data.results.map((e: Movie) => {
+          const { id, title, backdrop_path } = e;
+          return { id, title, backdrop_path };
+        });
+        moviesObject[e[0]] = movieEssentialArray as Array<MovieEssential>;
       });
     }),
   ).then(() => {
@@ -67,6 +75,10 @@ export const getStaticProps = async () => {
         return preloadingData.push(backdrop_path);
       }),
     );
+    const filePath = path.resolve(
+      path.join(process.cwd(), "public", "preloadingData.json"),
+    );
+    fs.writeFileSync(filePath, JSON.stringify({ validate, preloadingData }));
     return {
       props: { moviesObject, preloadingData, validate },
       revalidate: 4 * 24 * 60 * 60,
