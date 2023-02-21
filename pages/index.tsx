@@ -94,7 +94,6 @@ export default function Home() {
         // fetchPreload()
         fetch("/preloadingData.json").then(async (data) => {
           const res = await data.json();
-          console.log(res);
           dispatch(setDbValidate(res.validate));
           res.preloadData.map((backdrop_path) => {
             const imageElement = new Image();

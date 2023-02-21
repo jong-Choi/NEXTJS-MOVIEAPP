@@ -78,7 +78,10 @@ export const getStaticProps = async () => {
     const filePath = path.resolve(
       path.join(process.cwd(), "public", "preloadingData.json"),
     );
-    fs.writeFileSync(filePath, JSON.stringify({ validate, preloadingData }));
+    fs.writeFileSync(
+      filePath,
+      JSON.stringify({ validate, preloadData: preloadingData }),
+    );
     return {
       props: { moviesObject, preloadingData, validate },
       revalidate: 4 * 24 * 60 * 60,
