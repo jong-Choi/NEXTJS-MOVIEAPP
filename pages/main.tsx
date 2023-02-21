@@ -1,4 +1,7 @@
+import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+import Modal from "react-modal";
+import MovieDetail from "../components/MovieDetail";
 import MovieRow from "../components/MovieRow";
 import { patchPreload } from "../services/fbDb";
 import tmdbApi, { requests } from "../services/tmdbApi";
@@ -12,6 +15,8 @@ interface iProps {
 }
 
 const main = ({ moviesObject, preloadingData, validate }: iProps) => {
+  const router = useRouter();
+
   const dbValidate = useTypedSelector((state) => state.dbSlice.dbValidate);
   useEffect(() => {
     if (dbValidate !== validate) {
@@ -29,15 +34,17 @@ const main = ({ moviesObject, preloadingData, validate }: iProps) => {
   ];
 
   return (
-    <div className="container d-flex justify-content-center">
-      <div className="col-12 col-lg-10">
-        {MoviesDataEntries.map((e) => {
-          return (
-            <MovieRow id={e[0]} key={e[0]} title={e[0]} moviesData={e[1]} />
-          );
-        })}
+    <>
+      <div className="container d-flex justify-content-center">
+        <div className="col-12 col-lg-10" id="#__next3">
+          {MoviesDataEntries.map((e) => {
+            return (
+              <MovieRow id={e[0]} key={e[0]} title={e[0]} moviesData={e[1]} />
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
