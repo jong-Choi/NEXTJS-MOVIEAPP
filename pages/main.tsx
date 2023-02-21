@@ -1,11 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import Modal from "react-modal";
-import MovieDetail from "../components/MovieDetail";
 import MovieRow from "../components/MovieRow";
-import { patchPreload } from "../services/fbDb";
 import tmdbApi, { requests } from "../services/tmdbApi";
-import { useTypedSelector } from "../store";
 import { Movie, MovieEssential } from "../types/moive";
 
 interface iProps {
@@ -14,15 +10,8 @@ interface iProps {
   validate: number;
 }
 
-const main = ({ moviesObject, preloadingData, validate }: iProps) => {
+const main = ({ moviesObject }: iProps) => {
   const router = useRouter();
-
-  // const dbValidate = useTypedSelector((state) => state.dbSlice.dbValidate);
-  // useEffect(() => {
-  //   if (dbValidate !== validate) {
-  //     patchPreload(validate, preloadingData);
-  //   }
-  // }, []);
 
   const MoviesDataEntries: Array<[string, [Movie]]> = [
     ["요즘 뜨는 영화", moviesObject["fetchTrending"]],

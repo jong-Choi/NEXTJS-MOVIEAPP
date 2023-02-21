@@ -4,10 +4,8 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { authService } from "../public/fbase";
 import { onSocialLogin } from "../services/fbAuth";
-import { fetchPreload } from "../services/fbDb";
 import { fetchProfile } from "../services/fbProfile";
 import authSlice from "../store/authSlice";
-import { setDbValidate } from "../store/dbSlice";
 import GrayScaleMasthead from "../styles/GrayScaleMasthead";
 import { setCookie } from "../utils/handleCookie";
 import { toastError } from "../utils/toastAlert";
@@ -91,10 +89,8 @@ export default function Home() {
       Promise.allSettled([
         dispatch(authSlice.actions.setUserOjbect(currentUser)),
         dispatch(authSlice.actions.setUserProfile(profile)),
-        // fetchPreload()
         fetch("/preloadingData.json").then(async (data) => {
           const res = await data.json();
-          dispatch(setDbValidate(res.validate));
           res.preloadData.map((backdrop_path) => {
             const imageElement = new Image();
             imageElement.src = `https://image.tmdb.org/t/p/w780/${backdrop_path}`;

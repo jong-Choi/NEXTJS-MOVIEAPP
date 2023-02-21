@@ -9,9 +9,6 @@ const dbSlice = createSlice({
     articles: [] as Array<Article>,
   },
   reducers: {
-    setDbValidate(state, action: PayloadAction<number>) {
-      state.dbValidate = action.payload;
-    },
     setArticles(state, action: PayloadAction<Array<Article>>) {
       state.articles = action.payload;
     },
@@ -27,4 +24,4 @@ const dbSlice = createSlice({
 });
 
 export default dbSlice;
-export const { setDbValidate, setArticles } = dbSlice.actions;
+export const { setArticles } = dbSlice.actions;
