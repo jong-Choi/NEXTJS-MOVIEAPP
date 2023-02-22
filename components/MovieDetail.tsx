@@ -111,7 +111,7 @@ const MovieDetail = ({ onClose, movie }) => {
                 .slice(0, 3)
                 .join(", ")}`}</div>
             </div>
-            <div className="detail-text">${movie.overview}</div>
+            <div className="detail-text">{movie.overview}</div>
             <div className="button-wrapper">
               {creating ? (
                 <></>
