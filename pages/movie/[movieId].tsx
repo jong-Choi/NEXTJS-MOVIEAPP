@@ -19,18 +19,18 @@ const MovieDetailPage = ({ movie }: iProps) => {
   }, []);
 
   const StyledModal = styled(ReactModal)`
-    /* background-color: black; */
     border: 1px solid black;
     border-radius: 5px;
     outline: none;
     padding: 0px;
     position: sticky;
-    width: 50vw;
-    height: 30vw;
-    overflow: hidden;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    @media (min-width: 768px) {
+      height: 40vw;
+      margin: 0 10vw;
+      overflow: hidden;
+      top: 50%;
+      transform: translate(0%, -50%);
+    }
   `;
 
   useEffect(() => {
@@ -67,23 +67,10 @@ const MovieDetailPage = ({ movie }: iProps) => {
               top: 0,
               left: 0,
               backdropFilter: "blur(30px)",
+              WebkitBackdropFilter: "blur(30px)",
               width: "100%",
               height: "500%",
             },
-            // content: {
-            //   position: "absolute",
-            //   top: "40px",
-            //   left: "40px",
-            //   right: "40px",
-            //   bottom: "40px",
-            //   border: "0px",
-            //   background: "#fff",
-            //   overflow: "auto",
-            //   WebkitOverflowScrolling: "touch",
-            //   borderRadius: "4px",
-            //   outline: "none",
-            //   padding: "0px",
-            // },
           }}
         >
           <MovieDetail
