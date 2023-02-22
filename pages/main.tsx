@@ -25,7 +25,7 @@ const main = ({ moviesObject }: iProps) => {
   return (
     <>
       <div className="container d-flex justify-content-center">
-        <div className="col-12 col-lg-10" id="#__next3">
+        <div className="col-12 col-lg-10" id="main">
           {MoviesDataEntries.map((e) => {
             return (
               <MovieRow id={e[0]} key={e[0]} title={e[0]} moviesData={e[1]} />
