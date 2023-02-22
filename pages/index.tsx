@@ -147,7 +147,7 @@ export default function Home() {
   );
 }
 
-const BgImg = styled.img`
+export const BgImg = styled.img`
   pointer-events: none;
   position: absolute;
   width: 100vw;
