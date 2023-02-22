@@ -25,8 +25,15 @@ const MovieDetailPage = ({ movie }: iProps) => {
     padding: 0px;
     position: sticky;
     @media (min-width: 768px) {
-      height: 40vw;
-      margin: 0 10vw;
+      height: 450px;
+      margin: 0 5vw;
+      overflow: hidden;
+      top: 50%;
+      transform: translate(0%, -50%);
+    }
+    @media (min-width: 1023px) {
+      height: 450px;
+      margin: 0 20vw;
       overflow: hidden;
       top: 50%;
       transform: translate(0%, -50%);
