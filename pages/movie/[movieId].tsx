@@ -24,15 +24,23 @@ const MovieDetailPage = ({ movie }: iProps) => {
     outline: none;
     padding: 0px;
     position: sticky;
-    @media (min-width: 768px) {
-      height: 450px;
+    @media (min-width: 769px) {
+      max-height: 50vw;
       margin: 0 5vw;
       overflow: hidden;
       top: 50%;
       transform: translate(0%, -50%);
     }
-    @media (min-width: 1023px) {
-      height: 450px;
+    /* @media (min-width: 992px) {
+      height: 45vw;
+      margin: 0 20vw;
+      overflow: hidden;
+      top: 50%;
+      transform: translate(0%, -50%);
+    } */
+    @media (min-width: 1400px) {
+      /* max-height: 50vh; */
+      aspect-ratio: 16/9;
       margin: 0 20vw;
       overflow: hidden;
       top: 50%;
@@ -46,6 +54,10 @@ const MovieDetailPage = ({ movie }: iProps) => {
       document.body.style.overflow = "unset";
     };
   }, []);
+
+  const onClose = () => {
+    router.push("/main", undefined, { scroll: false });
+  };
 
   return (
     <>
@@ -63,9 +75,7 @@ const MovieDetailPage = ({ movie }: iProps) => {
       >
         <StyledModal
           isOpen={true} // The modal should always be shown on page load, it is the 'page'
-          onRequestClose={() =>
-            router.push("/main", undefined, { scroll: false })
-          }
+          onRequestClose={onClose}
           contentLabel="Post modal"
           style={{
             overlay: {
@@ -73,16 +83,14 @@ const MovieDetailPage = ({ movie }: iProps) => {
               position: "absolute",
               top: 0,
               left: 0,
-              backdropFilter: "blur(30px)",
-              WebkitBackdropFilter: "blur(30px)",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
               width: "100%",
               height: "500%",
             },
           }}
         >
-          <MovieDetail
-          // movie={movie}
-          />
+          <MovieDetail onClose={onClose} movie={movie} />
         </StyledModal>
       </div>
     </>
@@ -91,20 +99,20 @@ const MovieDetailPage = ({ movie }: iProps) => {
 
 export default MovieDetailPage;
 
-// export async function getStaticProps({ params: { movieId } }) {
-//   try {
-//     const { data: movie } = await getMovieDetail(movieId);
-//     return { props: { movieId: movieId, movie: movie } };
-//   } catch {
-//     return {
-//       notFound: true,
-//     };
-//   }
-// }
+export async function getStaticProps({ params: { movieId } }) {
+  try {
+    const { data: movie } = await getMovieDetail(movieId);
+    return { props: { movieId: movieId, movie: movie } };
+  } catch {
+    return {
+      notFound: true,
+    };
+  }
+}
 
-// export function getStaticPaths() {
-//   return {
-//     paths: [{ params: { movieId: "176762" } }],
-//     fallback: true,
-//   };
-// }
+export function getStaticPaths() {
+  return {
+    paths: [{ params: { movieId: "176762" } }],
+    fallback: true,
+  };
+}

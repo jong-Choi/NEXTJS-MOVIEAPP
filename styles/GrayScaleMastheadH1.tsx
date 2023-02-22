@@ -39,6 +39,7 @@ const GrayScaleMastheadH1 = styled.div`
     width: 100%;
     text-align: center;
     white-space: nowrap;
+    overflow: hidden;
   }
   .masthead h2,
   .masthead .h2 {
@@ -48,6 +49,9 @@ const GrayScaleMastheadH1 = styled.div`
     letter-spacing: 1rem;
     text-align: center;
     word-break: keep-all;
+    @media (min-width: 992px) {
+      font-size: 1.2vw;
+    }
   }
 `;
 

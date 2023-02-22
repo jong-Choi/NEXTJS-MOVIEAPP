@@ -11,15 +11,19 @@ import { toastSuccess } from "../../../utils/toastAlert";
 import { StyledCard } from "./Card";
 import CardBodyEditing from "./CardBodyEditing";
 
-const CardCreate = ({ setCreating, setTrigger }) => {
-  const initalMovie = {
+const CardCreate = ({
+  setCreating,
+  setTrigger,
+  intialMovie = {
     backdrop_path: "",
     title: "",
     id: "",
-  };
+  },
+  className = "col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4",
+}) => {
   const dispatch = useDispatch();
   const [input, setInput] = useState("");
-  const [movie, setMovie] = useState(initalMovie);
+  const [movie, setMovie] = useState(intialMovie);
   const [imageURL, setImageURL] = useState("/noResult.jpg");
   const [canCreate, setCanCreate] = useState(false);
   const { uid, nickname, image } = useTypedSelector((state) => {
@@ -65,7 +69,7 @@ const CardCreate = ({ setCreating, setTrigger }) => {
   };
 
   return (
-    <StyledCard className="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+    <StyledCard className={className}>
       <div
         className="card text-white card-has-bg click-col"
         style={{
