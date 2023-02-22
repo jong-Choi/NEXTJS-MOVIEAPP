@@ -1,0 +1,54 @@
+import styled from "styled-components";
+
+const GrayScaleMastheadH1 = styled.div`
+  .masthead {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+
+    /* min-height: 35rem; */
+    padding: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(250, 171, 54, 0.3) 0%,
+      rgba(0, 95, 96, 1) 60%,
+      #01192f 100%
+    );
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-size: cover;
+  }
+  .masthead h1,
+  .masthead .h1 {
+    font-family: "Noto Sans KR", "Varela Round", -apple-system,
+      BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+      sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+      "Noto Color Emoji";
+    font-display: block;
+    font-size: 3vw;
+    line-height: 2.5rem;
+    letter-spacing: 1.5vw;
+    background: linear-gradient(
+      rgba(255, 255, 255, 0.9),
+      rgba(255, 255, 255, 0)
+    );
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .masthead h2,
+  .masthead .h2 {
+    /* max-width: 20rem; */
+    width: 70%;
+    font-size: 1rem;
+    letter-spacing: 1rem;
+    text-align: center;
+    word-break: keep-all;
+  }
+`;
+
+export default GrayScaleMastheadH1;

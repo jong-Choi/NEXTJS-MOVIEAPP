@@ -2,15 +2,24 @@ import React from "react";
 import styled from "styled-components";
 import { BgImg } from "../pages";
 import GrayScaleMasthead from "../styles/GrayScaleMasthead";
+import GrayScaleMastheadH1 from "../styles/GrayScaleMastheadH1";
 
 const MovieDetail = ({}) => {
   console.log();
   return (
-    <GrayScaleMasthead>
+    <GrayScaleMastheadH1>
       <StyledImage src={"/backgroundImages/쇼생크탈출.jpg"}></StyledImage>
-      <header className={`masthead px-0`}>
+      <header className={`masthead`}>
         <h1 className="">TEAL AND ORAGNE</h1>
-        <div>반가워요</div>
+        <h2 className="text-white-60 mx-auto">정말 대단한 나는 멋지다</h2>
+        <div className="col-6">
+          {" "}
+          슈퍼히어로 파트너인 스캇 랭과 호프 반 다인, 호프의 부모 재닛 반 다인과
+          행크 핌, 그리고 스캇의 딸 캐시 랭까지 미지의 양자 영역 세계 속에
+          빠져버린 앤트맨 패밀리. 그 곳에서 새로운 존재들과 무한한 우주를
+          다스리는 정복자 캉을 만나며, 그 누구도 예상 못 한 모든 것의 한계를
+          뛰어넘는 모험을 시작하게 되는데…
+        </div>
         {/* <div className="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center masthead-text">
           <h2 className="text-white-50 mx-auto mt-3 mb-5">
             슈퍼히어로 파트너인 스캇 랭과 호프 반 다인, 호프의 부모 재닛 반
@@ -24,7 +33,7 @@ const MovieDetail = ({}) => {
           </div>
         </div> */}
       </header>
-    </GrayScaleMasthead>
+    </GrayScaleMastheadH1>
   );
 };
 
