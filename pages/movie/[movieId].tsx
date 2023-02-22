@@ -33,6 +33,13 @@ const MovieDetailPage = ({ movie }: iProps) => {
     transform: translate(-50%, -50%);
   `;
 
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, []);
+
   return (
     <>
       <div
