@@ -61,7 +61,7 @@ const ProfilePage = () => {
                         v-if="isAuthorized && isAuthor"
                         type="button"
                         className={`btn btn-dark ${
-                          !myUid ? "visible" : "d-none"
+                          !myUid ? "invisible" : "d-none"
                         }`}
                         onClick={() => {}}
                       >
