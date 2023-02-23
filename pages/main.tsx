@@ -1,8 +1,15 @@
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import MovieRow from "../components/MovieRow";
 import tmdbApi, { requests } from "../services/tmdbApi";
 import { Movie, MovieEssential } from "../types/moive";
+import fs from "fs";
+import path from "path";
+import { useTypedSelector } from "../store";
+import { authService } from "../public/fbase";
+import { fetchProfile } from "../services/fbProfile";
+import { shallowEqual } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setUserOjbect, setUserProfile } from "../store/authSlice";
 
 interface iProps {
   moviesObject: { [key: string]: [Movie] };
@@ -11,18 +18,19 @@ interface iProps {
 }
 
 const MainPage = ({ moviesObject }: iProps) => {
-  const router = useRouter();
-  const userProfile = useTypedSelector((state) => state.authSlice.userProfile);
-  const [myRecommendations, setMyRecommendations] = useState(
-    () => userProfile.myRecommendations,
+  const dispatch = useDispatch();
+  const myRecommendations = useTypedSelector(
+    (state) => state.authSlice.userProfile.myRecommendations,
   );
+
   useEffect(() => {
-    if (userProfile.myRecommendations.length) return;
+    if (myRecommendations.length) return;
     authService.onAuthStateChanged((crrUser) => {
       const uid = crrUser?.uid;
       if (!uid) return;
       fetchProfile(uid).then((res) => {
-        setMyRecommendations([...res.myRecommendations]);
+        dispatch(setUserOjbect(crrUser));
+        dispatch(setUserProfile(res));
       });
     });
   }, []);
@@ -68,13 +76,6 @@ const MainPage = ({ moviesObject }: iProps) => {
   );
 };
 export default MainPage;
-
-import fs from "fs";
-import path from "path";
-import { useTypedSelector } from "../store";
-import { authService } from "../public/fbase";
-import { fetchProfile } from "../services/fbProfile";
-import { shallowEqual } from "react-redux";
 
 export const getStaticProps = async () => {
   const requestsUrl = Object.entries(requests);
