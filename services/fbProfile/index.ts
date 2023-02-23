@@ -28,6 +28,8 @@ export const createProfile = async (Profile: ProfileType) => {
       image,
       myMovies,
       myRecommendations,
+      followers: [],
+      followings: [],
     })
     .then((res) => Promise.resolve(res))
     .catch((err) => Promise.reject(err));

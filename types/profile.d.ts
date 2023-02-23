@@ -13,4 +13,6 @@ export interface ProfileType extends Author {
 
 export interface ProfileDataType extends ProfileType {
   documentId: string;
+  followers: Author[];
+  followings: Author[];
 }

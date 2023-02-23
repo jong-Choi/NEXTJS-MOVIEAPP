@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const CardFooter = ({ author, published_date }) => {
@@ -22,23 +23,30 @@ const CardFooter = ({ author, published_date }) => {
     )}년 전`;
 
   return (
-    <div className="card-footer" title="프로필로 이동하기">
-      <div className="media">
-        <div className="d-flex">
-          <img
-            className="mr-3 rounded-circle"
-            src={`${image}`}
-            alt="Generic placeholder image"
-            style={{ maxWidth: "50px" }}
-          />
-          <div className="card-profile">
-            <h6 className="my-0 text-white d-block">{nickname}</h6>
-            <small>{published_date_messge}</small>
-            {/* <small>Director of UI/UX</small> */}
+    <Link
+      href={{
+        pathname: "/profile",
+        query: { uid },
+      }}
+    >
+      <div className="card-footer" title="프로필로 이동하기">
+        <div className="media">
+          <div className="d-flex">
+            <img
+              className="mr-3 rounded-circle"
+              src={`${image}`}
+              alt="Generic placeholder image"
+              style={{ maxWidth: "50px" }}
+            />
+            <div className="card-profile">
+              <h6 className="my-0 text-white d-block">{nickname}</h6>
+              <small>{published_date_messge}</small>
+              {/* <small>Director of UI/UX</small> */}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
