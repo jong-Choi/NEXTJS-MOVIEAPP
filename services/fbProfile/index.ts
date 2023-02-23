@@ -10,6 +10,7 @@ export const fetchProfile = async (uid: string) => {
       const documentId = Snapshot.docs[0]?.id;
       const documentData = await Snapshot.docs[0]?.data();
       const data = { documentId, ...documentData } as ProfileDataType;
+      console.log(JSON.stringify(data));
       return Promise.resolve(documentData ? data : null);
     })
     .catch((err) => {

@@ -40,13 +40,16 @@ export const fetchTrending = () => {
       return { documentId, ...documentData } as Article;
     });
     if (!Articles.length) {
-      dbRef.get().then((Snapshot) => {
-        Articles = Snapshot.docs.map((doc) => {
-          const documentId = doc.id;
-          const documentData = doc.data();
-          return { documentId, ...documentData } as Article;
+      dbRef
+        .limit(20)
+        .get()
+        .then((Snapshot) => {
+          Articles = Snapshot.docs.map((doc) => {
+            const documentId = doc.id;
+            const documentData = doc.data();
+            return { documentId, ...documentData } as Article;
+          });
         });
-      });
     }
     Articles.sort((a, b) => b.likes.length - a.likes.length);
     return Articles.slice(0, 20);
