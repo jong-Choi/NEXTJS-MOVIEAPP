@@ -41,6 +41,7 @@ function MovieRow({
     if (moviesData?.length) return;
     setMovies(movieList);
   }, [movieList]);
+
   // const [modalOpen, setModalOpen] = useState(false);
   const [movieSelected, setMovieSelected] = useState({});
 

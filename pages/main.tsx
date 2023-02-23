@@ -12,24 +12,20 @@ interface iProps {
 
 const MainPage = ({ moviesObject }: iProps) => {
   const router = useRouter();
-  const userProfile = useTypedSelector(
-    (state) => state.authSlice.userProfile,
-    shallowEqual,
-  );
+  const userProfile = useTypedSelector((state) => state.authSlice.userProfile);
   const [myRecommendations, setMyRecommendations] = useState(
-    userProfile.myRecommendations,
+    () => userProfile.myRecommendations,
   );
   useEffect(() => {
+    if (userProfile.myRecommendations.length) return;
     authService.onAuthStateChanged((crrUser) => {
-      console.log(authService.currentUser);
-      if (userProfile.myRecommendations.length) return;
       const uid = crrUser?.uid;
       if (!uid) return;
       fetchProfile(uid).then((res) => {
-        setMyRecommendations(res.myRecommendations);
+        setMyRecommendations([...res.myRecommendations]);
       });
     });
-  }, [userProfile]);
+  }, []);
 
   const MoviesDataEntries: Array<[string, [Movie]]> = [
     ["요즘 뜨는 영화", moviesObject["fetchTrending"]],
@@ -52,9 +48,15 @@ const MainPage = ({ moviesObject }: iProps) => {
               moviesData={myRecommendations}
             />
           ) : (
-            <></>
+            <>
+              <MovieRow
+                id="my-recommendations"
+                key="my-recommendation"
+                title="나를 위한 추천 영화"
+                moviesData={[]}
+              />
+            </>
           )}
-
           {MoviesDataEntries.map((e) => {
             return (
               <MovieRow id={e[0]} key={e[0]} title={e[0]} moviesData={e[1]} />
