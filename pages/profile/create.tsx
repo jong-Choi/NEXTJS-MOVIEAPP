@@ -95,10 +95,10 @@ const create = () => {
       dispatch(setUserOjbect(currentUser));
       setCookie("uid", currentUser.uid, 1);
     }
-    const userProfile = await fetchProfile(userObject.uid);
-    if (userProfile) {
-      return router.push("/");
-    }
+    fetchProfile(userObject.uid).then((res) => {
+      dispatch(setUserProfile(res));
+      router.push("/");
+    });
   }, []);
 
   useEffect(() => {

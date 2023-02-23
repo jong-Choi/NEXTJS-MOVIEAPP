@@ -28,15 +28,17 @@ const ProfilePage = () => {
   const router = useRouter();
   const { uid } = router.query;
 
-  const [profile, setProfile] = useState(myProfile);
+  const [profile, setProfile] = useState(null);
   useEffect(() => {
-    async () => {
+    console.log(uid);
+    const updatingProfile = async () => {
       let profile = myProfile;
       if (uid) {
         profile = await fetchProfile(uid as string);
       }
       setProfile(profile);
     };
+    updatingProfile();
   }, []);
 
   // const profile = JSON.parse(
@@ -47,8 +49,9 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setIsFollowed(!!profile.followers?.find((e) => e.uid === myUid));
-  }, [profile]);
+    setIsFollowed(!!profile?.followers?.find((e) => e.uid === myUid));
+    console.log();
+  }, [profile, myUid]);
 
   useEffect(() => {
     authService.onAuthStateChanged(async (user) => {
@@ -74,8 +77,8 @@ const ProfilePage = () => {
               <div className="card">
                 <div className="card-body text-center">
                   <div>
-                    <img src={profile.image} style={{ maxWidth: "320px" }} />
-                    <h4>{profile.nickname}</h4>
+                    <img src={profile?.image} style={{ maxWidth: "320px" }} />
+                    <h4>{profile?.nickname}</h4>
                     <p>
                       <button
                         v-if="isAuthorized && isAuthor"
@@ -91,7 +94,7 @@ const ProfilePage = () => {
                         v-if="isAuthorized && isAuthor"
                         type="button"
                         className={`btn btn-dark ${
-                          myUid && myUid === profile.uid ? "visible" : "d-none"
+                          myUid && myUid === profile?.uid ? "visible" : "d-none"
                         }`}
                         onClick={() => {}}
                       >
@@ -100,7 +103,7 @@ const ProfilePage = () => {
                       <button
                         onClick={() => {}}
                         className={`btn btn-info btn-sm mt-3 mb-4 ${
-                          myUid && myUid !== profile.uid ? "visible" : "d-none"
+                          myUid && myUid !== profile?.uid ? "visible" : "d-none"
                         }`}
                       >
                         {isFollowed ? "팔로우 취소 하기" : "팔로우 하기"}
@@ -114,7 +117,7 @@ const ProfilePage = () => {
                   >
                 </p> */}
                     {/* <p className="text-muted mb-0">
-                  {{ profile.nickname || profile.user.username }}님의
+                  {{ profile?.nickname || profile?.user.username }}님의
                   공간
                 </p> */}
                   </div>
@@ -130,7 +133,7 @@ const ProfilePage = () => {
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModal"
                       >
-                        <h6>{profile.followers?.length}</h6>
+                        <h6>{profile?.followers?.length}</h6>
                         <p>Followers</p>
                       </div>
 
@@ -148,7 +151,7 @@ const ProfilePage = () => {
                                 className="modal-title text-dark"
                                 id="exampleModalLabel"
                               >
-                                {profile.nickname}님의 팔로워
+                                {profile?.nickname}님의 팔로워
                               </h5>
                               <button
                                 type="button"
@@ -158,7 +161,7 @@ const ProfilePage = () => {
                               ></button>
                             </div>
                             <div className="modal-body text-dark">
-                              {profile.followers?.map((follower) => {
+                              {profile?.followers?.map((follower) => {
                                 console.log(follower);
                                 return (
                                   <div
@@ -167,6 +170,7 @@ const ProfilePage = () => {
                                     aria-label="Close"
                                   >
                                     <Link
+                                      className="text-dark"
                                       href={{
                                         pathname: "/profile",
                                         query: { uid: follower.uid },
@@ -191,7 +195,7 @@ const ProfilePage = () => {
                         data-bs-toggle="modal"
                         data-bs-target="#followingModal"
                       >
-                        <h6>{profile.followings?.length}</h6>
+                        <h6>{profile?.followings?.length}</h6>
                         <p>Followings</p>
                       </div>
 
@@ -209,7 +213,7 @@ const ProfilePage = () => {
                                 className="modal-title text-dark"
                                 id="followingModalLabel"
                               >
-                                {profile.nickname}님의 팔로잉
+                                {profile?.nickname}님의 팔로잉
                               </h5>
                               <button
                                 type="button"
@@ -219,7 +223,7 @@ const ProfilePage = () => {
                               ></button>
                             </div>
                             <div className="modal-body text-dark">
-                              {profile.followings?.map((follwing) => {
+                              {profile?.followings?.map((follwing) => {
                                 return (
                                   <div
                                     key={follwing.uid + "following"}
@@ -227,6 +231,7 @@ const ProfilePage = () => {
                                     aria-label="Close"
                                   >
                                     <Link
+                                      className="text-dark"
                                       href={{
                                         pathname: "/about",
                                         query: { name: "test" },

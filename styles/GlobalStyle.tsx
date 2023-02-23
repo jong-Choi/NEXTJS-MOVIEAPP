@@ -8,6 +8,9 @@ const GlobalStyle = createGlobalStyle`
     /* padding-top: 75px; */
     color: #ffff;
   }
+  a {
+    text-decoration: none;
+  }
 `;
 
 export default GlobalStyle;

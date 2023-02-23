@@ -24,6 +24,7 @@ const CardFooter = ({ author, published_date }) => {
 
   return (
     <Link
+      className="text-white"
       href={{
         pathname: "/profile",
         query: { uid },
