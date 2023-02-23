@@ -49,8 +49,8 @@ const ProfilePage = () => {
     <StyledProfile>
       <div className="page-content page-container mt-5 mb-3" id="page-content">
         <div className="padding">
-          <div className="row container d-flex justify-content-center">
-            <div className="col-md-5">
+          <div className="row container d-flex justify-content-center mx-auto">
+            <div className="col-lg-5 col-md-7">
               <div className="card">
                 <div className="card-body text-center">
                   <div>
