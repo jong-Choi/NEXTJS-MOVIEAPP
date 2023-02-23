@@ -28,4 +28,4 @@ const dbSlice = createSlice({
 });
 
 export default dbSlice;
-export const { setArticles } = dbSlice.actions;
+export const { setArticles, setTrendingArticles } = dbSlice.actions;

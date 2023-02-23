@@ -11,6 +11,19 @@ import { shallowEqual } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setUserOjbect, setUserProfile } from "../store/authSlice";
 import { fetchTrending } from "../services/fbDb";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
+import { StyledMovieRow } from "../styles/StyledMovieRow";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Scrollbar, A11y } from "swiper";
+import styled from "styled-components";
+import Card, { StyledCard } from "../components/board/card/Card";
+import { useRouter } from "next/router";
+import CardGrid from "../components/board/card/CardGrid";
+import { setTrendingArticles } from "../store/dbSlice";
+import { StyledBoardHeader } from "../components/board/BoardHeader";
 
 interface iProps {
   moviesObject: { [key: string]: [Movie] };
@@ -20,8 +33,14 @@ interface iProps {
 
 const MainPage = ({ moviesObject }: iProps) => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const myRecommendations = useTypedSelector(
     (state) => state.authSlice.userProfile.myRecommendations,
+    shallowEqual,
+  );
+  const trendingArticles = useTypedSelector(
+    (state) => state.dbSlice.trendingArticles,
+    shallowEqual,
   );
 
   useEffect(() => {
@@ -36,8 +55,14 @@ const MainPage = ({ moviesObject }: iProps) => {
     });
   }, []);
 
+  const getTrending = () => {
+    if (trendingArticles.length) return;
+    fetchTrending().then((res) => {
+      dispatch(setTrendingArticles(res));
+    });
+  };
   useEffect(() => {
-    fetchTrending();
+    getTrending();
   }, []);
 
   const MoviesDataEntries: Array<[string, [Movie]]> = [
@@ -53,6 +78,72 @@ const MainPage = ({ moviesObject }: iProps) => {
     <>
       <div className="container d-flex justify-content-center">
         <div className="col-12 col-lg-10" id="main">
+          {/* 카드 리스트 입니다. */}
+          <StyledBoardHeader className="container">
+            <div className="row">
+              <div className="col text-center">
+                <h2 className="h4">인기 영화 일기</h2>
+                <div
+                  className={`lead eddting-text fs-5 mb-2`}
+                  onClick={() => {
+                    router.push("/board");
+                  }}
+                >
+                  더보기
+                </div>
+              </div>
+            </div>
+          </StyledBoardHeader>
+          <StyledMovieRow className="container" style={{ height: "350px" }}>
+            <div className="row">
+              <Swiper
+                modules={[Navigation, Pagination, Scrollbar, A11y]}
+                autoHeight={true}
+                loop={false}
+                navigation={{
+                  prevEl: ".swiper-button-prev",
+                  nextEl: ".swiper-button-next",
+                }}
+                // pagination={{ clickable: false }}
+                breakpoints={{
+                  1378: {
+                    slidesPerView: 4,
+                    slidesPerGroup: 4,
+                  },
+                  998: {
+                    slidesPerView: 3,
+                    slidesPerGroup: 3,
+                  },
+                  625: {
+                    slidesPerView: 2,
+                    slidesPerGroup: 2,
+                  },
+                  0: {
+                    slidesPerView: 1,
+                    slidesPerGroup: 1,
+                  },
+                }}
+              >
+                {trendingArticles.map((article) => {
+                  return (
+                    <SwiperSlide key={article.documentId}>
+                      <Card
+                        article={article}
+                        key={article.documentId}
+                        className="col-12"
+                        setArticles={() => {
+                          getTrending();
+                        }}
+                      />
+                    </SwiperSlide>
+                  );
+                })}
+                <div className="swiper-button-prev arrow"></div>
+                <div className="swiper-button-next arrow"></div>
+              </Swiper>
+            </div>
+          </StyledMovieRow>
+          {/* 영화 리스트입니다. */}
           {myRecommendations.length ? (
             <MovieRow
               id="my-recommendations"
@@ -81,6 +172,27 @@ const MainPage = ({ moviesObject }: iProps) => {
   );
 };
 export default MainPage;
+
+const NoResultCard = styled.div`
+  .card {
+    border: none;
+    transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+    overflow: hidden;
+    border-radius: 20px;
+    min-height: 350px;
+    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.2);
+  }
+  @media (max-width: 768px) {
+    .card {
+      min-height: 350px;
+    }
+  }
+  @media (max-width: 420px) {
+    .card {
+      min-height: 300px;
+    }
+  }
+`;
 
 export const getStaticProps = async () => {
   const requestsUrl = Object.entries(requests);

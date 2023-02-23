@@ -25,7 +25,7 @@ const BoardHeader = ({ creating, setCreating, uid }) => {
 
 export default BoardHeader;
 
-const StyledBoardHeader = styled.div`
+export const StyledBoardHeader = styled.div`
   .eddting-text {
     max-width: 300px;
     margin-left: auto;

@@ -13,9 +13,14 @@ import CardFooter from "./CardFooter";
 interface iProp {
   article: Article;
   setArticles: Function;
+  className?: string;
 }
 
-const Card = ({ article, setArticles }: iProp) => {
+const Card = ({
+  article,
+  setArticles,
+  className = "col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4",
+}: iProp) => {
   const uid = useTypedSelector((state) => state.authSlice.userProfile?.uid);
   const [articleSnapshot, setArticleSnapshot] = useState(article);
   const [onClickHander, setOnclickHandler] = useState();
@@ -227,7 +232,7 @@ const Card = ({ article, setArticles }: iProp) => {
   }, [isEditing, movie.backdrop_path, backdrop_path]);
 
   return (
-    <StyledCard className="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+    <StyledCard className={className}>
       <div
         className={`card text-white card-has-bg click-col 
 
