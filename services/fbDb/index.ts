@@ -32,12 +32,22 @@ export const fetchTrending = () => {
     ">=",
     Date.now() - 7 * 24 * 60 * 60 * 1000,
   );
+
   const data = query.get().then((Snapshot) => {
-    const Articles = Snapshot.docs.map((doc) => {
+    let Articles = Snapshot.docs.map((doc) => {
       const documentId = doc.id;
       const documentData = doc.data();
       return { documentId, ...documentData } as Article;
     });
+    if (!Articles.length) {
+      dbRef.get().then((Snapshot) => {
+        Articles = Snapshot.docs.map((doc) => {
+          const documentId = doc.id;
+          const documentData = doc.data();
+          return { documentId, ...documentData } as Article;
+        });
+      });
+    }
     Articles.sort((a, b) => b.likes.length - a.likes.length);
     return Articles.slice(0, 20);
   });
