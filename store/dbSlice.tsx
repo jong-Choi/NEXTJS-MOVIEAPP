@@ -7,10 +7,14 @@ const dbSlice = createSlice({
   initialState: {
     dbValidate: 0,
     articles: [] as Array<Article>,
+    trendingArticles: [] as Array<Article>,
   },
   reducers: {
     setArticles(state, action: PayloadAction<Array<Article>>) {
       state.articles = action.payload;
+    },
+    setTrendingArticles(state, action: PayloadAction<Array<Article>>) {
+      state.trendingArticles = action.payload;
     },
   },
   extraReducers: {

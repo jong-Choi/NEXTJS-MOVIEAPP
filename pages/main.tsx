@@ -10,6 +10,7 @@ import { fetchProfile } from "../services/fbProfile";
 import { shallowEqual } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setUserOjbect, setUserProfile } from "../store/authSlice";
+import { fetchTrending } from "../services/fbDb";
 
 interface iProps {
   moviesObject: { [key: string]: [Movie] };
@@ -33,6 +34,10 @@ const MainPage = ({ moviesObject }: iProps) => {
         dispatch(setUserProfile(res));
       });
     });
+  }, []);
+
+  useEffect(() => {
+    fetchTrending();
   }, []);
 
   const MoviesDataEntries: Array<[string, [Movie]]> = [
