@@ -5,6 +5,7 @@ import styled from "styled-components";
 import MovieDetail from "../../components/MovieDetail";
 import { getMovieDetail } from "../../services/tmdbApi";
 import { Movie } from "../../types/moive";
+import MainPage from "../main";
 
 ReactModal.setAppElement("#__next");
 
@@ -17,36 +18,6 @@ const MovieDetailPage = ({ movie }: iProps) => {
     router.prefetch("/main");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const StyledModal = styled(ReactModal)`
-    border: 1px solid black;
-    border-radius: 5px;
-    outline: none;
-    padding: 0px;
-    position: sticky;
-    @media (min-width: 769px) {
-      max-height: 50vw;
-      margin: 0 5vw;
-      overflow: hidden;
-      top: 50%;
-      transform: translate(0%, -50%);
-    }
-    /* @media (min-width: 992px) {
-      height: 45vw;
-      margin: 0 20vw;
-      overflow: hidden;
-      top: 50%;
-      transform: translate(0%, -50%);
-    } */
-    @media (min-width: 1400px) {
-      /* max-height: 50vh; */
-      aspect-ratio: 16/9;
-      margin: 0 20vw;
-      overflow: hidden;
-      top: 50%;
-      transform: translate(0%, -50%);
-    }
-  `;
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -98,6 +69,28 @@ const MovieDetailPage = ({ movie }: iProps) => {
 };
 
 export default MovieDetailPage;
+
+const StyledModal = styled(ReactModal)`
+  border: 1px solid black;
+  border-radius: 5px;
+  outline: none;
+  padding: 0px;
+  position: sticky;
+  @media (min-width: 769px) {
+    max-height: 50vw;
+    margin: 0 5vw;
+    overflow: hidden;
+    top: 50%;
+    transform: translate(0%, -50%);
+  }
+  @media (min-width: 1400px) {
+    aspect-ratio: 16/9;
+    margin: 0 20vw;
+    overflow: hidden;
+    top: 50%;
+    transform: translate(0%, -50%);
+  }
+`;
 
 export async function getStaticProps({ params: { movieId } }) {
   try {

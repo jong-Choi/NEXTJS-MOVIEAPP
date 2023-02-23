@@ -41,6 +41,7 @@ export const newRecommendations = (myMovies: Array<MyMovie>) => {
           id: movie.id,
           title: movie.title,
           backdrop_path: movie.backdrop_path,
+          poster_path: movie.poster_path,
           genre_ids: movie.genre_ids,
         });
     });

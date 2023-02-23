@@ -38,6 +38,7 @@ const GrayScaleMasthead = styled.div`
   }
   .masthead h2,
   .masthead .h2 {
+    word-break: keep-all;
     max-width: 20rem;
     font-size: 1rem;
   }
