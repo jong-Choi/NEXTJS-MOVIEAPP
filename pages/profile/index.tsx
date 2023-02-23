@@ -1,10 +1,19 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { authService } from "../../public/fbase";
 import { fetchProfile } from "../../services/fbProfile";
 import wrapper, { useTypedSelector } from "../../store";
+import { setUserOjbect, setUserProfile } from "../../store/authSlice";
 import { ProfileDataType } from "../../types/profile";
 
+//쿼리 스트링으로 프로필 불러오기
+//불러온 프로필을 페이지의 데이터로 사용하기
+//팔로우 기능 구현하기(디바운스 사용하기)
+//팔로우를 했을 때,
+//게시글 목록 보이기
+//추천 영화 목록 보이기
 const ProfilePage = () => {
   const {
     image: myImage,
@@ -16,10 +25,25 @@ const ProfilePage = () => {
   );
   const [isFollowed, setIsFollowed] = useState(false);
   const [myPosts, setMyPosts] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setIsFollowed(profile.followers?.include(myUid));
   }, [profile]);
+
+  useEffect(() => {
+    authService.onAuthStateChanged(async (user) => {
+      if (myUid) return;
+      const currentUser = user;
+      if (!currentUser) {
+        return;
+      }
+      const uid = currentUser.uid;
+      const profile = await fetchProfile(uid);
+      dispatch(setUserOjbect(currentUser));
+      dispatch(setUserProfile(profile));
+    });
+  }, []);
 
   return (
     <StyledProfile>
@@ -36,10 +60,30 @@ const ProfilePage = () => {
                       <button
                         v-if="isAuthorized && isAuthor"
                         type="button"
-                        className="btn btn-dark"
+                        className={`btn btn-dark ${
+                          !myUid ? "visible" : "d-none"
+                        }`}
+                        onClick={() => {}}
+                      >
+                        로그인 하기
+                      </button>
+                      <button
+                        v-if="isAuthorized && isAuthor"
+                        type="button"
+                        className={`btn btn-dark ${
+                          myUid && myUid === profile.uid ? "visible" : "d-none"
+                        }`}
                         onClick={() => {}}
                       >
                         로그아웃 하기
+                      </button>
+                      <button
+                        onClick={() => {}}
+                        className={`btn btn-info btn-sm mt-3 mb-4 ${
+                          myUid && myUid !== profile.uid ? "visible" : "d-none"
+                        }`}
+                      >
+                        {isFollowed ? "팔로우 취소 하기" : "팔로우 하기"}
                       </button>
                     </p>
                     {/* <p>
@@ -54,14 +98,6 @@ const ProfilePage = () => {
                   공간
                 </p> */}
                   </div>
-
-                  <button
-                    v-if="isAuthorized && !isAuthor"
-                    onClick={() => {}}
-                    className="btn btn-info btn-sm mt-3 mb-4"
-                  >
-                    {isFollowed ? "팔로우 취소 하기" : "팔로우 하기"}
-                  </button>
 
                   <div className="border-top pt-3">
                     <div className="row">
