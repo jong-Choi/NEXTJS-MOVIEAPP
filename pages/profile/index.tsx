@@ -11,7 +11,6 @@ import { StyledMovieRow } from "../../styles/StyledMovieRow";
 
 const MyProfile = () => {
   const profile = useTypedSelector((state) => state.authSlice.userProfile);
-  const [creating, setCreating] = useState(false);
   const [articles, setArticles] = useState([]);
   useEffect(() => {
     fetchAticles(0, profile.uid).then((articles) => {
@@ -149,11 +148,7 @@ const MyProfile = () => {
                             <div className="modal-body text-dark">
                               {profile.followings.map((follwing) => {
                                 return (
-                                  <div
-                                    key={follwing.uid + "following"}
-                                    data-bs-dismiss="modal"
-                                    aria-label="Close"
-                                  >
+                                  <div key={follwing.uid + "following"}>
                                     <Link
                                       className="text-dark"
                                       key={follwing.uid}
