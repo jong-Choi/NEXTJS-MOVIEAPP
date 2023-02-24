@@ -2,17 +2,20 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import CardGrid from "../../components/board/card/CardGrid";
+import CardRow from "../../components/CardRow";
+import MovieRow from "../../components/MovieRow";
 import { fetchAticles } from "../../services/fbDb";
 import wrapper, { useTypedSelector } from "../../store";
 import { setUserOjbect } from "../../store/authSlice";
+import { StyledMovieRow } from "../../styles/StyledMovieRow";
 
 const MyProfile = () => {
   const profile = useTypedSelector((state) => state.authSlice.userProfile);
   const [creating, setCreating] = useState(false);
-  const [posts, setPosts] = useState([]);
+  const [articles, setArticles] = useState([]);
   useEffect(() => {
     fetchAticles(0, profile.uid).then((articles) => {
-      setPosts(articles);
+      setArticles(articles);
     });
   }, []);
 
@@ -25,8 +28,12 @@ const MyProfile = () => {
               <div className="card">
                 <div className="card-body text-center">
                   <div>
-                    <img src={profile.image} style={{ maxWidth: "240px" }} />
                     <h4>{profile.nickname}</h4>
+                    <img
+                      src={profile.image}
+                      style={{ maxWidth: "240px" }}
+                      className="m-3"
+                    />
                     <p>
                       <button
                         v-if="isAuthorized && isAuthor"
@@ -43,7 +50,7 @@ const MyProfile = () => {
                   <div className="border-top pt-3">
                     <div className="row">
                       <div className="col-4">
-                        <h6>{posts.length}</h6>
+                        <h6>{articles.length}</h6>
                         <p>Post</p>
                       </div>
                       <div
@@ -175,11 +182,37 @@ const MyProfile = () => {
           </div>
         </div>
       </div>
-      <CardGrid
+      <div className="container d-flex justify-content-center">
+        <div className="col-12 col-lg-10">
+          <div className="row">
+            <h4 className="m-3">나의 인생영화</h4>
+            <div>
+              <MovieRow
+                id={profile.uid + "myMovies"}
+                moviesData={profile.myMovies}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <h4 className="m-3">나를 위한 추천 영화</h4>
+            <div>
+              <MovieRow
+                id={profile.uid + "recommendations"}
+                moviesData={profile.myRecommendations}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <h4 className="m-3">내가 작성한 글</h4>
+            <CardRow articles={articles} setArticles={setArticles}></CardRow>
+          </div>
+        </div>
+      </div>
+      {/* <CardGrid
         creating={creating}
         setCreating={setCreating}
         initialArticles={posts}
-      ></CardGrid>
+      ></CardGrid> */}
     </StyledProfile>
   );
 };

@@ -24,6 +24,7 @@ import { useRouter } from "next/router";
 import CardGrid from "../components/board/card/CardGrid";
 import { setTrendingArticles } from "../store/dbSlice";
 import { StyledBoardHeader } from "../components/board/BoardHeader";
+import CardRow from "../components/CardRow";
 
 interface iProps {
   moviesObject: { [key: string]: [Movie] };
@@ -56,12 +57,13 @@ const MainPage = ({ moviesObject }: iProps) => {
   }, []);
 
   const getTrending = () => {
-    if (trendingArticles.length) return;
+    // if (trendingArticles.length) return;
     fetchTrending().then((res) => {
       dispatch(setTrendingArticles(res));
     });
   };
   useEffect(() => {
+    if (trendingArticles.length) return;
     getTrending();
   }, []);
 
@@ -94,55 +96,7 @@ const MainPage = ({ moviesObject }: iProps) => {
               </div>
             </div>
           </StyledBoardHeader>
-          <StyledMovieRow className="container" style={{ height: "350px" }}>
-            <div className="row">
-              <Swiper
-                modules={[Navigation, Pagination, Scrollbar, A11y]}
-                autoHeight={true}
-                loop={false}
-                navigation={{
-                  prevEl: ".swiper-button-prev",
-                  nextEl: ".swiper-button-next",
-                }}
-                // pagination={{ clickable: false }}
-                breakpoints={{
-                  1378: {
-                    slidesPerView: 4,
-                    slidesPerGroup: 4,
-                  },
-                  998: {
-                    slidesPerView: 3,
-                    slidesPerGroup: 3,
-                  },
-                  625: {
-                    slidesPerView: 2,
-                    slidesPerGroup: 2,
-                  },
-                  0: {
-                    slidesPerView: 1,
-                    slidesPerGroup: 1,
-                  },
-                }}
-              >
-                {trendingArticles.map((article) => {
-                  return (
-                    <SwiperSlide key={article.documentId}>
-                      <Card
-                        article={article}
-                        key={article.documentId}
-                        className="col-12"
-                        setArticles={() => {
-                          getTrending();
-                        }}
-                      />
-                    </SwiperSlide>
-                  );
-                })}
-                <div className="swiper-button-prev arrow"></div>
-                <div className="swiper-button-next arrow"></div>
-              </Swiper>
-            </div>
-          </StyledMovieRow>
+          <CardRow articles={trendingArticles} setArticles={getTrending} />
           {/* 영화 리스트입니다. */}
           {myRecommendations.length ? (
             <MovieRow

@@ -5,7 +5,7 @@ import { useIntersection } from "../../../utils/useIntersection";
 import Card from "./Card";
 import CardCreate from "./CardCreate";
 
-const CardGrid = ({ creating, setCreating, initialArticles = null }) => {
+const CardGrid = ({ creating, setCreating }) => {
   const [articles, setArticles] = useState([] as Article[]);
   const [grid, setGrid] = useState([]);
   const [cardList, setCardlist] = useState([]);
@@ -29,11 +29,11 @@ const CardGrid = ({ creating, setCreating, initialArticles = null }) => {
   useEffect(() => {
     if (!triggered) return;
     if (isLastPage) return setTriggered(false);
-    if (initialArticles) {
-      setArticles(initialArticles);
-      setPublishedDate(initialArticles.at(-1).published_date);
-      return setIsLastPage(true);
-    }
+    // if (initialArticles) {
+    //   setArticles(initialArticles);
+    //   setPublishedDate(initialArticles.at(-1).published_date);
+    //   return setIsLastPage(true);
+    // }
     fetchAticles(publishedDate).then((articles) => {
       if (articles.length === 0) return setIsLastPage(true);
       setPublishedDate(articles.at(-1).published_date);
@@ -92,6 +92,11 @@ const CardGrid = ({ creating, setCreating, initialArticles = null }) => {
     }
   }, [creating]);
 
+  // if(initialArticles) {
+  //   return (
+
+  //   )
+  // }
   return (
     <div className="container">
       <div className="row">{grid}</div>

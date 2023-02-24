@@ -10,25 +10,25 @@ import MovieRowContent from "./MovieRowContent";
 import { Movie, MovieEssential, MyMovie } from "../types/moive";
 
 interface iProps {
-  title: string;
+  title?: string;
   id: string;
-  movieList?: Array<Movie>;
+  movieResultsList?: Array<Movie>;
   moviesData?: Array<MovieEssential>;
   onResultClick?: (movie: Movie) => any;
   cardMode?: boolean;
   mainMode?: boolean;
 }
 function MovieRow({
-  title,
+  title = "",
   id,
-  movieList,
+  movieResultsList,
   moviesData,
   onResultClick,
   cardMode = false,
   mainMode = false,
 }: iProps) {
   const [movies, setMovies] = useState<Array<MovieEssential> | Array<Movie>>(
-    moviesData || movieList,
+    moviesData || movieResultsList,
   );
 
   // useEffect(() => {
@@ -37,8 +37,8 @@ function MovieRow({
 
   useEffect(() => {
     if (moviesData?.length) return;
-    setMovies(movieList);
-  }, [movieList]);
+    setMovies(movieResultsList);
+  }, [movieResultsList]);
 
   // const [modalOpen, setModalOpen] = useState(false);
   const [movieSelected, setMovieSelected] = useState({});
@@ -46,7 +46,7 @@ function MovieRow({
   // const fetchMovieData = async () => {
   //   let request;
   //   if (fetchUrl) request = await tmdbApi.get(fetchUrl);
-  //   const newMovies = movieList || request.data.results;
+  //   const newMovies = movieResultsList || request.data.results;
   //   setMovies(newMovies);
   // };
 
@@ -73,7 +73,9 @@ function MovieRow({
   // poster_path: "/f2PVrphK0u81ES256lw3oAZuF3x.jpg"
   // vote_average: 8.3
   // vote_count: 939
-  const MovieFigure = movieList?.length ? MovieRowSearch : MovieRowContent;
+  const MovieFigure = movieResultsList?.length
+    ? MovieRowSearch
+    : MovieRowContent;
   return (
     <StyledMovieRow className={`row ${mainMode ? "mt-4" : ""}`}>
       {title ? <h2 className="mt-2 ">{title}</h2> : <></>}
@@ -91,8 +93,8 @@ function MovieRow({
             ? {}
             : {
                 1378: {
-                  slidesPerView: 6,
-                  slidesPerGroup: 6,
+                  slidesPerView: movies.length === 5 ? 5 : 6,
+                  slidesPerGroup: movies.length === 5 ? 5 : 6,
                 },
                 998: {
                   slidesPerView: 5,

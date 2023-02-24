@@ -13,11 +13,13 @@ export const fetchAticles = (published_date = 0, authorId = "") => {
   let query = dbRef;
   if (authorId) {
     query = query.where("author.uid", "==", authorId);
+  } else {
+    if (published_date) {
+      query = query.startAfter(published_date);
+    }
+    query = query.limit(40);
   }
-  if (published_date) {
-    query = query.startAfter(published_date);
-  }
-  query = query.limit(40);
+
   // console.log(JSON.stringify(query));
   return query.get().then((Snapshot) => {
     // console.log(Snapshot.docs);

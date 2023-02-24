@@ -12,11 +12,11 @@ const SearchResult = ({
 }) => {
   return (
     <StyledSearchResults className={debouncedInput && input ? "" : "d-none"}>
-      <div className="RowContainer">
+      <div className={`RowContainer ${mainMode ? "pt-5" : "pt-3"}`}>
         <MovieRow
           title=""
           id="SearchResult"
-          movieList={movies}
+          movieResultsList={movies}
           onResultClick={onResultClick}
           cardMode={cardMode}
           mainMode={mainMode}

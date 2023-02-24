@@ -33,7 +33,10 @@ const Card = ({
     published_date,
     body,
   } = articleSnapshot;
-  const isAuth = article.author.uid === uid;
+  const [isAuth, setIsAuth] = useState(article.author.uid === uid);
+  useEffect(() => {
+    setIsAuth(article.author.uid === uid);
+  }, [uid]);
 
   const [isEditing, setIsEditing] = useState(false);
 

@@ -37,12 +37,17 @@ function Navbar() {
     <div className="sticky-top d-flex justify-content-center">
       <StyledNav
         className="nav"
-        style={{ backgroundColor: `rgba(1, 25, 47, ${opa})` }}
+        style={{
+          backgroundColor: `rgba(1, 25, 47, ${
+            input && debouncedInput ? 0 : opa
+          })`,
+        }}
       >
         <img
           alt="logo"
           src="/logo.png"
-          className="nav__logo"
+          className="nav__logo mt-1"
+          role="button"
           onClick={() => router.push("/main")}
         />
         <div className="d-flex">
@@ -89,7 +94,7 @@ const StyledNav = styled.nav`
   position: sticky;
   top: 0;
   width: 80%;
-  height: 40px;
+  height: 55px;
   z-index: 5;
   padding: 0px 10px;
   display: flex;
