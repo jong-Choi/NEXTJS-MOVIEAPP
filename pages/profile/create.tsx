@@ -16,7 +16,7 @@ import { toastError, toastInfo, toastSuccess } from "../../utils/toastAlert";
 import { Movie, MyMovie } from "../../types/moive";
 import { getRecommenations, newRecommendations } from "../../services/tmdbApi";
 
-const create = () => {
+const ProfileCreate = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -95,10 +95,6 @@ const create = () => {
       dispatch(setUserOjbect(currentUser));
       setCookie("uid", currentUser.uid, 1);
     }
-    fetchProfile(userObject.uid).then((res) => {
-      dispatch(setUserProfile(res));
-      router.push("/");
-    });
   }, []);
 
   useEffect(() => {
@@ -172,4 +168,4 @@ const create = () => {
   );
 };
 
-export default create;
+export default ProfileCreate;

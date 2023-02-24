@@ -12,7 +12,8 @@ import GrayScaleMastheadH1 from "../styles/GrayScaleMastheadH1";
 
 function App({ Component, pageProps }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(pageProps);
-  const isLanding = Component.name === "Home";
+  const isLanding =
+    Component.name === "Home" || Component.name === "ProfileCreate";
   const isMain = Component.name === "MainPage";
 
   return (

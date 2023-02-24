@@ -17,6 +17,7 @@ const MyProfile = () => {
       setArticles(articles);
     });
   }, []);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   return (
     <StyledProfile>
@@ -96,8 +97,8 @@ const MyProfile = () => {
                                     <Link
                                       className="text-dark"
                                       key={follower.uid}
-                                      href="/profile/[uid]"
-                                      as={`/profile`}
+                                      href={`/profile/${follower.uid}`}
+                                      // as={`/profile`}
                                     >
                                       <img
                                         src={follower.image}
@@ -152,8 +153,8 @@ const MyProfile = () => {
                                     <Link
                                       className="text-dark"
                                       key={follwing.uid}
-                                      href="/profile/[uid]"
-                                      as={`/profile`}
+                                      href={`/profile/${follwing.uid}`}
+                                      // as={`/profile`}
                                     >
                                       <img
                                         src={follwing.image}
@@ -180,7 +181,16 @@ const MyProfile = () => {
       <div className="container d-flex justify-content-center">
         <div className="col-12 col-lg-10">
           <div className="row">
-            <h4 className="m-3">나의 인생영화</h4>
+            <div className="d-flex">
+              <h4 className="m-3">나의 인생영화</h4>
+              <div
+                className="mt-4 updatingButton"
+                role="button"
+                onClick={() => setIsUpdating(!isUpdating)}
+              >
+                {isUpdating ? "수정하기" : "취소"}
+              </div>
+            </div>
             <div>
               <MovieRow
                 id={profile.uid + "myMovies"}
@@ -223,7 +233,9 @@ const StyledProfile = styled.div`
     width: 100%;
     min-width: 100%;
   }
-
+  .updatingButton:hover {
+    color: orange;
+  }
   .card {
     color: #fff;
     position: relative;

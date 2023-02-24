@@ -1,7 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import { persistReducer, persistStore } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import storageSession from "redux-persist/lib/storage/session";
 import {
   TypedUseSelectorHook,
   useSelector as useReduxSeletor,
@@ -16,7 +16,7 @@ const reducers = combineReducers({
 
 const persistConfig = {
   key: "root",
-  storage,
+  storage: storageSession,
 };
 
 //https://choyeon-dev.tistory.com/14
