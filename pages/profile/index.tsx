@@ -10,7 +10,11 @@ import { fetchAticles } from "../../services/fbDb";
 import { updateProfile } from "../../services/fbProfile";
 import { newRecommendations } from "../../services/tmdbApi";
 import wrapper, { useTypedSelector } from "../../store";
-import { setUserOjbect, setUserProfile } from "../../store/authSlice";
+import {
+  patchUserProfile,
+  setUserOjbect,
+  setUserProfile,
+} from "../../store/authSlice";
 import StyledForm from "../../styles/StyledForm";
 import { StyledMovieRow } from "../../styles/StyledMovieRow";
 import { Movie } from "../../types/moive";
@@ -21,7 +25,7 @@ const MyProfile = () => {
   const profile = useTypedSelector((state) => state.authSlice.userProfile);
   const dispatch = useDispatch();
   const [articles, setArticles] = useState([]);
-  const [myMovies, setMyMovies] = useState(profile.myMovies);
+  const [myMovies, setMyMovies] = useState([...profile.myMovies]);
   const onSearchResultClikced = useCallback(
     (movie: Movie) => {
       if (myMovies.find((element) => element.id === movie.id)) return;
@@ -52,17 +56,9 @@ const MyProfile = () => {
     e.preventDefault();
     setIsLoading(true);
     const myRecommendations = await newRecommendations(myMovies);
-    console.log(myRecommendations);
-
     updateProfile(profile.documentId, myMovies, myRecommendations)
       .then(async (res) => {
-        dispatch(
-          setUserProfile({
-            ...profile,
-            myMovies: [...myMovies],
-            myRecommendations: [...myRecommendations],
-          }),
-        );
+        dispatch(patchUserProfile({ myMovies, myRecommendations }));
         setIsLoading(false);
         setIsUpdating(false);
         toastSuccess("프로필이 수정되었습니다.");

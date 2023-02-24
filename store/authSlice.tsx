@@ -24,6 +24,9 @@ const authSlice = createSlice({
     setUserProfile(state, action: PayloadAction<ProfileDataType>) {
       state.userProfile = action.payload;
     },
+    patchUserProfile(state, action) {
+      state.userProfile = { ...state.userProfile, ...action.payload };
+    },
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -36,4 +39,5 @@ const authSlice = createSlice({
 });
 
 export default authSlice;
-export const { setUserOjbect, setUserProfile } = authSlice.actions;
+export const { setUserOjbect, setUserProfile, patchUserProfile } =
+  authSlice.actions;
