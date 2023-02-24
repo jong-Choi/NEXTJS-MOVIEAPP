@@ -5,17 +5,22 @@ export const createArticle = async (article: Article) => {
   return dbService.collection("articles").add(article);
 };
 
-export const fetchAticles = (published_date = 0) => {
-  const dbRef = dbService
+export const fetchAticles = (published_date = 0, authorId = "") => {
+  let dbRef = dbService
     .collection("articles")
     .orderBy("published_date", "desc");
 
-  const query = published_date
-    ? dbRef.startAfter(published_date).limit(40)
-    : dbRef.limit(40);
-
+  let query = dbRef;
+  if (authorId) {
+    query = query.where("author.uid", "==", authorId);
+  }
+  if (published_date) {
+    query = query.startAfter(published_date);
+  }
+  query = query.limit(40);
+  // console.log(JSON.stringify(query));
   return query.get().then((Snapshot) => {
-    console.log(Snapshot.docs);
+    // console.log(Snapshot.docs);
     const Articles = Snapshot.docs.map((doc) => {
       const documentId = doc.id;
       const documentData = doc.data();

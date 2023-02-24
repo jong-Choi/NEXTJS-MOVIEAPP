@@ -1,8 +1,10 @@
 import Link from "next/link";
 import React from "react";
+import { useTypedSelector } from "../../../store";
 
 const CardFooter = ({ author, published_date = 0 }) => {
   const { uid, nickname, image } = author;
+  const myUid = useTypedSelector((state) => state.authSlice.userProfile.uid);
   const now = Date.now();
   const gap = now - published_date;
   let published_date_messge;
@@ -22,12 +24,12 @@ const CardFooter = ({ author, published_date = 0 }) => {
       gap / (365 * 24 * 60 * 60 * 1000),
     )}년 전`;
 
+  const pathname = myUid === uid ? "/profile" : `/profile/${uid}`;
   return (
     <Link
       className="text-white"
       href={{
-        pathname: "/profile",
-        query: { uid },
+        pathname: pathname,
       }}
     >
       <div className="card-footer" title="프로필로 이동하기">
