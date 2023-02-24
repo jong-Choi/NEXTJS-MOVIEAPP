@@ -1,23 +1,79 @@
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import CardGrid from "../../components/board/card/CardGrid";
 import CardRow from "../../components/CardRow";
 import MovieRow from "../../components/MovieRow";
+import MyMovieForm from "../../components/MyMovieForm";
 import { fetchAticles } from "../../services/fbDb";
+import { updateProfile } from "../../services/fbProfile";
+import { newRecommendations } from "../../services/tmdbApi";
 import wrapper, { useTypedSelector } from "../../store";
-import { setUserOjbect } from "../../store/authSlice";
+import { setUserOjbect, setUserProfile } from "../../store/authSlice";
+import StyledForm from "../../styles/StyledForm";
 import { StyledMovieRow } from "../../styles/StyledMovieRow";
+import { Movie } from "../../types/moive";
+import { ProfileType } from "../../types/profile";
+import { toastError, toastInfo, toastSuccess } from "../../utils/toastAlert";
 
 const MyProfile = () => {
   const profile = useTypedSelector((state) => state.authSlice.userProfile);
+  const dispatch = useDispatch();
   const [articles, setArticles] = useState([]);
+  const [myMovies, setMyMovies] = useState(profile.myMovies);
+  const onSearchResultClikced = useCallback(
+    (movie: Movie) => {
+      if (myMovies.find((element) => element.id === movie.id)) return;
+      if (myMovies.length >= 5) {
+        return toastInfo("다섯개까지 선택 가능합니다.");
+      }
+      setMyMovies([
+        ...myMovies,
+        {
+          backdrop_path: movie.backdrop_path,
+          id: movie.id,
+          title: movie.title || movie.original_title,
+          genre_ids: movie.genre_ids,
+        },
+      ]);
+    },
+    [myMovies],
+  );
+
   useEffect(() => {
     fetchAticles(0, profile.uid).then((articles) => {
       setArticles(articles);
     });
   }, []);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const onRequest = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const myRecommendations = await newRecommendations(myMovies);
+    console.log(myRecommendations);
+
+    updateProfile(profile.documentId, myMovies, myRecommendations)
+      .then(async (res) => {
+        dispatch(
+          setUserProfile({
+            ...profile,
+            myMovies: [...myMovies],
+            myRecommendations: [...myRecommendations],
+          }),
+        );
+        setIsLoading(false);
+        setIsUpdating(false);
+        toastSuccess("프로필이 수정되었습니다.");
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+        setIsUpdating(false);
+        toastError("프로필 수정에 실패하였습니다.");
+      });
+  };
 
   return (
     <StyledProfile>
@@ -181,24 +237,53 @@ const MyProfile = () => {
       <div className="container d-flex justify-content-center">
         <div className="col-12 col-lg-10">
           <div className="row">
-            <div className="d-flex">
-              <h4 className="m-3">나의 인생영화</h4>
+            <div className="d-flex align-items-center">
+              <h4 className="m-3 mr-0">나의 인생영화</h4>
               <div
-                className="mt-4 updatingButton"
+                className="updatingButton mt-1"
                 role="button"
                 onClick={() => setIsUpdating(!isUpdating)}
               >
-                {isUpdating ? "수정하기" : "취소"}
+                {!isUpdating ? "수정하기" : "취소"}
               </div>
             </div>
-            <div>
-              <MovieRow
-                id={profile.uid + "myMovies"}
-                moviesData={profile.myMovies}
-              />
-            </div>
+
+            {!isUpdating ? (
+              <div>
+                <MovieRow
+                  id={profile.uid + "myMovies"}
+                  moviesData={profile.myMovies}
+                />
+              </div>
+            ) : (
+              <StyledForm>
+                <div
+                  className="login-dark mt-5 mb-3"
+                  style={{ height: "204px" }}
+                >
+                  <form>
+                    <MyMovieForm
+                      myMovies={myMovies}
+                      setMyMovies={setMyMovies}
+                      onResultClick={onSearchResultClikced}
+                    ></MyMovieForm>
+                    <div className="form-floating text-center">
+                      <button
+                        className={`btn btn-primary btn-block ${
+                          myMovies.length < 5 || isLoading ? "disabled" : ""
+                        }`}
+                        type="button"
+                        onClick={onRequest}
+                      >
+                        {!isLoading ? "완료하기" : "로딩중"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </StyledForm>
+            )}
           </div>
-          <div className="row">
+          <div className={`row ${isUpdating ? "d-none" : ""}`}>
             <h4 className="m-3">나를 위한 추천 영화</h4>
             <div>
               <MovieRow
@@ -207,7 +292,7 @@ const MyProfile = () => {
               />
             </div>
           </div>
-          <div className={`row mb-5`}>
+          <div className={`row mb-3 ${isUpdating ? "d-none" : ""}`}>
             <h4 className="m-3">내가 작성한 글</h4>
             {articles.length ? (
               <CardRow articles={articles} setArticles={setArticles}></CardRow>
@@ -215,6 +300,10 @@ const MyProfile = () => {
               <div className="col-12 text-center">작성한 글이 없습니다.</div>
             )}
           </div>
+          <div
+            className={`row ${!isUpdating ? "d-none" : ""}`}
+            style={{ padding: "350px" }}
+          ></div>
         </div>
       </div>
       {/* <CardGrid
@@ -232,6 +321,9 @@ const StyledProfile = styled.div`
   .stretch-card > .card {
     width: 100%;
     min-width: 100%;
+  }
+  .updatingButton {
+    font-size: small;
   }
   .updatingButton:hover {
     color: orange;

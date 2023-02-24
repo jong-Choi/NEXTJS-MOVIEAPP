@@ -35,25 +35,27 @@ export const createProfile = async (Profile: ProfileType) => {
     .catch((err) => Promise.reject(err));
 };
 
-export const updateProfile = (UpdatingProfile: ProfileDataType) => {
-  const { documentId, uid, nickname, image, myMovies, myRecommendations } =
-    UpdatingProfile;
-  return dbService
-    .doc(`user/${documentId}`)
-    .update({ uid, nickname, image, myMovies, myRecommendations })
-    .then(() => {
-      return Promise.resolve({
-        uid,
-        nickname,
-        image,
-        myMovies,
-        myRecommendations,
-      } as ProfileType);
-    })
-    .catch((err) => {
-      return Promise.reject(err);
-    });
+export const updateProfile = (documentId, myMovies, myRecommendations) => {
+  return (
+    dbService
+      .doc(`user/${documentId}`)
+      .update({ myMovies, myRecommendations })
+      // .then(() => {
+      //   return Promise.resolve({
+      //     uid,
+      //     nickname,
+      //     image,
+      //     myMovies,
+      //     myRecommendations,
+      //   } as ProfileType);
+      // })
+      .catch((err) => {
+        return Promise.reject(err);
+      })
+  );
 };
-
+export const updateArticle = (documentId, payload) => {
+  return dbService.doc(`articles/${documentId}`).update(payload);
+};
 const fbProfile = { fetchProfile, createProfile, updateProfile };
 export default fbProfile;

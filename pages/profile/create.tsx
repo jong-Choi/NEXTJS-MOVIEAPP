@@ -80,7 +80,7 @@ const ProfileCreate = () => {
         });
         setIntegrityMsg("");
         toastSuccess("프로필이 생성되었습니다.");
-        router.push("/main");
+        router.push("/");
       })
       .catch((err) => {
         toastError("프로필 생성에 실패하였습니다.");

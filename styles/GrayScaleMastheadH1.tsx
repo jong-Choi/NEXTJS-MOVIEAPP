@@ -54,7 +54,6 @@ const GrayScaleMastheadH1 = styled.div`
   }
   .navhead h1 {
     font-size: 3vw;
-    font-size: 2vw;
     background: linear-gradient(
       rgba(255, 255, 255, 0.9),
       rgba(250, 171, 54, 0)
@@ -62,7 +61,11 @@ const GrayScaleMastheadH1 = styled.div`
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
+    @media (min-width: 1400px) {
+      font-size: 2vw;
+    }
   }
+
   .masthead h2,
   .masthead .h2 {
     /* max-width: 20rem; */
