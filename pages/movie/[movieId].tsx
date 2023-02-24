@@ -14,8 +14,10 @@ interface iProps {
 }
 const MovieDetailPage = ({ movie }: iProps) => {
   const router = useRouter();
+
   useEffect(() => {
     router.prefetch("/main");
+    if (!movie?.backdrop_path) router.push("/main");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -27,7 +29,7 @@ const MovieDetailPage = ({ movie }: iProps) => {
   }, []);
 
   const onClose = () => {
-    router.push("/main", undefined, { scroll: false });
+    router.back();
   };
 
   return (

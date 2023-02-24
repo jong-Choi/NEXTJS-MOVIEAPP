@@ -58,7 +58,7 @@ const MovieDetail = ({ onClose, movie }) => {
     <GrayScaleMastheadH1>
       <StyledImage
         src={`https://image.tmdb.org/t/p/original/${
-          movie.backdrop_path || movie.poster_path
+          movie?.backdrop_path || movie?.poster_path
         }`}
       ></StyledImage>
 
@@ -70,8 +70,8 @@ const MovieDetail = ({ onClose, movie }) => {
         >
           닫기{" "}
         </div>
-        <h1 className="">{movie.original_title || movie.title}</h1>
-        <h2 className="text-white-60 mx-auto mb-4">{movie.title}</h2>
+        <h1 className="">{movie?.original_title || movie?.title}</h1>
+        <h2 className="text-white-60 mx-auto mb-4">{movie?.title}</h2>
         <StyledContainer>
           <div className="detail-image-container">
             {creating ? (
@@ -85,7 +85,7 @@ const MovieDetail = ({ onClose, movie }) => {
               <img
                 className="detail-image"
                 src={`https://image.tmdb.org/t/p/w300/${
-                  movie.poster_path || movie.backdrop_path
+                  movie?.poster_path || movie?.backdrop_path
                 }`}
               ></img>
             )}
@@ -96,22 +96,22 @@ const MovieDetail = ({ onClose, movie }) => {
               className="text-white-60 mx-auto mb-4"
               style={{ letterSpacing: "normal" }}
             >
-              {movie.tagline || ""}
+              {movie?.tagline || ""}
             </h2>
             <div className="footer-wrapper">
-              <div>{`개봉일: ${movie.release_date}`}</div>
+              <div>{`개봉일: ${movie?.release_date}`}</div>
               <div>
                 {`평점: 
                 ${(
-                  Math.floor(Number(movie.vote_average) * 100) / 100
+                  Math.floor(Number(movie?.vote_average) * 100) / 100
                 ).toString()}`}
               </div>
-              <div>{`장르 : ${movie.genres
+              <div>{`장르 : ${movie?.genres
                 .map((e) => e.name)
                 .slice(0, 3)
                 .join(", ")}`}</div>
             </div>
-            <div className="detail-text">{movie.overview}</div>
+            <div className="detail-text">{movie?.overview}</div>
             <div className="button-wrapper">
               {creating ? (
                 <></>
@@ -221,31 +221,31 @@ const StyledContainer = styled.div`
 `;
 
 // {
-//   adult: ${movie.adult},
-//   backdrop_path: ${movie.backdrop_path},
-//   belongs_to_collection: ${movie.belongs_to_collection},
-//   budget: ${movie.budget},
-//   genres: ${JSON.stringify(movie.genres)},
-//   homepage: ${movie.homepage},
-//   id: ${movie.id},
-//   imdb_id: ${movie.imdb_id},
-//   original_language: ${movie.original_language},
-//   original_title: ${movie.original_title},
-//   overview: ${movie.overview}',
-//   popularity: ${movie.popularity}',
-//   poster_path: ${movie.poster_path},
-//   production_companies: ${JSON.stringify(movie.production_companies)},
-//   production_countries: ${JSON.stringify(movie.production_countries)},
-//   release_date: ${movie.release_date},
-//   revenue: ${movie.revenue},
-//   runtime: ${movie.runtime},
-//   spoken_languages: ${JSON.stringify(movie.spoken_languages)},
-//   status: ${movie.status},
-//   tagline: ${movie.tagline},
-//   title: ${movie.title},
-//   video: ${movie.video},
-//   vote_average: ${movie.vote_average},
-//   vote_count: ${movie.vote_count},
+//   adult: ${movie?.adult},
+//   backdrop_path: ${movie?.backdrop_path},
+//   belongs_to_collection: ${movie?.belongs_to_collection},
+//   budget: ${movie?.budget},
+//   genres: ${JSON.stringify(movie?.genres)},
+//   homepage: ${movie?.homepage},
+//   id: ${movie?.id},
+//   imdb_id: ${movie?.imdb_id},
+//   original_language: ${movie?.original_language},
+//   original_title: ${movie?.original_title},
+//   overview: ${movie?.overview}',
+//   popularity: ${movie?.popularity}',
+//   poster_path: ${movie?.poster_path},
+//   production_companies: ${JSON.stringify(movie?.production_companies)},
+//   production_countries: ${JSON.stringify(movie?.production_countries)},
+//   release_date: ${movie?.release_date},
+//   revenue: ${movie?.revenue},
+//   runtime: ${movie?.runtime},
+//   spoken_languages: ${JSON.stringify(movie?.spoken_languages)},
+//   status: ${movie?.status},
+//   tagline: ${movie?.tagline},
+//   title: ${movie?.title},
+//   video: ${movie?.video},
+//   vote_average: ${movie?.vote_average},
+//   vote_count: ${movie?.vote_count},
 //   }
 
 //   adult: false,

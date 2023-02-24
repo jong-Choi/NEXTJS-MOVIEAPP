@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-const CardFooter = ({ author, published_date }) => {
+const CardFooter = ({ author, published_date = 0 }) => {
   const { uid, nickname, image } = author;
   const now = Date.now();
   const gap = now - published_date;
@@ -39,7 +39,7 @@ const CardFooter = ({ author, published_date }) => {
               alt="Generic placeholder image"
               style={{ maxWidth: "50px" }}
             />
-            <div className="card-profile">
+            <div className={published_date ? `card-profile` : `d-none`}>
               <h6 className="my-0 text-white d-block">{nickname}</h6>
               <small>{published_date_messge}</small>
               {/* <small>Director of UI/UX</small> */}

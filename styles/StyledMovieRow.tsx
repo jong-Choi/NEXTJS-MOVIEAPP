@@ -38,7 +38,7 @@ export const StyledMovieRow = styled.section`
     transition: 400ms all ease-in-out;
     cursor: pointer;
     width: 80px;
-    z-index: 1000;
+    z-index: 2;
     position: absolute;
     right: 0;
     top: 0;

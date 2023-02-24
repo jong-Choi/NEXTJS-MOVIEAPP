@@ -6,12 +6,14 @@ import useDebounce from "../utils/useDebounce";
 import MovieRow from "./MovieRow";
 import Input from "./common/Input";
 import { Movie } from "../types/moive";
+import SearchResult from "./SearchResult";
 
 interface iProps {
   label?: string;
   onResultClick?: (movie: Movie) => any;
   disabled?: boolean;
   cardMode?: boolean;
+  mainMode?: boolean;
 }
 
 const Search = ({
@@ -21,19 +23,19 @@ const Search = ({
   cardMode = false,
 }: iProps) => {
   const [input, setInput] = useState("");
-  const [movies, setMoives] = useState<Array<Movie>>([]);
+  const [movies, setMovies] = useState<Array<Movie>>([]);
   const debouncedInput = useDebounce(input, 500);
   useEffect(() => {
     if (disabled) {
       setInput("");
-      setMoives([]);
+      setMovies([]);
     }
   }, [disabled]);
 
   useEffect(() => {
-    if (!debouncedInput) return setMoives([]);
+    if (!debouncedInput) return setMovies([]);
     getSearchData(debouncedInput).then((res) => {
-      setMoives(res.data.results);
+      setMovies(res.data.results);
     });
   }, [debouncedInput]);
 
@@ -46,19 +48,13 @@ const Search = ({
           setState={setInput}
           disabled={disabled}
         >
-          <StyledSearchResults
-            className={debouncedInput && input ? "" : "d-none"}
-          >
-            <div className="RowContainer">
-              <MovieRow
-                title=""
-                id="SearchResult"
-                movieList={movies}
-                onResultClick={onResultClick}
-                cardMode={cardMode}
-              ></MovieRow>
-            </div>
-          </StyledSearchResults>
+          <SearchResult
+            debouncedInput={debouncedInput}
+            input={input}
+            movies={movies}
+            onResultClick={onResultClick}
+            cardMode={cardMode}
+          />
         </Input>
       </StyledForm>
     </div>
@@ -66,25 +62,3 @@ const Search = ({
 };
 
 export default Search;
-
-export const StyledSearchResults = styled.div`
-  display: flex;
-  position: absolute;
-  z-index: 2;
-  width: 100%;
-
-  backdrop-filter: blur(10px);
-  box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.5);
-  .RowContainer {
-    padding-top: 1rem;
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  /*
-  https://stackoverflow.com/questions/63213956/when-loading-swiper-slide-height-changes
-  */
-  .row__posters {
-    height: 8vh;
-  }
-`;

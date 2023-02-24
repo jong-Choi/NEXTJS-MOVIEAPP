@@ -16,6 +16,7 @@ interface iProps {
   moviesData?: Array<MovieEssential>;
   onResultClick?: (movie: Movie) => any;
   cardMode?: boolean;
+  mainMode?: boolean;
 }
 function MovieRow({
   title,
@@ -24,6 +25,7 @@ function MovieRow({
   moviesData,
   onResultClick,
   cardMode = false,
+  mainMode = false,
 }: iProps) {
   const [movies, setMovies] = useState<Array<MovieEssential> | Array<Movie>>(
     moviesData || movieList,
@@ -73,7 +75,7 @@ function MovieRow({
   // vote_count: 939
   const MovieFigure = movieList?.length ? MovieRowSearch : MovieRowContent;
   return (
-    <StyledMovieRow className="row">
+    <StyledMovieRow className={`row ${mainMode ? "mt-4" : ""}`}>
       {title ? <h2 className="mt-2 ">{title}</h2> : <></>}
       <Swiper
         modules={[Navigation, Pagination, Scrollbar, A11y]}

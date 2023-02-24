@@ -6,9 +6,12 @@ import { Provider } from "react-redux";
 import Head from "next/head";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Navbar from "../components/Navbar";
 
 function App({ Component, pageProps }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(pageProps);
+  const isLanding = Component.name === "Home";
+
   return (
     <Provider store={store}>
       <Head>
@@ -16,8 +19,10 @@ function App({ Component, pageProps }: AppProps) {
       </Head>
       <GlobalStyle />
       <ToastContainer />
-      {/* <Header /> */}
-      <Component {...props} />
+      <>
+        {isLanding ? <></> : <Navbar />}
+        <Component {...props} />
+      </>
     </Provider>
   );
 }
