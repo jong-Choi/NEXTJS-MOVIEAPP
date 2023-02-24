@@ -34,6 +34,7 @@ const ProfileCreate = () => {
       setMyMovies([
         ...myMovies,
         {
+          poster_path: movie.poster_path,
           backdrop_path: movie.backdrop_path,
           id: movie.id,
           title: movie.title || movie.original_title,
