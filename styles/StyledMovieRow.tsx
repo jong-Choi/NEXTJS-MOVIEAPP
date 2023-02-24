@@ -273,8 +273,8 @@ export const StyledMovieRow = styled.section`
     height: 100%;
     color: #fff;
     background: rgba(0, 0, 0, 0.6);
-    -webkit-transition: 1s ease;
-    transition: 1s ease;
+    /* -webkit-transition: 0.01s ease;
+    transition: 0.011s ease; */
   }
   figure .overlay .description {
     font-size: medium;

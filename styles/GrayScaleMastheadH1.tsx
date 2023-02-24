@@ -19,6 +19,17 @@ const GrayScaleMastheadH1 = styled.div`
     background-attachment: scroll;
     background-size: cover;
   }
+  .navhead {
+    position: static;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    height: 3vw;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
+  .navhead h1,
   .masthead h1,
   .masthead .h1 {
     font-family: "Noto Sans KR", "Varela Round", -apple-system,
@@ -31,7 +42,7 @@ const GrayScaleMastheadH1 = styled.div`
     letter-spacing: 1.5vw;
     background: linear-gradient(
       rgba(255, 255, 255, 0.9),
-      rgba(255, 255, 255, 0)
+      rgba(250, 171, 54, 0.1)
     );
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
@@ -40,6 +51,17 @@ const GrayScaleMastheadH1 = styled.div`
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
+  }
+  .navhead h1 {
+    font-size: 3vw;
+    font-size: 2vw;
+    background: linear-gradient(
+      rgba(255, 255, 255, 0.9),
+      rgba(250, 171, 54, 0)
+    );
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
   }
   .masthead h2,
   .masthead .h2 {

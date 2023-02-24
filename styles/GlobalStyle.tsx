@@ -11,6 +11,11 @@ const GlobalStyle = createGlobalStyle`
   a {
     text-decoration: none;
   }
+  h1, h2, h3, h4, h5, h6 {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
 `;
 
 export default GlobalStyle;

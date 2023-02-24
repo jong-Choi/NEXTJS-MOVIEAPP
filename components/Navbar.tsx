@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getSearchData } from "../services/tmdbApi";
 import { useTypedSelector } from "../store";
+import GrayScaleMastheadH1 from "../styles/GrayScaleMastheadH1";
 import useDebounce from "../utils/useDebounce";
 import CardFooter from "./board/card/CardFooter";
 import SearchResult from "./SearchResult";
@@ -22,7 +23,7 @@ function Navbar() {
       window.removeEventListener("scroll", onScroll);
     };
   }, []);
-  const opa = position < 280 ? (position - 50) / 200 : 0.9;
+  const opa = position < 280 ? (position - 100) / 200 + 0.1 : 0.95;
 
   const [input, setInput] = useState("");
   const debouncedInput = useDebounce(input, 200);
@@ -50,7 +51,7 @@ function Navbar() {
           role="button"
           onClick={() => router.push("/main")}
         />
-        <div className="d-flex">
+        <div className="d-flex  pr-5">
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -64,6 +65,7 @@ function Navbar() {
           >
             취소
           </div>
+          <div style={{ width: "27px" }}></div>
         </div>
         <div style={{ height: "10px" }}>
           <CardFooter author={profile}></CardFooter>

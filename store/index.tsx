@@ -1,5 +1,7 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 import {
   TypedUseSelectorHook,
   useSelector as useReduxSeletor,
@@ -7,11 +9,21 @@ import {
 import authSlice from "./authSlice";
 import dbSlice from "./dbSlice";
 
+const reducers = combineReducers({
+  authSlice: authSlice.reducer,
+  dbSlice: dbSlice.reducer,
+});
+
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+//https://choyeon-dev.tistory.com/14
+const persistedReducer = persistReducer(persistConfig, reducers);
+
 const store = configureStore({
-  reducer: {
-    authSlice: authSlice.reducer,
-    dbSlice: dbSlice.reducer,
-  },
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
@@ -21,6 +33,7 @@ const makeStore = () => store;
 
 const wrapper = createWrapper(makeStore);
 export default wrapper;
+export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export const useTypedSelector: TypedUseSelectorHook<RootState> =

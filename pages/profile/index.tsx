@@ -197,9 +197,13 @@ const MyProfile = () => {
               />
             </div>
           </div>
-          <div className="row mb-5">
+          <div className={`row mb-5`}>
             <h4 className="m-3">내가 작성한 글</h4>
-            <CardRow articles={articles} setArticles={setArticles}></CardRow>
+            {articles.length ? (
+              <CardRow articles={articles} setArticles={setArticles}></CardRow>
+            ) : (
+              <div className="col-12 text-center">작성한 글이 없습니다.</div>
+            )}
           </div>
         </div>
       </div>
