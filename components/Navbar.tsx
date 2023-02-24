@@ -22,7 +22,7 @@ function Navbar() {
       window.removeEventListener("scroll", onScroll);
     };
   }, []);
-  const opa = position < 280 ? (position - 100) / 200 : 0.9;
+  const opa = position < 280 ? (position - 50) / 200 : 0.9;
 
   const [input, setInput] = useState("");
   const debouncedInput = useDebounce(input, 200);
@@ -34,15 +34,15 @@ function Navbar() {
     });
   }, [debouncedInput]);
   return (
-    <div className="sticky-top d-flex justify-content-center">
-      <StyledNav
-        className="nav"
-        style={{
-          backgroundColor: `rgba(1, 25, 47, ${
-            input && debouncedInput ? 0 : opa
-          })`,
-        }}
-      >
+    <div
+      className="container sticky-top d-flex justify-content-center"
+      style={{
+        backgroundColor: `rgba(1, 25, 47, ${
+          input && debouncedInput ? 0 : opa
+        })`,
+      }}
+    >
+      <StyledNav className="nav col-12 col-lg-10">
         <img
           alt="logo"
           src="/logo.png"
@@ -93,18 +93,14 @@ export default Navbar;
 const StyledNav = styled.nav`
   position: sticky;
   top: 0;
-  width: 80%;
   height: 55px;
-  z-index: 5;
+  z-index: 3;
   padding: 0px 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   transition-timing-function: ease-in;
   transition: all 0.5s;
-  @media screen and (max-width: 1200px) {
-    width: 100%;
-  }
 
   .nav__black {
     background-color: #01192f;

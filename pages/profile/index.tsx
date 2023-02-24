@@ -197,7 +197,7 @@ const MyProfile = () => {
               />
             </div>
           </div>
-          <div className="row">
+          <div className="row mb-5">
             <h4 className="m-3">내가 작성한 글</h4>
             <CardRow articles={articles} setArticles={setArticles}></CardRow>
           </div>

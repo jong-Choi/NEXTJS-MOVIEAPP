@@ -11,7 +11,9 @@ const SearchResult = ({
   cardMode = false,
 }) => {
   return (
-    <StyledSearchResults className={debouncedInput && input ? "" : "d-none"}>
+    <StyledSearchResults
+      className={debouncedInput && input ? "col-12 col-lg-10" : "d-none"}
+    >
       <div className={`RowContainer ${mainMode ? "pt-5" : "pt-3"}`}>
         <MovieRow
           title=""
@@ -32,8 +34,6 @@ export const StyledSearchResults = styled.div`
   display: flex;
   position: absolute;
   z-index: 2;
-  width: 100%;
-
   backdrop-filter: blur(10px);
   box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.5);
   .RowContainer {
