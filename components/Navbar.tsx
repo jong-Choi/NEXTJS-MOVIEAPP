@@ -5,8 +5,6 @@ import { getSearchData } from "../services/tmdbApi";
 import { useTypedSelector } from "../store";
 import useDebounce from "../utils/useDebounce";
 import CardFooter from "./board/card/CardFooter";
-
-import Search from "./Search";
 import SearchResult from "./SearchResult";
 
 function Navbar() {
@@ -111,7 +109,7 @@ const StyledNav = styled.nav`
   .nav__logo {
     /* position: fixed; */
     /* left: 40px; */
-    width: 100px;
+    width: 120px;
     object-fit: contain;
   }
 
