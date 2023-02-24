@@ -8,6 +8,10 @@ import { StyledMovieRow } from "../styles/StyledMovieRow";
 import MovieRowSearch from "./MovieRowSearch";
 import MovieRowContent from "./MovieRowContent";
 import { Movie, MovieEssential, MyMovie } from "../types/moive";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
 
 interface iProps {
   title?: string;

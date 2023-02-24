@@ -47,16 +47,17 @@ const Search = ({
           state={input}
           setState={setInput}
           disabled={disabled}
-        >
-          <SearchResult
-            debouncedInput={debouncedInput}
-            input={input}
-            movies={movies}
-            onResultClick={onResultClick}
-            cardMode={cardMode}
-          />
-        </Input>
+        ></Input>
       </StyledForm>
+      <div className="d-flex justify-content-center">
+        <SearchResult
+          debouncedInput={debouncedInput}
+          input={input}
+          movies={movies}
+          onResultClick={onResultClick}
+          cardMode={cardMode}
+        />
+      </div>
     </div>
   );
 };
