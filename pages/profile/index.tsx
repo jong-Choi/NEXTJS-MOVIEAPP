@@ -83,11 +83,11 @@ const MyProfile = () => {
       });
   };
 
-  const onLogout = () => {
+  const onLogout = useCallback(() => {
     authService.signOut();
     sessionStorage.clear();
     router.push("/");
-  };
+  }, []);
   return (
     <StyledProfile>
       <div className="page-content page-container mt-5 mb-3" id="page-content">
