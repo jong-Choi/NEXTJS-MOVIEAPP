@@ -9,9 +9,7 @@ export const fetchAticles = (published_date = 0, authorId = "") => {
   let dbRef = dbService.collection("articles");
   let query;
   if (authorId) {
-    query = dbRef
-      .orderBy("published_date", "desc")
-      .where("author.uid", "==", authorId);
+    query = dbRef.where("author.uid", "==", authorId);
   } else {
     query = dbRef.orderBy("published_date", "desc");
     if (published_date) {

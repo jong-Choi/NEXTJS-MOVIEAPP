@@ -47,11 +47,13 @@ const Card = ({
   useEffect(() => {
     if (!initiated) return;
     if (hasLiked) {
+      console.log("좋아요");
       docRef.update({
         likes: firebaseInstance.firestore.FieldValue.arrayUnion(uid),
       });
       setInitiated(false);
     } else if (!hasLiked) {
+      console.log("싫어요");
       docRef.update({
         likes: firebaseInstance.firestore.FieldValue.arrayRemove(uid),
       });
