@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import { useTypedSelector } from "../../../store";
 import ProfileLink from "../../ProfileLink";
+import Image from "next/image";
 
 const CardFooter = ({ author, published_date = 0 }) => {
   const { uid, nickname, image } = author;
@@ -30,10 +31,12 @@ const CardFooter = ({ author, published_date = 0 }) => {
       <div className="card-footer" title="프로필로 이동하기">
         <div className="media">
           <div className="d-flex">
-            <img
+            <Image
               className="mr-3 rounded-circle"
+              width={50}
+              height={50}
               src={`${image}`}
-              alt="Generic placeholder image"
+              alt="profie image"
               style={{ maxWidth: "50px" }}
             />
             <div className={published_date ? `card-profile` : `d-none`}>

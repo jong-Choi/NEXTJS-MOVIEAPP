@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -67,7 +68,9 @@ function Navbar() {
         }}
       >
         <StyledNav className="nav col-12 col-lg-10">
-          <img
+          <Image
+            height={40}
+            width={120}
             alt="logo"
             src="/logo.png"
             className="nav__logo mt-1"
