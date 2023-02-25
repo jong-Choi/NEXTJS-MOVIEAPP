@@ -137,7 +137,6 @@ const ProfilePage = ({
                     />
                     <p>
                       <button
-                        v-if="isAuthorized && isAuthor"
                         type="button"
                         className={`btn btn-dark
                         `}
@@ -188,7 +187,6 @@ const ProfilePage = ({
                             </div>
                             <div className="modal-body text-dark">
                               {profile.followers.map((follower) => {
-                                console.log(follower);
                                 return (
                                   <div
                                     key={follower.uid + "follower"}

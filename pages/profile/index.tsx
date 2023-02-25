@@ -41,6 +41,7 @@ const MyProfile = () => {
       setMyMovies([
         ...myMovies,
         {
+          poster_path: movie.poster_path,
           backdrop_path: movie.backdrop_path,
           id: movie.id,
           title: movie.title || movie.original_title,
@@ -105,7 +106,6 @@ const MyProfile = () => {
                     />
                     <p>
                       <button
-                        v-if="isAuthorized && isAuthor"
                         type="button"
                         className={`btn btn-dark
                         `}
@@ -156,7 +156,6 @@ const MyProfile = () => {
                             </div>
                             <div className="modal-body text-dark">
                               {profile.followers?.map((follower) => {
-                                console.log(follower);
                                 return (
                                   <div
                                     key={follower.uid + "follower"}

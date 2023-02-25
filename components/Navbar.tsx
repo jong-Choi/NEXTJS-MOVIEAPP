@@ -19,8 +19,7 @@ function Navbar() {
   const profile = useTypedSelector((state) => state.authSlice.userProfile);
   useEffect(() => {
     if (!profile?.uid) {
-      toastInfo("로그인이 필요합니다.");
-      router.push("/");
+      router.push("/").then(() => toastInfo("로그인이 필요합니다."));
     }
   }, []);
 
