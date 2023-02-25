@@ -94,11 +94,6 @@ function Navbar() {
           <div style={{ height: "10px" }}>
             <CardFooter author={profile}></CardFooter>
           </div>
-          {/* <img
-          alt="User Logged In"
-          src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/64623a33850498.56ba69ac2a6f7.png"
-          className="nav__avatar"
-        /> */}
         </StyledNav>
         <SearchResult
           debouncedInput={debouncedInput}
