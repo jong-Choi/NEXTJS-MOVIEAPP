@@ -50,27 +50,23 @@ const MovieRowContent = ({ movie, cardMode = false }: iProps) => {
               height: "100%",
               objectFit: "cover",
             }}
-            className="row__poster "
+            className={`row__poster ${isInView ? "" : "d-none"}`}
             onLoad={() => setIsLoading(0)}
-            src={
-              isInView
-                ? `https://image.tmdb.org/t/p/w300/${movie.backdrop_path}`
-                : ""
-            }
+            src={`https://image.tmdb.org/t/p/w300/${movie.backdrop_path}`}
           />
           <div
             className="overlay"
-            style={
-              Loading
-                ? {
-                    display: "block",
-                    opacity: "1",
-                    backdropFilter: "blur(10px)",
-                  }
-                : {
-                    backdropFilter: "blur(0px)",
-                  }
-            }
+            // style={
+            //   Loading
+            //     ? {
+            //         display: "block",
+            //         opacity: "1",
+            //         backdropFilter: "blur(10px)",
+            //       }
+            //     : {
+            //         backdropFilter: "blur(0px)",
+            //       }
+            // }
           >
             <div
               className="description"
