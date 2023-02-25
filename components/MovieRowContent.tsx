@@ -27,7 +27,7 @@ const MovieRowContent = ({ movie, cardMode = false }: iProps) => {
       onMouseEnter={() => {
         const imageBackdrop = new Image();
         const imagePoster = new Image();
-        imageBackdrop.src = `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`;
+        imageBackdrop.src = `https://image.tmdb.org/t/p/w1280/${movie.backdrop_path}`;
         imagePoster.src = `https://image.tmdb.org/t/p/w300/${movie.poster_path}`;
         return { imageBackdrop, imagePoster };
       }}
