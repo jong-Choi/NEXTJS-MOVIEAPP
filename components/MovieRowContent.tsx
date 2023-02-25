@@ -37,7 +37,7 @@ const MovieRowContent = ({ movie, cardMode = false }: iProps) => {
           style={{
             width: "100%",
             paddingTop: "56.25%",
-            backgroundImage: Loading ? `url('/noResult.jpg')` : "",
+            backgroundImage: `url('/noResult.jpg')`,
             backgroundSize: "cover",
           }}
         >
@@ -50,7 +50,7 @@ const MovieRowContent = ({ movie, cardMode = false }: iProps) => {
               height: "100%",
               objectFit: "cover",
             }}
-            className={`row__poster ${isInView ? "" : "d-none"}`}
+            className={`row__poster ${isInView ? "" : "invisble"}`}
             onLoad={() => setIsLoading(0)}
             src={`https://image.tmdb.org/t/p/w300/${movie.backdrop_path}`}
           />
