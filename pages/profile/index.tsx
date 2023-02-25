@@ -209,7 +209,11 @@ const MyProfile = () => {
                             <div className="modal-body text-dark">
                               {profile.followings.map((follwing) => {
                                 return (
-                                  <div key={follwing.uid + "following"}>
+                                  <div
+                                    key={follwing.uid + "following"}
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                  >
                                     <Link
                                       className="text-dark"
                                       key={follwing.uid}

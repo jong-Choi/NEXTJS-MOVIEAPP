@@ -42,7 +42,7 @@ const ProfilePage = ({
     !!profileSnapshot.followers.find((e) => e.uid === myUid),
   );
   const [isClicked, setIsClicked] = useState(false);
-  const debouncedFollowed = useDebounce(followed, 300);
+  const debouncedFollowed = useDebounce(followed, 200);
   const docRef = dbService.collection("user").doc(profile.documentId);
   const myDocRef = dbService.collection("user").doc(myProfile.documentId);
 
@@ -52,7 +52,11 @@ const ProfilePage = ({
   };
 
   useEffect(() => {
+    const followersIdx = profile.followers.findIndex((e) => {
+      return e.uid === myUid;
+    });
     if (followed) {
+      if (followersIdx >= 0) return;
       setProfile({
         ...profile,
         followers: [
@@ -65,9 +69,6 @@ const ProfilePage = ({
         ],
       });
     } else {
-      const followersIdx = profile.followers.findIndex((e) => {
-        return e.uid === myUid;
-      });
       const newFollowers = [...profile.followers];
       newFollowers.splice(followersIdx, 1);
       setProfile({
@@ -248,7 +249,11 @@ const ProfilePage = ({
                             <div className="modal-body text-dark">
                               {profile.followings.map((follwing) => {
                                 return (
-                                  <div key={follwing.uid + "following"}>
+                                  <div
+                                    key={follwing.uid + "following"}
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                  >
                                     <ProfileLink
                                       uid={follwing.uid}
                                       myUid={myUid}
