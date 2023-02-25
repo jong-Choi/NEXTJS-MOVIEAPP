@@ -6,28 +6,29 @@ export const createArticle = async (article: Article) => {
 };
 
 export const fetchAticles = (published_date = 0, authorId = "") => {
-  let dbRef = dbService
-    .collection("articles")
-    .orderBy("published_date", "desc");
-
-  let query = dbRef;
+  let dbRef = dbService.collection("articles");
+  let query;
   if (authorId) {
-    query = query.where("author.uid", "==", authorId);
+    query = dbRef
+      .orderBy("published_date", "desc")
+      .where("author.uid", "==", authorId);
   } else {
+    query = dbRef.orderBy("published_date", "desc");
     if (published_date) {
       query = query.startAfter(published_date);
     }
     query = query.limit(40);
   }
 
-  // console.log(JSON.stringify(query));
   return query.get().then((Snapshot) => {
-    // console.log(Snapshot.docs);
     const Articles = Snapshot.docs.map((doc) => {
       const documentId = doc.id;
       const documentData = doc.data();
       return { documentId, ...documentData } as Article;
     });
+    if (authorId) {
+      Articles.sort((a, b) => b.published_date - a.published_date);
+    }
     return Articles;
   });
 };
