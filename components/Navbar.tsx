@@ -11,13 +11,30 @@ import SearchResult from "./SearchResult";
 
 function Navbar() {
   const router = useRouter();
+
+  const isLanding =
+    router.pathname === "/" || router.pathname === "/profile/create";
+  if (isLanding) return <></>;
+
   const profile = useTypedSelector((state) => state.authSlice.userProfile);
   useEffect(() => {
-    toastInfo("로그인이 필요합니다.");
-    if (!profile?.uid) router.push("/");
+    if (!profile?.uid) {
+      toastInfo("로그인이 필요합니다.");
+      router.push("/");
+    }
   }, []);
 
-  //https://velog.io/@ljj3347/React스크롤위치-가져오기-코드
+  const isMain = router.pathname === "/main";
+  const header = isMain ? (
+    <GrayScaleMastheadH1>
+      <header className={`navhead`}>
+        <h1 className="">TEAL AND ORANGE</h1>
+      </header>
+    </GrayScaleMastheadH1>
+  ) : (
+    <></>
+  );
+
   const [position, setPosition] = useState(0);
   function onScroll() {
     setPosition(window.scrollY);
@@ -40,58 +57,61 @@ function Navbar() {
     });
   }, [debouncedInput]);
   return (
-    <div
-      className="container sticky-top d-flex justify-content-center"
-      style={{
-        backgroundColor: `rgba(1, 25, 47, ${
-          input && debouncedInput ? 0 : opa
-        })`,
-      }}
-    >
-      <StyledNav className="nav col-12 col-lg-10">
-        <img
-          alt="logo"
-          src="/logo.png"
-          className="nav__logo mt-1"
-          role="button"
-          onClick={() => router.push("/main")}
-        />
-        <div className="d-flex  pr-5">
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            className="nav__input"
-            type="text"
-            placeholder="영화를 검색해주세요."
+    <>
+      {header}
+      <div
+        className="container sticky-top d-flex justify-content-center"
+        style={{
+          backgroundColor: `rgba(1, 25, 47, ${
+            input && debouncedInput ? 0 : opa
+          })`,
+        }}
+      >
+        <StyledNav className="nav col-12 col-lg-10">
+          <img
+            alt="logo"
+            src="/logo.png"
+            className="nav__logo mt-1"
+            role="button"
+            onClick={() => router.push("/main")}
           />
-          <div
-            className={`nav__cancel ${input ? "visible" : "invisible"}`}
-            onClick={() => setInput("")}
-          >
-            취소
+          <div className="d-flex  pr-5">
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              className="nav__input"
+              type="text"
+              placeholder="영화를 검색해주세요."
+            />
+            <div
+              className={`nav__cancel ${input ? "visible" : "invisible"}`}
+              onClick={() => setInput("")}
+            >
+              취소
+            </div>
+            <div style={{ width: "27px" }}></div>
           </div>
-          <div style={{ width: "27px" }}></div>
-        </div>
-        <div style={{ height: "10px" }}>
-          <CardFooter author={profile}></CardFooter>
-        </div>
-        {/* <img
+          <div style={{ height: "10px" }}>
+            <CardFooter author={profile}></CardFooter>
+          </div>
+          {/* <img
           alt="User Logged In"
           src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/64623a33850498.56ba69ac2a6f7.png"
           className="nav__avatar"
         /> */}
-      </StyledNav>
-      <SearchResult
-        debouncedInput={debouncedInput}
-        input={input}
-        movies={movies}
-        onResultClick={(movie) => {
-          router.push(`/movie/${movie.id}`);
-          setInput("");
-        }}
-        mainMode={true}
-      />
-    </div>
+        </StyledNav>
+        <SearchResult
+          debouncedInput={debouncedInput}
+          input={input}
+          movies={movies}
+          onResultClick={(movie) => {
+            router.push(`/movie/${movie.id}`);
+            setInput("");
+          }}
+          mainMode={true}
+        />
+      </div>
+    </>
   );
 }
 

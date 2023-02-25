@@ -1,20 +1,19 @@
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import styled from "styled-components";
 import ImageInput from "../../components/profile-form/ImageInput";
 import Input from "../../components/common/Input";
 import Search from "../../components/Search";
-import { authService, dbService } from "../../public/fbase";
-import { createProfile, fetchProfile } from "../../services/fbProfile";
-import wrapper, { useTypedSelector } from "../../store";
-import { setUserOjbect, setUserProfile } from "../../store/authSlice";
+import { authService } from "../../public/fbase";
+import { createProfile } from "../../services/fbProfile";
+import { useTypedSelector } from "../../store";
+import { setUserOjbect } from "../../store/authSlice";
 import StyledForm from "../../styles/StyledForm";
 import { ProfileType } from "../../types/profile";
 import { setCookie } from "../../utils/handleCookie";
 import { toastError, toastInfo, toastSuccess } from "../../utils/toastAlert";
 import { Movie, MyMovie } from "../../types/moive";
-import { getRecommenations, newRecommendations } from "../../services/tmdbApi";
+import { newRecommendations } from "../../services/tmdbApi";
 
 const ProfileCreate = () => {
   const router = useRouter();

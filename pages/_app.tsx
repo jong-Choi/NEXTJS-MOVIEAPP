@@ -12,9 +12,6 @@ import GrayScaleMastheadH1 from "../styles/GrayScaleMastheadH1";
 
 function App({ Component, pageProps }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(pageProps);
-  const isLanding =
-    Component.name === "Home" || Component.name === "ProfileCreate";
-  const isMain = Component.name === "MainPage";
 
   return (
     <Provider store={store}>
@@ -25,16 +22,7 @@ function App({ Component, pageProps }: AppProps) {
         <GlobalStyle />
         <ToastContainer />
         <>
-          {isMain ? (
-            <GrayScaleMastheadH1>
-              <header className={`navhead`}>
-                <h1 className="">TEAL AND ORANGE</h1>
-              </header>
-            </GrayScaleMastheadH1>
-          ) : (
-            <></>
-          )}
-          {isLanding ? <></> : <Navbar />}
+          <Navbar></Navbar>
           <Component {...props} />
         </>
       </PersistGate>
