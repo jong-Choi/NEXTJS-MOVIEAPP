@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { getSearchData } from "../services/tmdbApi";
 import { useTypedSelector } from "../store";
 import GrayScaleMastheadH1 from "../styles/GrayScaleMastheadH1";
+import { toastInfo } from "../utils/toastAlert";
 import useDebounce from "../utils/useDebounce";
 import CardFooter from "./board/card/CardFooter";
 import SearchResult from "./SearchResult";
@@ -11,6 +12,10 @@ import SearchResult from "./SearchResult";
 function Navbar() {
   const router = useRouter();
   const profile = useTypedSelector((state) => state.authSlice.userProfile);
+  useEffect(() => {
+    toastInfo("로그인이 필요합니다.");
+    if (!profile?.uid) router.push("/");
+  }, []);
 
   //https://velog.io/@ljj3347/React스크롤위치-가져오기-코드
   const [position, setPosition] = useState(0);

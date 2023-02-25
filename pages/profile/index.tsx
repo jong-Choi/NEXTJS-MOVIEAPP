@@ -56,6 +56,7 @@ const MyProfile = () => {
       setArticles(articles);
     });
   }, []);
+
   const [isUpdating, setIsUpdating] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const onRequest = async (e) => {
@@ -126,7 +127,7 @@ const MyProfile = () => {
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModal"
                       >
-                        <h6>{profile.followers.length}</h6>
+                        <h6>{profile.followers?.length}</h6>
                         <p>Followers</p>
                       </div>
 
@@ -154,7 +155,7 @@ const MyProfile = () => {
                               ></button>
                             </div>
                             <div className="modal-body text-dark">
-                              {profile.followers.map((follower) => {
+                              {profile.followers?.map((follower) => {
                                 console.log(follower);
                                 return (
                                   <div
@@ -187,7 +188,7 @@ const MyProfile = () => {
                         data-bs-toggle="modal"
                         data-bs-target="#followingModal"
                       >
-                        <h6>{profile.followings.length}</h6>
+                        <h6>{profile.followings?.length}</h6>
                         <p>Followings</p>
                       </div>
 
@@ -215,7 +216,7 @@ const MyProfile = () => {
                               ></button>
                             </div>
                             <div className="modal-body text-dark">
-                              {profile.followings.map((follwing) => {
+                              {profile.followings?.map((follwing) => {
                                 return (
                                   <div
                                     key={follwing.uid + "following"}

@@ -14,6 +14,8 @@ const authSlice = createSlice({
       image: "",
       myMovies: [],
       myRecommendations: [],
+      followers: [],
+      followings: [],
     } as ProfileDataType,
   },
   reducers: {
