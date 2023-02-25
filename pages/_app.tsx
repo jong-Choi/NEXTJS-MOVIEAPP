@@ -17,7 +17,7 @@ function App({ Component, pageProps }: AppProps) {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <Head>
-          <title>Create Next App</title>
+          <title>Teal And Orange</title>
         </Head>
         <GlobalStyle />
         <ToastContainer />
