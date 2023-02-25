@@ -40,9 +40,8 @@ function MovieRow({
   // });
 
   useEffect(() => {
-    if (moviesData?.length) return;
-    setMovies(movieResultsList);
-  }, [movieResultsList]);
+    setMovies(movieResultsList || moviesData);
+  }, [movieResultsList, moviesData]);
 
   // const [modalOpen, setModalOpen] = useState(false);
   const [movieSelected, setMovieSelected] = useState({});

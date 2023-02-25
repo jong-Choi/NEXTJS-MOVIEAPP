@@ -5,11 +5,16 @@ import styled from "styled-components";
 import CardGrid from "../../components/board/card/CardGrid";
 import CardRow from "../../components/CardRow";
 import MovieRow from "../../components/MovieRow";
+import ProfileLink from "../../components/ProfileLink";
+import firebaseInstance, { dbService } from "../../public/fbase";
 import { fetchAticles } from "../../services/fbDb";
 import { fetchProfile } from "../../services/fbProfile";
 import wrapper, { useTypedSelector } from "../../store";
-import { setUserOjbect } from "../../store/authSlice";
+import { setUserOjbect, setUserProfile } from "../../store/authSlice";
 import { StyledMovieRow } from "../../styles/StyledMovieRow";
+import { Article } from "../../types/article";
+import { ProfileDataType } from "../../types/profile";
+import useDebounce from "../../utils/useDebounce";
 
 // {
 //   uid: "",
@@ -20,17 +25,99 @@ import { StyledMovieRow } from "../../styles/StyledMovieRow";
 // } as ProfileDataType,
 // }
 
-const ProfilePage = ({ profile }) => {
-  const myUid = useTypedSelector((state) => {
-    return state.authSlice.userProfile.uid;
-  }, shallowEqual);
+const ProfilePage = ({
+  profileSnapshot,
+  articlesSnapshot,
+  myProfile,
+  myUid,
+}: {
+  profileSnapshot: ProfileDataType;
+  articlesSnapshot: Array<Article>;
+  myProfile: ProfileDataType;
+  myUid: string;
+}) => {
+  const [articles, setArticles] = useState(articlesSnapshot);
+  const [profile, setProfile] = useState(profileSnapshot);
+  const [followed, setFollowed] = useState(
+    !!profileSnapshot.followers.find((e) => e.uid === myUid),
+  );
+  const [isClicked, setIsClicked] = useState(false);
+  const debouncedFollowed = useDebounce(followed, 300);
+  const docRef = dbService.collection("user").doc(profile.documentId);
+  const myDocRef = dbService.collection("user").doc(myProfile.documentId);
 
-  const [articles, setArticles] = useState([]);
+  const onClickHandler = () => {
+    setIsClicked(true);
+    setFollowed(!followed);
+  };
+
   useEffect(() => {
-    fetchAticles(0, profile.uid).then((articles) => {
-      setArticles(articles);
-    });
-  }, []);
+    if (followed) {
+      setProfile({
+        ...profile,
+        followers: [
+          ...profile.followers,
+          {
+            uid: myProfile.uid,
+            nickname: myProfile.nickname,
+            image: myProfile.image,
+          },
+        ],
+      });
+    } else {
+      const followersIdx = profile.followers.findIndex((e) => {
+        return e.uid === myUid;
+      });
+      const newFollowers = [...profile.followers];
+      newFollowers.splice(followersIdx, 1);
+      setProfile({
+        ...profile,
+        followers: newFollowers,
+      });
+    }
+  }, [followed]);
+  useEffect(() => {
+    if (!isClicked) return;
+    if (debouncedFollowed) {
+      Promise.allSettled([
+        docRef.update({
+          followers: firebaseInstance.firestore.FieldValue.arrayUnion({
+            uid: myProfile.uid,
+            nickname: myProfile.nickname,
+            image: myProfile.image,
+          }),
+        }),
+        myDocRef.update({
+          followings: firebaseInstance.firestore.FieldValue.arrayUnion({
+            uid: profile.uid,
+            nickname: profile.nickname,
+            image: profile.image,
+          }),
+        }),
+      ]).then(() => {
+        setIsClicked(false);
+      });
+    } else if (!debouncedFollowed) {
+      Promise.allSettled([
+        docRef.update({
+          followers: firebaseInstance.firestore.FieldValue.arrayRemove({
+            uid: myProfile.uid,
+            nickname: myProfile.nickname,
+            image: myProfile.image,
+          }),
+        }),
+        myDocRef.update({
+          followings: firebaseInstance.firestore.FieldValue.arrayRemove({
+            uid: profile.uid,
+            nickname: profile.nickname,
+            image: profile.image,
+          }),
+        }),
+      ]).then(() => {
+        setIsClicked(false);
+      });
+    }
+  }, [debouncedFollowed]);
 
   return (
     <StyledProfile>
@@ -53,9 +140,9 @@ const ProfilePage = ({ profile }) => {
                         type="button"
                         className={`btn btn-dark
                         `}
-                        onClick={() => {}}
+                        onClick={onClickHandler}
                       >
-                        로그아웃 하기
+                        {followed ? "팔로우 취소" : "팔로우하기"}
                       </button>
                     </p>
                   </div>
@@ -107,18 +194,17 @@ const ProfilePage = ({ profile }) => {
                                     data-bs-dismiss="modal"
                                     aria-label="Close"
                                   >
-                                    <Link
+                                    <ProfileLink
+                                      uid={follower.uid}
+                                      myUid={myUid}
                                       className="text-dark"
-                                      key={follower.uid}
-                                      href={`/profile/${follower.uid}`}
-                                      // as={`/profile`}
                                     >
                                       <img
                                         src={follower.image}
                                         style={{ height: "64px" }}
                                       />
                                       <span>{follower.nickname}</span>
-                                    </Link>
+                                    </ProfileLink>
                                     <hr />
                                   </div>
                                 );
@@ -163,18 +249,17 @@ const ProfilePage = ({ profile }) => {
                               {profile.followings.map((follwing) => {
                                 return (
                                   <div key={follwing.uid + "following"}>
-                                    <Link
+                                    <ProfileLink
+                                      uid={follwing.uid}
+                                      myUid={myUid}
                                       className="text-dark"
-                                      key={follwing.uid}
-                                      href={`/profile/${follwing.uid}`}
-                                      // as={`/profile`}
                                     >
                                       <img
                                         src={follwing.image}
                                         style={{ height: "64px" }}
                                       />
                                       <span>{follwing.nickname}</span>
-                                    </Link>
+                                    </ProfileLink>
                                     <hr />
                                   </div>
                                 );
@@ -202,7 +287,7 @@ const ProfilePage = ({ profile }) => {
               />
             </div>
           </div>
-          <div className="row">
+          <div className={`row ${!isClicked && followed ? "" : "d-none"}`}>
             <h4 className="m-3">{profile.nickname}님과 함께 보면 좋을 영화</h4>
             <div>
               <MovieRow
@@ -211,7 +296,7 @@ const ProfilePage = ({ profile }) => {
               />
             </div>
           </div>
-          <div className={`row mb-5`}>
+          <div className={`row mb-5 ${!isClicked && followed ? "" : "d-none"}`}>
             <h4 className="m-3">{profile.nickname}님이 작성한 글</h4>
             {articles.length ? (
               <CardRow articles={articles} setArticles={setArticles}></CardRow>
@@ -232,16 +317,38 @@ const ProfilePage = ({ profile }) => {
 
 export default ProfilePage;
 
-export async function getServerSideProps(context) {
-  const { uid } = context.query; // get the URL parameter
-  const profile = await fetchProfile(uid);
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async (context) => {
+    try {
+      const { uid } = context.query; // get the URL parameter
+      const { value: myUid } = context.req.headers.cookie
+        .split("; ")
+        .map((cookie) => {
+          const [key, value] = cookie.split("=");
+          return { key: key, value: value };
+        })
+        .find((e) => e.key === "uid");
 
-  return {
-    props: {
-      profile,
-    },
-  };
-}
+      const profileSnapshot = await fetchProfile(uid as string);
+      const myProfile = await fetchProfile(myUid);
+      const articlesSnapshot = await fetchAticles(0, profileSnapshot.uid);
+
+      store.dispatch(setUserProfile(myProfile));
+      return {
+        props: {
+          profileSnapshot,
+          articlesSnapshot,
+          myProfile,
+          myUid,
+        },
+      };
+    } catch {
+      return {
+        notFound: true,
+      };
+    }
+  },
+);
 
 const StyledProfile = styled.div`
   .stretch-card > .card {

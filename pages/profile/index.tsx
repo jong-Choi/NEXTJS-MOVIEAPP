@@ -25,7 +25,10 @@ const MyProfile = () => {
   const profile = useTypedSelector((state) => state.authSlice.userProfile);
   const dispatch = useDispatch();
   const [articles, setArticles] = useState([]);
-  const [myMovies, setMyMovies] = useState([...profile.myMovies]);
+  const [myMovies, setMyMovies] = useState(
+    JSON.parse(JSON.stringify(profile.myMovies)),
+  );
+
   const onSearchResultClikced = useCallback(
     (movie: Movie) => {
       if (myMovies.find((element) => element.id === movie.id)) return;
@@ -58,7 +61,12 @@ const MyProfile = () => {
     const myRecommendations = await newRecommendations(myMovies);
     updateProfile(profile.documentId, myMovies, myRecommendations)
       .then(async (res) => {
-        dispatch(patchUserProfile({ myMovies, myRecommendations }));
+        dispatch(
+          patchUserProfile({
+            myMovies: JSON.parse(JSON.stringify(myMovies)),
+            myRecommendations: JSON.parse(JSON.stringify(myRecommendations)),
+          }),
+        );
         setIsLoading(false);
         setIsUpdating(false);
         toastSuccess("프로필이 수정되었습니다.");
@@ -238,7 +246,12 @@ const MyProfile = () => {
               <div
                 className="updatingButton mt-1"
                 role="button"
-                onClick={() => setIsUpdating(!isUpdating)}
+                onClick={() => {
+                  if (isUpdating) {
+                    setMyMovies(JSON.parse(JSON.stringify(profile.myMovies)));
+                  }
+                  setIsUpdating(!isUpdating);
+                }}
               >
                 {!isUpdating ? "수정하기" : "취소"}
               </div>
