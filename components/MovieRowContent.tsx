@@ -54,7 +54,7 @@ const MovieRowContent = ({ movie, cardMode = false }: iProps) => {
             onLoad={() => setIsLoading(0)}
             src={
               isInView
-                ? `https://image.tmdb.org/t/p/w780/${movie.backdrop_path}`
+                ? `https://image.tmdb.org/t/p/w300/${movie.backdrop_path}`
                 : ""
             }
           />

@@ -241,12 +241,12 @@ const Card = ({
 
         `}
         style={{
-          backgroundImage: `url("https://image.tmdb.org/t/p/w780/${ImageBackdropPath}")`,
+          backgroundImage: `url("https://image.tmdb.org/t/p/w300/${ImageBackdropPath}")`,
         }}
       >
         <img
           className="card-img d-none"
-          src={`https://image.tmdb.org/t/p/w780/${ImageBackdropPath}`}
+          src={`https://image.tmdb.org/t/p/w300/${ImageBackdropPath}`}
           alt={title}
         />
 

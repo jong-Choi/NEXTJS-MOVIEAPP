@@ -95,7 +95,7 @@ export default function Home() {
           const res = await data.json();
           res.preloadData.map((backdrop_path) => {
             const imageElement = new Image();
-            imageElement.src = `https://image.tmdb.org/t/p/w780/${backdrop_path}`;
+            imageElement.src = `https://image.tmdb.org/t/p/w300/${backdrop_path}`;
             return imageElement;
           });
         }),
@@ -103,7 +103,7 @@ export default function Home() {
           if (!profile) return;
           profile.myRecommendations.map((movie) => {
             const imageElement = new Image();
-            imageElement.src = `https://image.tmdb.org/t/p/w780/${movie.backdrop_path}`;
+            imageElement.src = `https://image.tmdb.org/t/p/w300/${movie.backdrop_path}`;
             return imageElement;
           });
         },
