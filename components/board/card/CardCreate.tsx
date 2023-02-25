@@ -40,7 +40,7 @@ const CardCreate = ({
 
   useEffect(() => {
     if (movie.backdrop_path) {
-      setImageURL(`https://image.tmdb.org/t/p/w300/${movie.backdrop_path}`);
+      setImageURL(`https://image.tmdb.org/t/p/w780/${movie.backdrop_path}`);
     } else {
       setImageURL("/noResult.jpg");
     }
