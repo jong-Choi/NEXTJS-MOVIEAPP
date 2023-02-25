@@ -11,7 +11,7 @@ const board = () => {
   const dispatch = useDispatch();
   const [creating, setCreating] = useState(false);
   const uid = useTypedSelector((state) => {
-    return state.authSlice.userProfile?.uid;
+    return state.authSlice.userProfile.uid;
   }, shallowEqual);
 
   useEffect(() => {

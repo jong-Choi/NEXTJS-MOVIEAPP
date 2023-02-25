@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -6,6 +7,7 @@ import CardGrid from "../../components/board/card/CardGrid";
 import CardRow from "../../components/CardRow";
 import MovieRow from "../../components/MovieRow";
 import MyMovieForm from "../../components/MyMovieForm";
+import { authService } from "../../public/fbase";
 import { fetchAticles } from "../../services/fbDb";
 import { updateProfile } from "../../services/fbProfile";
 import { newRecommendations } from "../../services/tmdbApi";
@@ -23,6 +25,7 @@ import { toastError, toastInfo, toastSuccess } from "../../utils/toastAlert";
 
 const MyProfile = () => {
   const profile = useTypedSelector((state) => state.authSlice.userProfile);
+  const router = useRouter();
   const dispatch = useDispatch();
   const [articles, setArticles] = useState([]);
   const [myMovies, setMyMovies] = useState(
@@ -79,6 +82,11 @@ const MyProfile = () => {
       });
   };
 
+  const onLogout = () => {
+    authService.signOut();
+    sessionStorage.clear();
+    router.push("/");
+  };
   return (
     <StyledProfile>
       <div className="page-content page-container mt-5 mb-3" id="page-content">
@@ -100,7 +108,7 @@ const MyProfile = () => {
                         type="button"
                         className={`btn btn-dark
                         `}
-                        onClick={() => {}}
+                        onClick={onLogout}
                       >
                         로그아웃 하기
                       </button>
