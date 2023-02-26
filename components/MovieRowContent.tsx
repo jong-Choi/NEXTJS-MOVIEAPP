@@ -37,7 +37,7 @@ const MovieRowContent = ({ movie, cardMode = false }: iProps) => {
           style={{
             width: "100%",
             paddingTop: "56.25%",
-            backgroundImage: `url('/noResult.jpg')`,
+            backgroundImage: Loading ? `url('/noResult.jpg')` : "",
             backgroundSize: "cover",
           }}
         >
