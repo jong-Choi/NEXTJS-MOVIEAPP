@@ -18,6 +18,8 @@ const GrayScaleMastheadH1 = styled.div`
     background-repeat: no-repeat;
     background-attachment: scroll;
     background-size: cover;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
   }
   .navhead {
     position: static;

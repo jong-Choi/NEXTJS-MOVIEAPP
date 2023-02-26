@@ -57,7 +57,7 @@ const MovieDetail = ({ onClose, movie }) => {
   return (
     <GrayScaleMastheadH1>
       <StyledImage
-        src={`https://image.tmdb.org/t/p/w1280/${
+        src={`https://image.tmdb.org/t/p/w300/${
           movie?.backdrop_path || movie?.poster_path
         }`}
       ></StyledImage>
