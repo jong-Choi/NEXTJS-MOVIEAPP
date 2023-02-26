@@ -27,6 +27,7 @@ const MovieRowSearch = ({ movie, cardMode = false }) => {
             top: "0",
             height: "100%",
             objectFit: "cover",
+            backdropFilter: "blur(50px)",
           }}
           className={`row__poster ${Loading ? "invisible" : ""}`}
           onLoad={() => setIsLoading(0)}

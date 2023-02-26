@@ -49,6 +49,7 @@ const MovieRowContent = ({ movie, cardMode = false }: iProps) => {
               top: "0",
               height: "100%",
               objectFit: "cover",
+              backdropFilter: "blur(50px)",
             }}
             className={`row__poster ${isInView ? "" : "invisble"}`}
             onLoad={() => setIsLoading(0)}
