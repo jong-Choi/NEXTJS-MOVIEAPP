@@ -106,21 +106,40 @@ export async function getStaticProps({ params: { movieId } }) {
       `https://image.tmdb.org/t/p/w1280/${movie.backdrop_path}`,
     );
     const buffer = await res.arrayBuffer();
-
     const optimizedImage = await sharp(Buffer.from(buffer))
-      .resize({ width: 900 })
-      .webp({ quality: 80 })
+      .jpeg({ quality: 60, mozjpeg: true })
       .toBuffer();
     const filePath = path.resolve(
-      path.join(
-        process.cwd(),
-        "public",
-        "backdrop",
-        movie.backdrop_path.split(".")[0] + ".webp",
-      ),
+      path.join(process.cwd(), "public", "backdrop", movie.backdrop_path),
     );
-    console.log("실행중");
     fs.writeFileSync(filePath, optimizedImage);
+
+    const resPoster = await fetch(
+      `https://image.tmdb.org/t/p/w1280/${movie.poster_path}`,
+    );
+    const bufferPoster = await resPoster.arrayBuffer();
+    const optimizedImagePoster = await sharp(Buffer.from(bufferPoster))
+      .jpeg({ quality: 60, mozjpeg: true })
+      .toBuffer();
+    const filePathPoster = path.resolve(
+      path.join(process.cwd(), "public", "poster", movie.poster_path),
+    );
+    fs.writeFileSync(filePathPoster, optimizedImagePoster);
+    // const optimizedImage2 = await sharp(Buffer.from(buffer))
+    //   // .resize({ width: 900 })
+    //   .webp({ quality: 60 })
+    //   .toBuffer();
+    // const filePath2 = path.resolve(
+    //   path.join(
+    //     process.cwd(),
+    //     "public",
+    //     "backdrop",
+    //     movie.backdrop_path.split(".")[0] + ".webp",
+    //     // movie.backdrop_path,
+    //   ),
+    // );
+    // fs.writeFileSync(filePath2, optimizedImage2);
+
     return { props: { movieId: movieId, movie: movie } };
   } catch (e) {
     console.log(e);

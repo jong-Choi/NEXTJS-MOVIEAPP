@@ -57,9 +57,10 @@ const MovieDetail = ({ onClose, movie }) => {
   return (
     <GrayScaleMastheadH1>
       <StyledImage
-        src={`https://image.tmdb.org/t/p/w1280/${
-          movie?.backdrop_path || movie?.poster_path
-        }`}
+        src={`/backdrop/${movie?.backdrop_path}`}
+        // src={`https://image.tmdb.org/t/p/w1280/${
+        //   movie?.backdrop_path || movie?.poster_path
+        // }`}
       ></StyledImage>
 
       <header className={`masthead`}>
@@ -84,9 +85,10 @@ const MovieDetail = ({ onClose, movie }) => {
             ) : (
               <img
                 className="detail-image"
-                src={`https://image.tmdb.org/t/p/w300/${
-                  movie?.poster_path || movie?.backdrop_path
-                }`}
+                src={`/poster/${movie?.poster_path}`}
+                // src={`https://image.tmdb.org/t/p/w300/${
+                //   movie?.poster_path || movie?.backdrop_path
+                // }`}
               ></img>
             )}
           </div>
