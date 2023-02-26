@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { shallowEqual, useDispatch } from "react-redux";
 import styled from "styled-components";
 import CardGrid from "../../components/board/card/CardGrid";
 import CardRow from "../../components/CardRow";
@@ -17,6 +17,7 @@ import {
   setUserOjbect,
   setUserProfile,
 } from "../../store/authSlice";
+import { setArticles as setStoreArticles } from "../../store/dbSlice";
 import StyledForm from "../../styles/StyledForm";
 import { StyledMovieRow } from "../../styles/StyledMovieRow";
 import { Movie } from "../../types/moive";
@@ -27,7 +28,27 @@ const MyProfile = () => {
   const profile = useTypedSelector((state) => state.authSlice.userProfile);
   const router = useRouter();
   const dispatch = useDispatch();
-  const [articles, setArticles] = useState([]);
+  const [articles, setArticlesState] = useState([]);
+  const storeArticles = useTypedSelector((state) => {
+    return state.dbSlice.articles;
+  }, shallowEqual);
+
+  useEffect(() => {
+    if (!storeArticles?.length) {
+      return fetchAticles(0, profile.uid).then((articles) => {
+        dispatch(setStoreArticles(articles));
+        setArticles(articles);
+      });
+    } else {
+      setArticles(storeArticles);
+    }
+  }, []);
+
+  const setArticles = (articles) => {
+    setArticlesState(articles);
+    dispatch(setStoreArticles(articles));
+  };
+
   const [myMovies, setMyMovies] = useState(
     JSON.parse(JSON.stringify(profile.myMovies)),
   );
@@ -51,12 +72,6 @@ const MyProfile = () => {
     },
     [myMovies],
   );
-
-  useEffect(() => {
-    fetchAticles(0, profile.uid).then((articles) => {
-      setArticles(articles);
-    });
-  }, []);
 
   const [isUpdating, setIsUpdating] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

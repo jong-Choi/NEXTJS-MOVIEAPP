@@ -4,10 +4,10 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { authService } from "../public/fbase";
 import { onSocialLogin } from "../services/fbAuth";
-import { fetchTrending } from "../services/fbDb";
+import { fetchAticles, fetchTrending } from "../services/fbDb";
 import { fetchProfile } from "../services/fbProfile";
 import authSlice from "../store/authSlice";
-import { setTrendingArticles } from "../store/dbSlice";
+import { setArticles, setTrendingArticles } from "../store/dbSlice";
 import GrayScaleMasthead from "../styles/GrayScaleMasthead";
 import { setCookie } from "../utils/handleCookie";
 import { toastError } from "../utils/toastAlert";
@@ -109,6 +109,9 @@ export default function Home() {
         },
         fetchTrending().then((res) => {
           dispatch(setTrendingArticles(res));
+        }),
+        fetchAticles(0, profile.uid).then((articles) => {
+          dispatch(setArticles(articles));
         }),
       ]).then(() => (flag = -1));
     });

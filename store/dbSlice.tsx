@@ -13,6 +13,9 @@ const dbSlice = createSlice({
     setArticles(state, action: PayloadAction<Array<Article>>) {
       state.articles = action.payload;
     },
+    shiftArticles(state, action: PayloadAction<Article>) {
+      state.articles = [action.payload, ...state.articles];
+    },
     setTrendingArticles(state, action: PayloadAction<Array<Article>>) {
       state.trendingArticles = action.payload;
     },
@@ -28,4 +31,5 @@ const dbSlice = createSlice({
 });
 
 export default dbSlice;
-export const { setArticles, setTrendingArticles } = dbSlice.actions;
+export const { setArticles, setTrendingArticles, shiftArticles } =
+  dbSlice.actions;
