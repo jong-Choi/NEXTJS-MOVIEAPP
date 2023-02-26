@@ -37,7 +37,7 @@ const MovieRowContent = ({ movie, cardMode = false }: iProps) => {
           style={{
             width: "100%",
             paddingTop: "56.25%",
-            backgroundImage: Loading ? `url('/noResult.jpg')` : "",
+            backgroundImage: `url('/noResult.jpg')`,
             backgroundSize: "cover",
           }}
         >
@@ -49,7 +49,7 @@ const MovieRowContent = ({ movie, cardMode = false }: iProps) => {
               top: "0",
               height: "100%",
               objectFit: "cover",
-              backdropFilter: "blur(50px)",
+              backdropFilter: "blur(10px)",
             }}
             className={`row__poster ${isInView ? "" : "invisble"}`}
             onLoad={() => setIsLoading(0)}
