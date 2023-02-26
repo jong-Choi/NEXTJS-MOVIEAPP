@@ -32,6 +32,13 @@ const GlobalStyle = createGlobalStyle`
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
   }
+  .up-comming-profile {
+    opacity: 0;
+    animation-duration: 0.2s;
+    animation-delay: 50ms;
+    animation-name: title-up-comming;
+    animation-fill-mode: forwards;
+  }
   .up-comming {
     visibility: hidden;
     animation-duration: 0.2s;

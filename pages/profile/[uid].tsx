@@ -122,10 +122,7 @@ const ProfilePage = ({
 
   return (
     <StyledProfile>
-      <div
-        className="page-content page-container mt-5 mb-3 up-comming"
-        id="page-content"
-      >
+      <div className="page-content page-container mt-5 mb-3 " id="page-content">
         <div className="padding">
           <div className="row container d-flex justify-content-center mx-auto">
             <div className="col-lg-5 col-md-7">
@@ -135,7 +132,7 @@ const ProfilePage = ({
                     <h4>{profile.nickname}</h4>
                     <img
                       src={profile.image}
-                      style={{ width: "15vh" }}
+                      style={{ width: "120px" }}
                       className="m-3"
                     />
                     <p>
