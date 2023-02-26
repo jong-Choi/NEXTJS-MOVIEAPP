@@ -98,14 +98,18 @@ import fetch from "node-fetch";
 import sharp from "sharp";
 import fs from "fs";
 import path from "path";
+import axios from "axios";
 export async function getStaticProps({ params: { movieId } }) {
   try {
     const { data: movie } = await getMovieDetail(movieId);
 
-    const res = await fetch(
+    const response = await axios.get(
       `https://image.tmdb.org/t/p/w1280/${movie.backdrop_path}`,
+      {
+        responseType: "arraybuffer",
+      },
     );
-    const buffer = await res.arrayBuffer();
+    const buffer = Buffer.from(response.data);
     const optimizedImage = await sharp(Buffer.from(buffer))
       .jpeg({ quality: 60, mozjpeg: true })
       .toBuffer();
@@ -114,10 +118,13 @@ export async function getStaticProps({ params: { movieId } }) {
     );
     fs.writeFileSync(filePath, optimizedImage);
 
-    const resPoster = await fetch(
-      `https://image.tmdb.org/t/p/w1280/${movie.poster_path}`,
+    const responsePoster = await axios.get(
+      `https://image.tmdb.org/t/p/w185/${movie.poster_path}`,
+      {
+        responseType: "arraybuffer",
+      },
     );
-    const bufferPoster = await resPoster.arrayBuffer();
+    const bufferPoster = Buffer.from(responsePoster.data);
     const optimizedImagePoster = await sharp(Buffer.from(bufferPoster))
       .jpeg({ quality: 60, mozjpeg: true })
       .toBuffer();
@@ -125,20 +132,6 @@ export async function getStaticProps({ params: { movieId } }) {
       path.join(process.cwd(), "public", "poster", movie.poster_path),
     );
     fs.writeFileSync(filePathPoster, optimizedImagePoster);
-    // const optimizedImage2 = await sharp(Buffer.from(buffer))
-    //   // .resize({ width: 900 })
-    //   .webp({ quality: 60 })
-    //   .toBuffer();
-    // const filePath2 = path.resolve(
-    //   path.join(
-    //     process.cwd(),
-    //     "public",
-    //     "backdrop",
-    //     movie.backdrop_path.split(".")[0] + ".webp",
-    //     // movie.backdrop_path,
-    //   ),
-    // );
-    // fs.writeFileSync(filePath2, optimizedImage2);
 
     return { props: { movieId: movieId, movie: movie } };
   } catch (e) {
