@@ -119,7 +119,7 @@ const MyProfile = () => {
                     <h4>{profile.nickname}</h4>
                     <img
                       src={profile.image}
-                      style={{ width: "15vh", maxWidth: "240px" }}
+                      style={{ width: "120px" }}
                       className="m-3"
                     />
                     <p>
@@ -148,14 +148,13 @@ const MyProfile = () => {
                       </div>
                       <div
                         className="col-4"
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
+                        // data-bs-toggle="modal"
+                        // data-bs-target="#exampleModal"
                       >
                         <h6>{profile.followers?.length}</h6>
                         <p>Followers</p>
                       </div>
-
-                      <div
+                      {/* <div
                         className="modal fade"
                         id="exampleModal"
                         tabIndex={-1}
@@ -205,17 +204,17 @@ const MyProfile = () => {
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                       <div
                         className="col-4"
-                        data-bs-toggle="modal"
-                        data-bs-target="#followingModal"
+                        // data-bs-toggle="modal"
+                        // data-bs-target="#followingModal"
                       >
                         <h6>{profile.followings?.length}</h6>
                         <p>Followings</p>
                       </div>
 
-                      <div
+                      {/* <div
                         className="modal fade"
                         id="followingModal"
                         tabIndex={-1}
@@ -265,7 +264,7 @@ const MyProfile = () => {
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -274,7 +273,7 @@ const MyProfile = () => {
           </div>
         </div>
       </div>
-      <div className="container d-flex justify-content-center">
+      <div className="container d-flex justify-content-center up-comming">
         <div className="col-12 col-lg-10">
           <div className="row">
             <div className="d-flex align-items-center">

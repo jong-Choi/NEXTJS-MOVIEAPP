@@ -158,13 +158,13 @@ const ProfilePage = ({
                       </div>
                       <div
                         className="col-4"
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
+                        // data-bs-toggle="modal"
+                        // data-bs-target="#exampleModal"
                       >
                         <h6>{profile.followers.length}</h6>
                         <p>Followers</p>
                       </div>
-
+                      {/* 
                       <div
                         className="modal fade"
                         id="exampleModal"
@@ -214,17 +214,17 @@ const ProfilePage = ({
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                       <div
                         className="col-4"
-                        data-bs-toggle="modal"
-                        data-bs-target="#followingModal"
+                        // data-bs-toggle="modal"
+                        // data-bs-target="#followingModal"
                       >
                         <h6>{profile.followings.length}</h6>
                         <p>Followings</p>
                       </div>
 
-                      <div
+                      {/* <div
                         className="modal fade"
                         id="followingModal"
                         tabIndex={-1}
@@ -273,7 +273,7 @@ const ProfilePage = ({
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -282,7 +282,7 @@ const ProfilePage = ({
           </div>
         </div>
       </div>
-      <div className="container d-flex justify-content-center">
+      <div className="container d-flex justify-content-center up-comming">
         <div className="col-12 col-lg-10">
           <div className="row">
             <h4 className="m-3">{profile.nickname}님의 인생영화</h4>
@@ -293,7 +293,11 @@ const ProfilePage = ({
               />
             </div>
           </div>
-          <div className={`row ${!isClicked && followed ? "" : "d-none"}`}>
+          <div
+            className={`row ${
+              !isClicked && followed ? "up-comming" : "d-none"
+            }`}
+          >
             <h4 className="m-3">{profile.nickname}님과 함께 보면 좋을 영화</h4>
             <div>
               <MovieRow
@@ -302,7 +306,11 @@ const ProfilePage = ({
               />
             </div>
           </div>
-          <div className={`row mb-5 ${!isClicked && followed ? "" : "d-none"}`}>
+          <div
+            className={`row mb-5 ${
+              !isClicked && followed ? "up-comming" : "d-none"
+            }`}
+          >
             <h4 className="m-3">{profile.nickname}님이 작성한 글</h4>
             {articles.length ? (
               <CardRow articles={articles} setArticles={setArticles}></CardRow>
