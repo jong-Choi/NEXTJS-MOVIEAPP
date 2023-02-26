@@ -2,6 +2,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { shallowEqual } from "react-redux";
 import styled from "styled-components";
+import { StyledProfile } from ".";
 import CardGrid from "../../components/board/card/CardGrid";
 import CardRow from "../../components/CardRow";
 import MovieRow from "../../components/MovieRow";
@@ -119,10 +120,21 @@ const ProfilePage = ({
       });
     }
   }, [debouncedFollowed]);
+  const [followerModal, setFollowerModal] = useState(false);
+  const [followingModal, setFollowingModal] = useState(false);
+  const onClickModal = (e) => {
+    if (followerModal || followingModal) {
+      setFollowerModal(false);
+      setFollowingModal(false);
+    }
+  };
 
   return (
-    <StyledProfile>
-      <div className="page-content page-container mt-5 mb-3 " id="page-content">
+    <StyledProfile onClick={onClickModal}>
+      <div
+        className="page-content page-container mt-5 mb-3 up-comming"
+        id="page-content"
+      >
         <div className="padding">
           <div className="row container d-flex justify-content-center mx-auto">
             <div className="col-lg-5 col-md-7">
@@ -154,12 +166,37 @@ const ProfilePage = ({
                         <p>Post</p>
                       </div>
                       <div
+                        role="button"
                         className="col-4"
+                        onClick={() => {
+                          setFollowerModal(true);
+                        }}
                         // data-bs-toggle="modal"
                         // data-bs-target="#exampleModal"
                       >
                         <h6>{profile.followers.length}</h6>
                         <p>Followers</p>
+                      </div>
+                      <div
+                        className={`RowContainer modalList ${
+                          followerModal ? "" : "d-none"
+                        }`}
+                      >
+                        <div className="m-2">{profile.nickname}님의 팔로워</div>
+                        {profile.followers?.map((follower) => {
+                          return (
+                            <ProfileLink uid={follower.uid} myUid={myUid}>
+                              <div key={follower.uid + "following"}>
+                                <img
+                                  src={follower.image}
+                                  style={{ height: "64px" }}
+                                />
+                                <span>{follower.nickname}</span>
+                                <hr />
+                              </div>
+                            </ProfileLink>
+                          );
+                        })}
                       </div>
                       {/* 
                       <div
@@ -214,13 +251,37 @@ const ProfilePage = ({
                       </div> */}
                       <div
                         className="col-4"
+                        role="button"
+                        onClick={() => {
+                          setFollowingModal(true);
+                        }}
                         // data-bs-toggle="modal"
                         // data-bs-target="#followingModal"
                       >
                         <h6>{profile.followings.length}</h6>
                         <p>Followings</p>
                       </div>
-
+                      <div
+                        className={`RowContainer modalList ${
+                          followingModal ? "" : "d-none"
+                        }`}
+                      >
+                        <div className="m-2">{profile.nickname}님의 팔로잉</div>
+                        {profile.followings?.map((follwing) => {
+                          return (
+                            <ProfileLink uid={follwing.uid} myUid={myUid}>
+                              <div key={follwing.uid + "following"}>
+                                <img
+                                  src={follwing.image}
+                                  style={{ height: "64px" }}
+                                />
+                                <span>{follwing.nickname}</span>
+                                <hr />
+                              </div>
+                            </ProfileLink>
+                          );
+                        })}
+                      </div>
                       {/* <div
                         className="modal fade"
                         id="followingModal"
@@ -360,41 +421,3 @@ export const getServerSideProps = wrapper.getServerSideProps(
     }
   },
 );
-
-const StyledProfile = styled.div`
-  .stretch-card > .card {
-    width: 100%;
-    min-width: 100%;
-  }
-
-  .card {
-    color: #fff;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: rgba(0, 0, 0, 0.397);
-    background-clip: border-box;
-    border: 1px solid rgba(20, 20, 20, 0.438);
-    border-radius: 10px;
-  }
-
-  .btn-info {
-    color: #fff;
-    background-color: #f48f3d;
-    border-color: #f48f3d;
-  }
-
-  .btn {
-    font-size: 0.875rem;
-    line-height: 1;
-    font-weight: 400;
-    padding: 0.7rem 1.5rem;
-    border-radius: 0.1275rem;
-  }
-
-  h6 {
-    font-size: 0.9375rem;
-  }
-`;
