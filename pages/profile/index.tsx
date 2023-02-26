@@ -436,7 +436,7 @@ export const StyledProfile = styled.div`
     height: 350px;
     width: 400px;
     position: absolute;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     top: 0;
     background-color: rgba(0, 0, 0, 0.87);
   }
