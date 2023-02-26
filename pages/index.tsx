@@ -76,7 +76,7 @@ export default function Home() {
         if (!flag) {
           setHeadClassName("up-lift");
           setTimeout(() => router.push(url), 510);
-        } else if (flag > 10) {
+        } else if (flag > 30) {
           clearTimeout(routingTimeoutId);
           toastError("알 수 없는 에러가 발생하였습니다.");
         } else {
