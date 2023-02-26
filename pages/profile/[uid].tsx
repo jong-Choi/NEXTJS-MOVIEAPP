@@ -122,10 +122,7 @@ const ProfilePage = ({
 
   return (
     <StyledProfile>
-      <div
-        className="page-content page-container mt-5 mb-3 up-comming"
-        id="page-content"
-      >
+      <div className="page-content page-container mt-5 mb-3 " id="page-content">
         <div className="padding">
           <div className="row container d-flex justify-content-center mx-auto">
             <div className="col-lg-5 col-md-7">
@@ -293,7 +290,11 @@ const ProfilePage = ({
               />
             </div>
           </div>
-          <div className={`row ${!isClicked && followed ? "" : "d-none"}`}>
+          <div
+            className={`row ${
+              !isClicked && followed ? "up-comming" : "d-none"
+            }`}
+          >
             <h4 className="m-3">{profile.nickname}님과 함께 보면 좋을 영화</h4>
             <div>
               <MovieRow
@@ -302,7 +303,11 @@ const ProfilePage = ({
               />
             </div>
           </div>
-          <div className={`row mb-5 ${!isClicked && followed ? "" : "d-none"}`}>
+          <div
+            className={`row mb-5 ${
+              !isClicked && followed ? "up-comming" : "d-none"
+            }`}
+          >
             <h4 className="m-3">{profile.nickname}님이 작성한 글</h4>
             {articles.length ? (
               <CardRow articles={articles} setArticles={setArticles}></CardRow>
