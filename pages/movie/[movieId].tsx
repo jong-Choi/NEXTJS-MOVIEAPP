@@ -94,18 +94,22 @@ const StyledModal = styled(ReactModal)`
   }
 `;
 
+import fetch from "node-fetch";
 import sharp from "sharp";
 import fs from "fs";
 import path from "path";
-import fetch from "node-fetch";
+import axios from "axios";
 export async function getStaticProps({ params: { movieId } }) {
   try {
     const { data: movie } = await getMovieDetail(movieId);
 
-    const res = await fetch(
+    const response = await axios.get(
       `https://image.tmdb.org/t/p/w1280/${movie.backdrop_path}`,
+      {
+        responseType: "arraybuffer",
+      },
     );
-    const buffer = await res.arrayBuffer();
+    const buffer = Buffer.from(response.data);
     const optimizedImage = await sharp(Buffer.from(buffer))
       .jpeg({ quality: 60, mozjpeg: true })
       .toBuffer();
@@ -114,10 +118,13 @@ export async function getStaticProps({ params: { movieId } }) {
     );
     fs.writeFileSync(filePath, optimizedImage);
 
-    const responsePoster = await fetch(
+    const responsePoster = await axios.get(
       `https://image.tmdb.org/t/p/w185/${movie.poster_path}`,
+      {
+        responseType: "arraybuffer",
+      },
     );
-    const bufferPoster = await responsePoster.arrayBuffer();
+    const bufferPoster = Buffer.from(responsePoster.data);
     const optimizedImagePoster = await sharp(Buffer.from(bufferPoster))
       .jpeg({ quality: 60, mozjpeg: true })
       .toBuffer();
