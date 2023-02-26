@@ -32,6 +32,24 @@ const GlobalStyle = createGlobalStyle`
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
   }
+  .up-comming {
+    visibility: hidden;
+    animation-duration: 0.2s;
+    animation-name: title-up-comming;
+    animation-fill-mode: forwards;
+  }
+  @keyframes title-up-comming {
+    0% {
+      opacity: 0;
+      visibility: hidden;
+      /* transform: translate3d(0, 105%, 0); */
+    }
+    100% {
+      opacity: 1;
+      visibility: visible;
+      /* transform: translateZ(0); */
+    }
+  }
 `;
 
 export default GlobalStyle;

@@ -4,7 +4,7 @@ import { toastError } from "../../utils/toastAlert";
 
 const BoardHeader = ({ creating, setCreating, uid }) => {
   return (
-    <StyledBoardHeader className="container">
+    <StyledBoardHeader className="container up-comming">
       <div className="row">
         <div className="col text-center mb-5">
           <h1>영화 일기</h1>

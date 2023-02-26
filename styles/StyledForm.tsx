@@ -15,7 +15,6 @@ const StyledForm = styled.div`
     animation-name: title-up-comming;
     animation-fill-mode: forwards;
   }
-
   @keyframes title-up-comming {
     0% {
       opacity: 0;

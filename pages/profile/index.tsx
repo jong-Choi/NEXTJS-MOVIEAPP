@@ -119,7 +119,13 @@ const MyProfile = () => {
                   <div className="border-top pt-3">
                     <div className="row">
                       <div className="col-4">
-                        <h6>{articles.length}</h6>
+                        <h6
+                          className={`${
+                            articles.length ? "up-comming" : "invisible"
+                          }`}
+                        >
+                          {articles.length}
+                        </h6>
                         <p>Post</p>
                       </div>
                       <div
@@ -313,7 +319,11 @@ const MyProfile = () => {
               />
             </div>
           </div>
-          <div className={`row mb-3 ${isUpdating ? "d-none" : ""}`}>
+          <div
+            className={`row mb-3 ${isUpdating ? "d-none" : ""} ${
+              articles.length ? "up-comming" : "invisible"
+            }`}
+          >
             <h4 className="m-3">내가 작성한 글</h4>
             {articles.length ? (
               <CardRow articles={articles} setArticles={setArticles}></CardRow>

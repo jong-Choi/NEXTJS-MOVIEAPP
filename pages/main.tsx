@@ -74,7 +74,7 @@ const MainPage = ({ moviesObject }: iProps) => {
 
   return (
     <>
-      <div className="container d-flex justify-content-center">
+      <div className="container d-flex justify-content-center up-comming">
         <div className="col-12 col-lg-10" id="main">
           {/* 카드 리스트 입니다. */}
           <StyledBoardHeader className="container">

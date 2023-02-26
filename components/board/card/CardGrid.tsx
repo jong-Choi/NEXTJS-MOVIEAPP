@@ -98,7 +98,9 @@ const CardGrid = ({ creating, setCreating }) => {
   //   )
   // }
   return (
-    <div className="container">
+    <div
+      className={`container ${articles.length ? "up-comming" : "invisible"}`}
+    >
       <div className="row">{grid}</div>
       <div
         ref={trigger}
