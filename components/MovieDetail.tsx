@@ -120,6 +120,11 @@ const MovieDetail = ({ onClose, movie }) => {
                   type="button"
                   className={`btn btn-outline-light ml-auto`}
                   onClick={() => setCreating(true)}
+                  onMouseEnter={() => {
+                    const cardBackdrop = new Image();
+                    cardBackdrop.src = `https://image.tmdb.org/t/p/w780/${movie.backdrop_path}`;
+                    return cardBackdrop;
+                  }}
                   name="creatMovieCard"
                 >
                   영화일기 작성하기
