@@ -94,9 +94,30 @@ const StyledModal = styled(ReactModal)`
   }
 `;
 
+import fetch from "node-fetch";
+import sharp from "sharp";
+import fs from "fs";
+import path from "path";
+import axios from "axios";
+
 export async function getStaticProps({ params: { movieId } }) {
   try {
     const { data: movie } = await getMovieDetail(movieId);
+
+    const response = await axios.get(
+      `https://image.tmdb.org/t/p/w1280/${movie.backdrop_path}`,
+      {
+        responseType: "arraybuffer",
+      },
+    );
+    const buffer = Buffer.from(response.data);
+    const optimizedImage = await sharp(Buffer.from(buffer))
+      .jpeg({ quality: 60, mozjpeg: true })
+      .toBuffer();
+    const filePath = path.resolve(
+      path.join(process.cwd(), "public", "backdrop", movie.backdrop_path),
+    );
+    fs.writeFileSync(filePath, optimizedImage);
     return { props: { movieId: movieId, movie: movie } };
   } catch {
     return {
