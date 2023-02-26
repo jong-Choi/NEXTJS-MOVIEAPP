@@ -5,7 +5,6 @@ import { authService } from "../../../public/fbase";
 import { createArticle, fetchAticles } from "../../../services/fbDb";
 import { fetchProfile } from "../../../services/fbProfile";
 import { useTypedSelector } from "../../../store";
-import { setMyArticles } from "../../../store/authSlice";
 import { setArticles } from "../../../store/dbSlice";
 import { Article } from "../../../types/article";
 import { toastSuccess } from "../../../utils/toastAlert";
@@ -64,9 +63,6 @@ const CardCreate = ({
     if (movie.title && uid && input)
       createArticle(article).then(() => {
         toastSuccess("게시글이 작성되었습니다.");
-        fetchAticles(0, uid).then((articles) => {
-          dispatch(setMyArticles(articles));
-        });
         setTrigger();
         setCanCreate(false);
       });

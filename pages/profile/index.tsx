@@ -7,14 +7,13 @@ import CardGrid from "../../components/board/card/CardGrid";
 import CardRow from "../../components/CardRow";
 import MovieRow from "../../components/MovieRow";
 import MyMovieForm from "../../components/MyMovieForm";
-import { authService, dbService } from "../../public/fbase";
+import { authService } from "../../public/fbase";
 import { fetchAticles } from "../../services/fbDb";
 import { updateProfile } from "../../services/fbProfile";
 import { newRecommendations } from "../../services/tmdbApi";
 import wrapper, { useTypedSelector } from "../../store";
 import {
   patchUserProfile,
-  setMyArticles,
   setUserOjbect,
   setUserProfile,
 } from "../../store/authSlice";
@@ -26,9 +25,9 @@ import { toastError, toastInfo, toastSuccess } from "../../utils/toastAlert";
 
 const MyProfile = () => {
   const profile = useTypedSelector((state) => state.authSlice.userProfile);
-  const articles = useTypedSelector((state) => state.authSlice.myArticles);
   const router = useRouter();
   const dispatch = useDispatch();
+  const [articles, setArticles] = useState([]);
   const [myMovies, setMyMovies] = useState(
     JSON.parse(JSON.stringify(profile.myMovies)),
   );
@@ -53,15 +52,10 @@ const MyProfile = () => {
     [myMovies],
   );
 
-  const setArticles = (articles) => {
-    dispatch(setMyArticles(articles));
-  };
   useEffect(() => {
-    if (!articles.length) {
-      fetchAticles(0, profile.uid).then((articles) => {
-        setArticles(articles);
-      });
-    }
+    fetchAticles(0, profile.uid).then((articles) => {
+      setArticles(articles);
+    });
   }, []);
 
   const [isUpdating, setIsUpdating] = useState(false);
