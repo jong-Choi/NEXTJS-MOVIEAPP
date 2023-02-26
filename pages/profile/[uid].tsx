@@ -135,7 +135,7 @@ const ProfilePage = ({
                     <h4>{profile.nickname}</h4>
                     <img
                       src={profile.image}
-                      style={{ width: "15vh" }}
+                      style={{ width: "120px" }}
                       className="m-3"
                     />
                     <p>
@@ -282,7 +282,7 @@ const ProfilePage = ({
           </div>
         </div>
       </div>
-      <div className="container d-flex justify-content-center">
+      <div className="container d-flex justify-content-center up-comming">
         <div className="col-12 col-lg-10">
           <div className="row">
             <h4 className="m-3">{profile.nickname}님의 인생영화</h4>
