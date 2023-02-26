@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import ReactModal from "react-modal";
 import styled from "styled-components";
 import MovieDetail from "../../components/MovieDetail";
-import tmdbApi, { getMovieDetail } from "../../services/tmdbApi";
+import { getMovieDetail } from "../../services/tmdbApi";
 import { Movie } from "../../types/moive";
 import MainPage from "../main";
 
@@ -97,18 +97,15 @@ const StyledModal = styled(ReactModal)`
 import sharp from "sharp";
 import fs from "fs";
 import path from "path";
-import axios from "axios";
+import fetch from "node-fetch";
 export async function getStaticProps({ params: { movieId } }) {
   try {
     const { data: movie } = await getMovieDetail(movieId);
 
-    const response = await axios.get(
-      `https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`,
-      {
-        responseType: "arraybuffer",
-      },
+    const res = await fetch(
+      `https://image.tmdb.org/t/p/w1280/${movie.backdrop_path}`,
     );
-    const buffer = Buffer.from(response.data);
+    const buffer = await res.arrayBuffer();
     const optimizedImage = await sharp(Buffer.from(buffer))
       .jpeg({ quality: 60, mozjpeg: true })
       .toBuffer();
@@ -117,13 +114,10 @@ export async function getStaticProps({ params: { movieId } }) {
     );
     fs.writeFileSync(filePath, optimizedImage);
 
-    const responsePoster = await axios.get(
-      `https://image.tmdb.org/t/p/w185${movie.poster_path}`,
-      {
-        responseType: "arraybuffer",
-      },
+    const responsePoster = await fetch(
+      `https://image.tmdb.org/t/p/w185/${movie.poster_path}`,
     );
-    const bufferPoster = Buffer.from(responsePoster.data);
+    const bufferPoster = await responsePoster.arrayBuffer();
     const optimizedImagePoster = await sharp(Buffer.from(bufferPoster))
       .jpeg({ quality: 60, mozjpeg: true })
       .toBuffer();
