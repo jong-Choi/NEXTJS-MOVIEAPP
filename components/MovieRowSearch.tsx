@@ -16,7 +16,8 @@ const MovieRowSearch = ({ movie, cardMode = false }) => {
         style={{
           width: "100%",
           paddingTop: "56.25%",
-          background: "url('/noResult.jpg')",
+          backgroundImage: Loading ? `url('/noResult.jpg')` : "",
+          backgroundSize: "cover",
         }}
       >
         <img
