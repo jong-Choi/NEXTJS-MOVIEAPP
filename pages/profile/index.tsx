@@ -101,7 +101,7 @@ const MyProfile = () => {
                     <h4>{profile.nickname}</h4>
                     <img
                       src={profile.image}
-                      style={{ maxWidth: "240px" }}
+                      style={{ width: "15vh" }}
                       className="m-3"
                     />
                     <p>
