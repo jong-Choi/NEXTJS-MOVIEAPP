@@ -131,7 +131,7 @@ export default function Home() {
                 isImageLoaded ? "after-01-secs" : ""
               }`}
             >
-              <h1 className="mx-auto my-0 text-uppercase">TEAL AND ORAGNE</h1>
+              <h1 className="mx-auto my-0 text-uppercase">TEAL AND ORANGE</h1>
               <h2 className="text-white-50 mx-auto mt-3 mb-5">
                 {quetes}
                 <br />- <i> {movieName}</i>
