@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
+import { Article } from "../types/article";
 import { ProfileDataType } from "../types/profile";
 import { UserType } from "../types/user";
 
@@ -8,6 +9,7 @@ const authSlice = createSlice({
   initialState: {
     userObject: null as UserType,
     isAuth: false as boolean,
+    myArticles: [] as Array<Article>,
     userProfile: {
       uid: "",
       nickname: "",
@@ -29,6 +31,9 @@ const authSlice = createSlice({
     patchUserProfile(state, action) {
       state.userProfile = { ...state.userProfile, ...action.payload };
     },
+    setMyArticles(state, action) {
+      state.myArticles = action.payload;
+    },
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -41,5 +46,9 @@ const authSlice = createSlice({
 });
 
 export default authSlice;
-export const { setUserOjbect, setUserProfile, patchUserProfile } =
-  authSlice.actions;
+export const {
+  setUserOjbect,
+  setUserProfile,
+  patchUserProfile,
+  setMyArticles,
+} = authSlice.actions;

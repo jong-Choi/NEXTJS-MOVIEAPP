@@ -132,7 +132,7 @@ const ProfilePage = ({
                     <h4>{profile.nickname}</h4>
                     <img
                       src={profile.image}
-                      style={{ width: "15vh" }}
+                      style={{ width: "15vh", maxWidth: "240px" }}
                       className="m-3"
                     />
                     <p>
