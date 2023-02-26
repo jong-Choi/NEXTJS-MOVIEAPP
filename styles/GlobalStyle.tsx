@@ -35,6 +35,7 @@ const GlobalStyle = createGlobalStyle`
   .up-comming {
     visibility: hidden;
     animation-duration: 0.2s;
+    animation-delay: 50ms;
     animation-name: title-up-comming;
     animation-fill-mode: forwards;
   }
