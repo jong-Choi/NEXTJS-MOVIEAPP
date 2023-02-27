@@ -14,7 +14,9 @@ function Navbar() {
   const router = useRouter();
 
   const isLanding =
-    router.pathname === "/" || router.pathname === "/profile/create";
+    router.pathname === "/" ||
+    router.pathname === "/profile/create" ||
+    router.pathname.startsWith("/movie");
   if (isLanding) return <></>;
 
   const profile = useTypedSelector((state) => state.authSlice.userProfile);
@@ -73,7 +75,7 @@ function Navbar() {
             width={120}
             alt="logo"
             src="/logo.png"
-            className="nav__logo mt-1"
+            className="nav__logo mt-1 d-none d-sm-block"
             role="button"
             onClick={() => router.push("/main")}
           />

@@ -188,6 +188,9 @@ const StyledContainer = styled.div`
     width: 60%;
     padding: 1rem;
     margin: 0 auto;
+    @media (max-width: 768px) {
+      width: 90%;
+    }
     @media (min-width: 768px) {
       padding-right: 5rem;
     }
