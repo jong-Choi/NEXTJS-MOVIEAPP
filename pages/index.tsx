@@ -106,6 +106,8 @@ export default function Home() {
             imageElement.src = `https://image.tmdb.org/t/p/w300/${movie.backdrop_path}`;
             return imageElement;
           });
+          const imageElement = new Image();
+          imageElement.src = `/${profile.image}`;
         },
         fetchTrending().then((res) => {
           dispatch(setTrendingArticles(res));
