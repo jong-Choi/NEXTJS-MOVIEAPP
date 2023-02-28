@@ -32,6 +32,18 @@ const MovieDetailPage = ({ movie }: iProps) => {
     router.back();
   };
 
+  useEffect(() => {
+    // beforePopState 이벤트를 등록합니다.
+    router.beforePopState((state) => {
+      state.options.scroll = false;
+      return true;
+    });
+    return () => {
+      // 컴포넌트가 언마운트될 때 이벤트를 해제합니다.
+      router.beforePopState(null);
+    };
+  }, []);
+
   return (
     <>
       <div
