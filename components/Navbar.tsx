@@ -27,14 +27,16 @@ function Navbar() {
   }, []);
 
   const isMain = router.pathname === "/main";
-  const header = isMain ? (
+  const header = (
     <GrayScaleMastheadH1>
-      <header className={`navhead`}>
+      <header
+        role="button"
+        className={`navhead ${isMain ? "" : "d-block d-sm-none"}`}
+        onClick={() => router.push("/main")}
+      >
         <h1 className="">TEAL AND ORANGE</h1>
       </header>
     </GrayScaleMastheadH1>
-  ) : (
-    <></>
   );
 
   const [position, setPosition] = useState(0);
