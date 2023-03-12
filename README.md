@@ -18,8 +18,6 @@
 - **리빌딩** : Next.js 13, Redux Toolkit, Firebase 9
 
 
-## 프로젝트 소개
-
 본 프로젝트는 TMDB API를 이용하여 영화 목록 조회, 영화 리뷰 작성, 회원정보 조회 등의 페이지로 구성한 Web Application 입니다. 
 - 부트캠프에서 Vue.js + Django REST framework로 제작한 프로젝트를 Next.js와 Firebase로 리빌딩 하였습니다. 
 - 카드형 UI를 중심으로 게시글의 생성 및 삭제, 좋아요 기능을 원터치로 작동하도록 사용자 경험을 설계하였습니다.
