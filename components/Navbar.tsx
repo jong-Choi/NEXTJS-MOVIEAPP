@@ -14,7 +14,9 @@ function Navbar() {
   const router = useRouter();
 
   const isLanding =
-    router.pathname === "/" || router.pathname === "/profile/create";
+    router.pathname === "/" ||
+    router.pathname === "/profile/create" ||
+    router.pathname.startsWith("/movie");
   if (isLanding) return <></>;
 
   const profile = useTypedSelector((state) => state.authSlice.userProfile);
@@ -25,14 +27,16 @@ function Navbar() {
   }, []);
 
   const isMain = router.pathname === "/main";
-  const header = isMain ? (
+  const header = (
     <GrayScaleMastheadH1>
-      <header className={`navhead`}>
+      <header
+        role="button"
+        className={`navhead ${isMain ? "" : "d-block d-sm-none"}`}
+        onClick={() => router.push("/main")}
+      >
         <h1 className="">TEAL AND ORANGE</h1>
       </header>
     </GrayScaleMastheadH1>
-  ) : (
-    <></>
   );
 
   const [position, setPosition] = useState(0);
@@ -73,7 +77,7 @@ function Navbar() {
             width={120}
             alt="logo"
             src="/logo.png"
-            className="nav__logo mt-1"
+            className="nav__logo mt-1 d-none d-sm-block"
             role="button"
             onClick={() => router.push("/main")}
           />
