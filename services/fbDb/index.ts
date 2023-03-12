@@ -39,14 +39,14 @@ export const fetchTrending = () => {
     Date.now() - 7 * 24 * 60 * 60 * 1000,
   );
 
-  const data = query.get().then((Snapshot) => {
-    let Articles = Snapshot.docs.map((doc) => {
+  const data = query.get().then(async (Snapshot) => {
+    let Articles = await Snapshot.docs.map((doc) => {
       const documentId = doc.id;
       const documentData = doc.data();
       return { documentId, ...documentData } as Article;
     });
     if (!Articles.length) {
-      dbRef
+      await dbRef
         .limit(20)
         .get()
         .then((Snapshot) => {
