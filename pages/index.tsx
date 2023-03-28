@@ -112,9 +112,10 @@ export default function Home() {
         fetchTrending().then((res) => {
           dispatch(setTrendingArticles(res));
         }),
-        fetchAticles(0, profile.uid).then((articles) => {
-          dispatch(setArticles(articles));
-        }),
+        profile &&
+          fetchAticles(0, profile.uid).then((articles) => {
+            dispatch(setArticles(articles));
+          }),
       ]).then(() => (flag = -1));
     });
   }, []);
