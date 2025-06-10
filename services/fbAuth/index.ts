@@ -17,10 +17,17 @@ export const onSocialLogin = async (event) => {
   });
 };
 
+export const onGuestLogin = async () => {
+  await authService.signInAnonymously().catch((err) => {
+    toastError("게스트 로그인에 실패하였습니다.");
+    Promise.reject(err);
+  });
+};
+
 export const onLogut = async () => {
   await authService.signOut().catch();
   delCookie("uid");
 };
 
-const fbAuth = { onSocialLogin, onLogut };
+const fbAuth = { onSocialLogin, onGuestLogin, onLogut };
 export default fbAuth;

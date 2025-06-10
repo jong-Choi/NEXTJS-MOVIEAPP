@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { authService } from "../public/fbase";
-import { onSocialLogin } from "../services/fbAuth";
+import { onGuestLogin, onSocialLogin } from "../services/fbAuth";
 import { fetchAticles, fetchTrending } from "../services/fbDb";
 import { fetchProfile } from "../services/fbProfile";
 import authSlice from "../store/authSlice";
@@ -142,14 +142,24 @@ export default function Home() {
                 {quetes}
                 <br />- <i> {movieName}</i>
               </h2>
-              <button
-                type="button"
-                className={`btn btn-outline-light ${buttonDisplay}`}
-                onClick={onSocialLogin}
-                name="loginWithGoogle"
-              >
-                구글로 로그인 하기
-              </button>
+              <div className="d-flex flex-column gap-2 w-50 mx-auto">
+                <button
+                  type="button"
+                  className={`btn btn-light ${buttonDisplay}`}
+                  onClick={onSocialLogin}
+                  name="loginWithGoogle"
+                >
+                  구글로 로그인 하기
+                </button>
+                <button
+                  type="button"
+                  className={`btn btn-outline-light ${buttonDisplay}`}
+                  onClick={onGuestLogin}
+                  name="loginWithGoogle"
+                >
+                  게스트 모드로 진행하기
+                </button>
+              </div>
             </div>
           </div>
         </div>
