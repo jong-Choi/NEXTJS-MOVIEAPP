@@ -37,7 +37,7 @@ const MyProfile = () => {
 
   useEffect(() => {
     if (!storeArticles?.length) {
-      return fetchAticles(0, profile.uid).then((articles) => {
+      fetchAticles(0, profile.uid).then((articles) => {
         dispatch(setStoreArticles(articles));
         setArticles(articles);
       });
